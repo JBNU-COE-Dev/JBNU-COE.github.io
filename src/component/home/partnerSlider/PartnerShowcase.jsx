@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import Kakao from '../maps/kakao.jsx';
+import Naver from '../maps/naver.jsx';
 import { partners } from '../../benefits/partnersData.js';
 import './PartnerShowcase.css';
 
@@ -62,7 +62,7 @@ export default function PartnerShowcase({ query = '' }) {
   return (
     <div className="benefit-body">
       <div className="benefit-map" aria-label="제휴업체 위치 지도">
-        <Kakao address={current.address} name={current.name} lat={current.lat} lng={current.lng} containerStyle={{ minHeight: '360px' }} />
+        <Naver address={current.address} name={current.name} lat={current.lat} lng={current.lng} containerStyle={{ minHeight: '360px' }} />
       </div>
       <div className="benefit-info">
         <div className="benefit-nav">

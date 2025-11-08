@@ -68,6 +68,76 @@
   border-radius: 12px;
   border: 1px solid #e5e7eb;
   background: #f8fafc;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 76, 165, 0.1);
+  transition: all 0.3s ease;
+}
+
+.benefits-map:hover {
+  box-shadow: 0 4px 20px rgba(0, 76, 165, 0.15);
+}
+
+/* 네이버 지도 커스텀 마커 스타일 */
+.benefits-map .custom-marker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: markerAppear 0.5s ease-out;
+}
+
+@keyframes markerAppear {
+  0% {
+    transform: scale(0) translateY(-20px);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) translateY(-5px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.benefits-map .marker-pulse {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 76, 165, 0.3);
+  animation: pulse 2s ease-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.benefits-map .marker-icon {
+  position: relative;
+  z-index: 1;
+  background: white;
+  border-radius: 50%;
+  padding: 6px;
+  box-shadow: 0 4px 12px rgba(0, 76, 165, 0.3),
+              0 0 0 3px rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.benefits-map .marker-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 76, 165, 0.4),
+              0 0 0 4px rgba(255, 255, 255, 0.9);
 }
 
 .benefits-info {

@@ -85,38 +85,52 @@ const normalizeAddress = (raw, name) => {
   return out.trim();
 };
 
-// Kakao Maps SDK를 동적으로 로드하는 헬퍼
-// - 환경변수(REACT_APP_KAKAOAPIKEY)로부터 키를 읽어오며
-// - geocoder/places 사용을 위해 services 라이브러리를 함께 로드합니다
-const loadKakaoIfNeeded = () => {
+// Naver Maps SDK를 동적으로 로드하는 헬퍼
+// - 환경변수(REACT_APP_NAVER_CLIENT_ID)로부터 키를 읽어옵니다
+const loadNaverIfNeeded = () => {
   return new Promise((resolve, reject) => {
-    const key = process.env.REACT_APP_KAKAOAPIKEY;
-    //const key = '1234567890';
+    const key = process.env.REACT_APP_NAVER_CLIENT_ID;
     if (!key) {
-      console.warn('[KAKAO] REACT_APP_KAKAOAPIKEY가 설정되지 않았습니다. 지도 기능이 비활성화됩니다.');
+      console.warn('[NAVER] REACT_APP_NAVER_CLIENT_ID가 설정되지 않았습니다. 지도 기능이 비활성화됩니다.');
       return resolve(); // 에러 대신 성공으로 처리
     }
-    if (window.kakao && window.kakao.maps) {
-      if (window.kakao.maps.services) {
-        console.log('[KAKAO] SDK already loaded(with services). key(len):', String(key).length);
+    if (window.naver && window.naver.maps) {
+      console.log('[NAVER] SDK already loaded. key(len):', String(key).length);
+      // Service 객체도 확인 (지오코딩 사용 시 필요)
+      if (window.naver.maps.Service) {
         resolve();
-        return;
+      } else {
+        // Service 객체가 아직 준비되지 않았으면 대기
+        const checkServiceReady = () => {
+          if (window.naver && window.naver.maps && window.naver.maps.Service) {
+            resolve();
+          } else {
+            setTimeout(checkServiceReady, 100);
+          }
+        };
+        checkServiceReady();
       }
-      console.error('[KAKAO] SDK가 services 라이브러리 없이 로드되었습니다. 새로고침이 필요합니다.');
-      reject(new Error('Kakao SDK missing services library'));
       return;
     }
     const script = document.createElement('script');
-    // services 라이브러리(지오코딩) 사용
-    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${key}&autoload=false&libraries=services`;
+    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${key}&submodules=geocoder`;
     script.async = true;
     script.onload = () => {
-      console.log('[KAKAO] SDK loaded. key(len):', String(key).length);
-      window.kakao.maps.load(resolve);
+      console.log('[NAVER] SDK loaded. key(len):', String(key).length);
+      // Service 객체가 준비될 때까지 대기
+      const checkServiceReady = () => {
+        if (window.naver && window.naver.maps && window.naver.maps.Service) {
+          resolve();
+        } else {
+          // Service 객체가 아직 준비되지 않았으면 100ms 후 다시 확인
+          setTimeout(checkServiceReady, 100);
+        }
+      };
+      checkServiceReady();
     };
     script.onerror = () => {
-      console.error('[KAKAO] SDK 스크립트 로드 실패');
-      reject(new Error('Kakao SDK load failed'));
+      console.error('[NAVER] SDK 스크립트 로드 실패');
+      reject(new Error('Naver SDK load failed'));
     };
     document.head.appendChild(script);
   });
@@ -128,17 +142,28 @@ const geocodeByAddress = async (addr) => {
   const cached = cacheGet(key);
   if (cached) return cached;
   return withDedup(key, () => new Promise((resolve) => {
-    const geocoder = new window.kakao.maps.services.Geocoder();
-    geocoder.addressSearch(addr, (result, status) => {
-      if (status === window.kakao.maps.services.Status.OK && result && result[0]) {
-        const y = parseFloat(result[0].y);
-        const x = parseFloat(result[0].x);
-        const out = { lat: y, lng: x };
-        cacheSet(key, out);
-        resolve(out);
-      } else {
+    if (!window.naver || !window.naver.maps || !window.naver.maps.Service) {
+      console.warn('[NAVER] Service 객체가 준비되지 않았습니다.');
+      resolve(null);
+      return;
+    }
+    window.naver.maps.Service.geocode({
+      query: addr
+    }, (status, response) => {
+      if (status === window.naver.maps.Service.Status.ERROR) {
         resolve(null);
+        return;
       }
+      if (response.v2.meta.totalCount === 0) {
+        resolve(null);
+        return;
+      }
+      const item = response.v2.addresses[0];
+      const y = parseFloat(item.y);
+      const x = parseFloat(item.x);
+      const out = { lat: y, lng: x };
+      cacheSet(key, out);
+      resolve(out);
     });
   }));
 };
@@ -146,37 +171,66 @@ const geocodeByAddress = async (addr) => {
 // (요청에 따라 비활성화) 업체명 키워드 검색은 사용하지 않습니다.
 
 // 단일 제휴업체 블록 컴포넌트
-// - 좌측: 카카오맵, 우측: 업체 정보
+// - 좌측: 네이버맵, 우측: 업체 정보
 // - 좌표(lat/lng)가 없을 경우 주소 → 지오코딩 → 마커 표시
 const BenefitsPartner = ({ name, address, phone, benefits = [], lat, lng }) => {
   const mapRef = useRef(null);
   const mapObjRef = useRef(null);
+  const markerRef = useRef(null);
   const [mapError, setMapError] = useState(null);
   const initializedRef = useRef(false);
 
   useEffect(() => {
     if (initializedRef.current) return; // 개발모드 StrictEffect 중복 방지
     initializedRef.current = true;
-    let marker;
-    loadKakaoIfNeeded()
+    
+    loadNaverIfNeeded()
       .then(() => {
         const container = mapRef.current;
         if (!container) return;
-        const DEFAULT_CENTER = new window.kakao.maps.LatLng(35.8464522, 127.1296552); // 기본(공대 근처)
+        const DEFAULT_CENTER = new window.naver.maps.LatLng(35.8464522, 127.1296552); // 기본(공대 근처)
 
         const initialCenter = (lat && lng)
-          ? new window.kakao.maps.LatLng(lat, lng)
+          ? new window.naver.maps.LatLng(lat, lng)
           : DEFAULT_CENTER;
 
         // 지도 생성(초기 중심은 좌표가 있으면 해당 위치, 아니면 공대 근처)
-        const map = new window.kakao.maps.Map(container, { center: initialCenter, level: 3 });
+        const map = new window.naver.maps.Map(container, {
+          center: initialCenter,
+          zoom: 15,
+          zoomControl: true,
+          zoomControlOptions: {
+            position: window.naver.maps.Position.TOP_RIGHT,
+            style: window.naver.maps.ZoomControlStyle.SMALL
+          }
+        });
+
+        // 커스텀 마커 HTML
+        const markerHTML = `
+          <div class="custom-marker">
+            <div class="marker-pulse"></div>
+            <div class="marker-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z" fill="#004ca5"/>
+              </svg>
+            </div>
+          </div>
+        `;
 
         // 마커 생성/갱신 + 지도 중심 이동 헬퍼
         const placeMarkerAt = (pos) => {
-          if (marker) marker.setMap(null);
-          marker = new window.kakao.maps.Marker({ position: pos });
-          marker.setMap(map);
-          map.setCenter(pos);
+          if (markerRef.current) markerRef.current.setMap(null);
+          markerRef.current = new window.naver.maps.Marker({
+            position: pos,
+            map: map,
+            icon: {
+              content: markerHTML,
+              anchor: new window.naver.maps.Point(12, 24)
+            },
+            title: name || '위치',
+            zIndex: 1000
+          });
+          map.panTo(pos, { duration: 500, easing: 'easeOutCubic' });
         };
 
         if (lat && lng) {
@@ -194,12 +248,12 @@ const BenefitsPartner = ({ name, address, phone, benefits = [], lat, lng }) => {
           if (addr && addr.replace(/\s/g, '').length >= 5) {
             const geo = await geocodeByAddress(addr);
             if (geo) {
-              const pos = new window.kakao.maps.LatLng(geo.lat, geo.lng);
+              const pos = new window.naver.maps.LatLng(geo.lat, geo.lng);
               placeMarkerAt(pos);
               mapObjRef.current = map;
               return;
             }
-            console.warn('[KAKAO] Geocoding 실패:', name, addr);
+            console.warn('[NAVER] Geocoding 실패:', name, addr);
           }
 
           // 주소가 없거나 실패 시 기본 중심(공대 근처) 사용
@@ -214,6 +268,7 @@ const BenefitsPartner = ({ name, address, phone, benefits = [], lat, lng }) => {
       });
 
     return () => {
+      if (markerRef.current) markerRef.current.setMap(null);
       mapObjRef.current = null;
     };
   }, [lat, lng, address, name]);
@@ -231,7 +286,7 @@ const BenefitsPartner = ({ name, address, phone, benefits = [], lat, lng }) => {
                 textAlign: 'center', padding: '1rem'
               }}>
                 지도 로드 실패: {mapError}<br/>
-                .env에 REACT_APP_KAKAOAPIKEY를 설정했는지 확인해 주세요.
+                .env에 REACT_APP_NAVER_CLIENT_ID를 설정했는지 확인해 주세요.
               </div>
             )}
           </div>
