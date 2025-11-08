@@ -113,7 +113,7 @@ const loadNaverIfNeeded = () => {
       return;
     }
     const script = document.createElement('script');
-    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${key}&submodules=geocoder`;
+    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${key}&submodules=geocoder`;
     script.async = true;
     script.onload = () => {
       console.log('[NAVER] SDK loaded. key(len):', String(key).length);

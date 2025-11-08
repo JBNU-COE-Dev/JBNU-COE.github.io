@@ -10,7 +10,7 @@ function Naver({ containerStyle, address, name, lat, lng }) {
   const scriptLoadedRef = useRef(false);
 
   useEffect(() => {
-    const CLIENT_ID = process.env.REACT_APP_NAVER_CLIENT_ID;
+    const CLIENT_ID = 'stpjolhsdg';
     
     if (!CLIENT_ID) {
       setError('네이버 지도 API 키가 설정되지 않았습니다.');
@@ -43,7 +43,7 @@ function Naver({ containerStyle, address, name, lat, lng }) {
 
     // 네이버 지도 스크립트 동적 로드 (신규 API 사용)
     const script = document.createElement('script');
-    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${CLIENT_ID}&submodules=geocoder`;
+    script.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${CLIENT_ID}&submodules=geocoder`;
     script.async = true;
 
     script.onload = () => {
