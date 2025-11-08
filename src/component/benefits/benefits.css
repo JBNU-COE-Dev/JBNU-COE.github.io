@@ -9,8 +9,9 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.5rem;
-  padding: 12vh 1.25rem 2rem; /* 상단 고정 헤더(10vh) 고려하여 여유 패딩 */
+  padding: 1.5rem 1.25rem 2rem; /* 뷰 토글 버튼 아래 여백 */
   box-sizing: border-box;
+  margin-top: 0; /* 상단 마진 제거 */
 }
 
 @media (max-width: 1200px) {
@@ -22,7 +23,7 @@
 @media (max-width: 640px) {
   .benefits-list {
     grid-template-columns: 1fr;
-    padding-top: 11vh;
+    padding-top: 1rem;
   }
 }
 
@@ -226,5 +227,147 @@
   }
   .benefits-perks {
     max-height: none;      /* 모바일에서는 전체 내용 표시 */
+  }
+}
+
+/* 전체 지도 뷰 스타일 */
+.benefits-map-view {
+  width: 100%;
+}
+
+.benefits-map-container {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 76, 165, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.benefits-map-container .custom-marker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: markerAppear 0.5s ease-out;
+}
+
+.benefits-map-container .marker-pulse {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 76, 165, 0.3);
+  animation: pulse 2s ease-out infinite;
+}
+
+.benefits-map-container .marker-icon {
+  position: relative;
+  z-index: 1;
+  background: white;
+  border-radius: 50%;
+  padding: 6px;
+  box-shadow: 0 4px 12px rgba(0, 76, 165, 0.3),
+              0 0 0 3px rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.benefits-map-container .marker-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 76, 165, 0.4),
+              0 0 0 4px rgba(255, 255, 255, 0.9);
+}
+
+/* 로딩 스피너 */
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top-color: #004ca5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 페이지 컨테이너 */
+.benefits-page {
+  width: 100%;
+  padding-top: calc(40px + 10vh); /* topBar(40px) + headerBar(10vh) 공간 확보 */
+}
+
+/* 뷰 모드 전환 버튼 */
+.benefits-view-toggle {
+  position: sticky;
+  top: calc(40px + 10vh); /* topBar(40px) + headerBar(10vh) */
+  z-index: 100;
+  padding: 1rem 1.25rem;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-top: 0; /* 상단 마진 제거 */
+}
+
+.view-toggle-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: #e5e7eb;
+  color: #374151;
+  cursor: pointer;
+  font-weight: 400;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.view-toggle-btn:hover {
+  background: #d1d5db;
+}
+
+.view-toggle-btn.active {
+  background: #004ca5;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* 지도 뷰 래퍼 */
+.benefits-map-wrapper {
+  padding: 1.5rem 1.25rem 2rem;
+  margin-top: 0; /* 상단 마진 제거 */
+}
+
+@media (max-width: 768px) {
+  .benefits-page {
+    padding-top: calc(35px + 10vh); /* 모바일 topBar(35px) + headerBar(10vh) */
+  }
+  
+  .benefits-view-toggle {
+    top: calc(35px + 10vh); /* 모바일 topBar(35px) + headerBar(10vh) */
+    padding: 0.75rem 1rem;
+    justify-content: center;
+  }
+  
+  .view-toggle-btn {
+    flex: 1;
+    max-width: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .benefits-page {
+    padding-top: calc(30px + 10vh); /* 작은 모바일 topBar(30px) + headerBar(10vh) */
+  }
+  
+  .benefits-view-toggle {
+    top: calc(30px + 10vh); /* 작은 모바일 topBar(30px) + headerBar(10vh) */
   }
 }

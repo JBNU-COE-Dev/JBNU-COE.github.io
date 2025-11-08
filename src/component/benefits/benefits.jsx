@@ -309,12 +309,237 @@ const BenefitsPartner = ({ name, address, phone, benefits = [], lat, lng }) => {
   );
 };
 
+// 전체 제휴업체를 한 지도에 표시하는 컴포넌트
+const BenefitsMapView = () => {
+  const mapRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+  const markersRef = useRef([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [mapError, setMapError] = useState(null);
+  const [selectedPartner, setSelectedPartner] = useState(null);
+  const initializedRef = useRef(false);
+
+  useEffect(() => {
+    if (initializedRef.current) return;
+    initializedRef.current = true;
+
+    loadNaverIfNeeded()
+      .then(() => {
+        const container = mapRef.current;
+        if (!container) return;
+
+        const DEFAULT_CENTER = new window.naver.maps.LatLng(35.8464522, 127.1296552);
+
+        // 지도 생성
+        const map = new window.naver.maps.Map(container, {
+          center: DEFAULT_CENTER,
+          zoom: 14,
+          zoomControl: true,
+          zoomControlOptions: {
+            position: window.naver.maps.Position.TOP_RIGHT,
+            style: window.naver.maps.ZoomControlStyle.SMALL
+          }
+        });
+
+        mapInstanceRef.current = map;
+
+        // 커스텀 마커 HTML
+        const markerHTML = `
+          <div class="custom-marker">
+            <div class="marker-pulse"></div>
+            <div class="marker-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z" fill="#004ca5"/>
+              </svg>
+            </div>
+          </div>
+        `;
+
+        // 모든 제휴업체의 좌표를 가져와서 마커 표시
+        const loadAllMarkers = async () => {
+          const validPartners = [];
+          const positions = [];
+
+          // 모든 업체의 좌표 가져오기
+          for (const partner of partners) {
+            let position = null;
+
+            if (partner.lat && partner.lng) {
+              position = new window.naver.maps.LatLng(partner.lat, partner.lng);
+            } else if (partner.address) {
+              const addr = normalizeAddress(partner.address, partner.name);
+              if (addr && addr.replace(/\s/g, '').length >= 5) {
+                const geo = await geocodeByAddress(addr);
+                if (geo) {
+                  position = new window.naver.maps.LatLng(geo.lat, geo.lng);
+                }
+              }
+            }
+
+            if (position) {
+              validPartners.push({ ...partner, position });
+              positions.push(position);
+            }
+          }
+
+          // 마커 생성
+          validPartners.forEach((partner) => {
+            const marker = new window.naver.maps.Marker({
+              position: partner.position,
+              map: map,
+              icon: {
+                content: markerHTML,
+                anchor: new window.naver.maps.Point(12, 24)
+              },
+              title: partner.name || '위치',
+              zIndex: 1000
+            });
+
+            // 마커 클릭 이벤트
+            window.naver.maps.Event.addListener(marker, 'click', () => {
+              setSelectedPartner(partner);
+            });
+
+            markersRef.current.push(marker);
+          });
+
+          // 모든 마커를 포함하도록 지도 범위 조정
+          if (positions.length > 0) {
+            const bounds = new window.naver.maps.LatLngBounds();
+            positions.forEach(pos => bounds.extend(pos));
+            map.fitBounds(bounds, { padding: 80 });
+          } else {
+            // 마커가 없으면 기본 중심 사용
+            map.setCenter(DEFAULT_CENTER);
+          }
+
+          setIsLoading(false);
+        };
+
+        loadAllMarkers();
+      })
+      .catch((err) => {
+        setMapError(err.message || '지도 초기화 오류');
+        setIsLoading(false);
+      });
+
+    return () => {
+      markersRef.current.forEach(marker => marker.setMap(null));
+      markersRef.current = [];
+      mapInstanceRef.current = null;
+    };
+  }, []);
+
+  return (
+    <div className="benefits-map-view">
+      <div className="benefits-map-container" ref={mapRef} style={{ width: '100%', height: '600px', minHeight: '500px' }}>
+        {isLoading && (
+          <div style={{
+            width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: '#f9fafb', borderRadius: '12px'
+          }}>
+            <div style={{ textAlign: 'center' }}>
+              <div className="loading-spinner" style={{ margin: '0 auto 1rem' }}></div>
+              <p>지도를 불러오는 중...</p>
+            </div>
+          </div>
+        )}
+        {mapError && (
+          <div style={{
+            width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: '#b91c1c', background: '#fff1f2', border: '1px solid #fecaca', borderRadius: '12px',
+            textAlign: 'center', padding: '1rem'
+          }}>
+            지도 로드 실패: {mapError}<br/>
+            .env에 REACT_APP_NAVER_CLIENT_ID를 설정했는지 확인해 주세요.
+          </div>
+        )}
+      </div>
+
+      {/* 선택된 업체 정보 표시 */}
+      {selectedPartner && (
+        <div className="benefits-map-info" style={{
+          marginTop: '1rem',
+          padding: '1rem',
+          background: '#ffffff',
+          borderRadius: '12px',
+          boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+          border: '1px solid #e5e7eb'
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '0.5rem' }}>
+            <h3 style={{ margin: 0, color: '#004ca5' }}>{selectedPartner.name}</h3>
+            <button
+              onClick={() => setSelectedPartner(null)}
+              style={{
+                background: 'none',
+                border: 'none',
+                fontSize: '1.5rem',
+                cursor: 'pointer',
+                color: '#6b7280',
+                padding: '0',
+                lineHeight: '1'
+              }}
+              aria-label="닫기"
+            >
+              ×
+            </button>
+          </div>
+          <div style={{ marginBottom: '0.5rem' }}>
+            <strong>주소:</strong> {selectedPartner.address}
+          </div>
+          {selectedPartner.phone && (
+            <div style={{ marginBottom: '0.5rem' }}>
+              <strong>연락처:</strong> <a href={`tel:${selectedPartner.phone}`}>{selectedPartner.phone}</a>
+            </div>
+          )}
+          {selectedPartner.benefits && selectedPartner.benefits.length > 0 && (
+            <div>
+              <strong>제휴 혜택:</strong>
+              <ul style={{ margin: '0.5rem 0 0 1.5rem', padding: 0 }}>
+                {selectedPartner.benefits.map((b, i) => (
+                  <li key={i} style={{ marginBottom: '0.25rem' }}>{b}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const BenefitsList = () => {
-    return (
-    <div className="benefits-list">
-      {partners.map((p, idx) => (
-        <BenefitsPartner key={idx} {...p} />
-      ))}
+  const [viewMode, setViewMode] = useState('list'); // 'list' or 'map'
+
+  return (
+    <div className="benefits-page">
+      {/* 뷰 모드 전환 버튼 */}
+      <div className="benefits-view-toggle">
+        <button
+          onClick={() => setViewMode('list')}
+          className={`view-toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
+        >
+          목록 보기
+        </button>
+        <button
+          onClick={() => setViewMode('map')}
+          className={`view-toggle-btn ${viewMode === 'map' ? 'active' : ''}`}
+        >
+          지도 보기
+        </button>
+      </div>
+
+      {viewMode === 'list' ? (
+        <div className="benefits-list">
+          {partners.map((p, idx) => (
+            <BenefitsPartner key={idx} {...p} />
+          ))}
+        </div>
+      ) : (
+        <div className="benefits-map-wrapper">
+          <BenefitsMapView />
+        </div>
+      )}
     </div>
   );
 };
