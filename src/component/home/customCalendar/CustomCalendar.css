@@ -268,40 +268,135 @@
 
 @media (max-width: 768px) {
   .calendar-wrapper {
-    padding: 1.5rem 2%;
-    gap: 1.5rem;
+    padding: 1rem 3%;
+    gap: 1rem;
+    flex-direction: column;
+    min-height: 100vh;
   }
 
   .calendar-left {
     min-height: 400px;
+    width: 100%;
+  }
+
+  .custom-big-calendar .rbc-toolbar {
+    padding: 0.75rem 0;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
   .custom-big-calendar .rbc-toolbar-label {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+    flex: 1;
+    text-align: center;
+    min-width: 100%;
+    order: 2;
+  }
+
+  .custom-big-calendar .nav-button {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid white;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    order: 1;
+  }
+
+  .custom-big-calendar .nav-button:active {
+    transform: scale(0.9);
+    background: rgba(255, 255, 255, 0.3);
   }
 
   .custom-big-calendar .rbc-header {
-    font-size: 0.9rem;
-    padding: 0.5rem 0;
+    font-size: 0.85rem;
+    padding: 0.6rem 0;
+    font-weight: 700;
+  }
+
+  .custom-big-calendar .rbc-month-row {
+    min-height: 60px;
+  }
+
+  .custom-big-calendar .rbc-date-cell {
+    padding: 0.3rem;
   }
 
   .custom-big-calendar .rbc-date-cell > a {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    padding: 0.3rem;
+    display: inline-block;
+    min-width: 28px;
+    text-align: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+  }
+
+  .custom-big-calendar .rbc-date-cell > a:active {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(0.9);
   }
 
   .custom-big-calendar .rbc-event {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    margin: 1px 0;
+  }
+
+  .calendar-right {
+    width: 100%;
+    min-height: 300px;
+  }
+
+  .schedule-box {
+    padding: 1.5rem;
+    border-width: 2px;
+    border-radius: 12px;
   }
 
   .schedule-title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
   }
 
   .schedule-date {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .schedule-list {
+    max-height: 300px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .schedule-list li {
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    font-size: 1rem;
   }
 
   .event-title {
     font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .event-description,
+  .event-time,
+  .event-date-range {
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+  }
+
+  .no-events {
+    font-size: 1rem;
+    padding: 2rem 1rem;
   }
 }

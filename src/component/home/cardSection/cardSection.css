@@ -19,10 +19,13 @@
   width: 33.33%; /* 기본: 3개 가로 나열 (PC 환경) */
   padding: 2rem;
   text-align: center;
-  transition: transform 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   color: white;
   border-radius: 0;
   box-sizing: border-box;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 
 /* 카드 색상 지정 */
@@ -30,10 +33,19 @@
 .card2 { background-color: #9bbbd4; } /* 제휴지도 */
 .card4 { background-color: #5093df; } /* 민원접수 */
 
+/* 카드 호버 효과 (PC) */
 .card1:hover,
 .card2:hover,
 .card4:hover {
-  transform: scale(1.15);
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* 카드 활성 효과 (모바일 터치) */
+.card1:active,
+.card2:active,
+.card4:active {
+  transform: scale(0.98);
 }
 
 .p {
@@ -46,15 +58,33 @@
     display: flex;
     flex-wrap: wrap;
     width: 100%;
+    gap: 0;
   }
 
   .card1, .card2, .card4 {
     width: 50%;   /* 2개씩 배치 후 마지막 하나는 한 줄 차지 */
-    padding: 1rem;
+    padding: 1.5rem 1rem;
+    min-height: 120px;
+    transition: all 0.3s ease;
   }
   
   .card4 {
     width: 100%; /* 마지막 카드는 전체 너비 */
+    min-height: 100px;
+  }
+
+  /* 모바일에서 호버 효과 제거하고 터치 피드백 강화 */
+  .card1:hover,
+  .card2:hover,
+  .card4:hover {
+    transform: none;
+  }
+
+  .card1:active,
+  .card2:active,
+  .card4:active {
+    transform: scale(0.95);
+    opacity: 0.9;
   }
 }
 

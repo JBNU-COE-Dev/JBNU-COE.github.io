@@ -63,6 +63,13 @@
   padding-left: 15px;
   flex: 1 1 auto; /* 가용 가로공간 전체 차지 */
 }
+
+@media (max-width: 767px) {
+  .header-left {
+    padding-left: 10px;
+    min-width: 0; /* flex 아이템이 축소될 수 있도록 */
+  }
+}
 .header-right {
   display: flex;
   align-items: center;
@@ -91,7 +98,7 @@
 
 @media (max-width: 767px) {
   .logo-size-lg {
-    --logo-size: 80px;
+    --logo-size: 120px;
   }
 }
 
@@ -239,8 +246,10 @@
     }
   
     .logo-img {
-      width: 50px;
+      width: var(--logo-size, 120px);
       margin-left: 0;
+      max-width: 140px;
+      height: auto;
     }
   
     .logo-title {

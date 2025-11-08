@@ -89,30 +89,52 @@
 @media (max-width: 768px) {
   .swiper-button-prev-custom,
   .swiper-button-next-custom {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   .swiper-button-prev-custom {
-    left: 15px;
+    left: 10px;
   }
 
   .swiper-button-next-custom {
-    right: 15px;
+    right: 10px;
   }
 
   .swiper-button-prev-custom svg,
   .swiper-button-next-custom svg {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
+  }
+
+  .swiper-button-prev-custom:active,
+  .swiper-button-next-custom:active {
+    transform: translateY(-50%) scale(0.9);
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  .imageSwiper .swiper-pagination {
+    bottom: 15px;
   }
 
   .imageSwiper .swiper-pagination-bullet {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
   }
 
   .imageSwiper .swiper-pagination-bullet-active {
-    width: 24px;
+    width: 28px;
+    background: white;
+    border-radius: 5px;
+  }
+
+  /* 모바일 터치 최적화 */
+  .imageSlider {
+    touch-action: pan-y pinch-zoom;
   }
 }

@@ -11,6 +11,7 @@ html, body, #root {
     overflow-y: auto;
     scroll-snap-type: y mandatory;
     scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
   }
   
   /* 스크롤 진입 애니메이션 */
@@ -31,14 +32,17 @@ html, body, #root {
   .third-screen {
     opacity: 1;
     transform: translateY(0);
+    transition: transform 0.3s ease-out;
   }
   
   /* 첫 번째 화면: 이미지 슬라이더 + 카드 */
   .first-screen {
     height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     scroll-snap-align: start;
+    position: relative;
   }
   
   /* 이미지 슬라이더 영역 */
@@ -61,12 +65,14 @@ html, body, #root {
   /* 두 번째 화면: 지도 + 버튼 */
   .second-screen {
     height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
     padding: 2rem;
     margin-top: 15vh; /* headerBar 높이만큼 상단 여백 */
     scroll-snap-align: start;
+    box-sizing: border-box;
   }
   
   /* 상단 툴바 */
@@ -82,6 +88,7 @@ html, body, #root {
   .benefit-title {
     font-size: 2rem;
     font-weight: 800;
+    color: #1f2937;
   }
 
   .benefit-search {
@@ -92,6 +99,12 @@ html, body, #root {
     border-radius: 9999px;
     padding: 0.25rem 0.75rem;
     height: 42px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .benefit-search:focus-within {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
   }
 
   .benefit-search input {
@@ -99,6 +112,7 @@ html, body, #root {
     outline: none;
     flex: 1;
     font-size: 1rem;
+    background: transparent;
   }
 
   .search-icon {
@@ -114,12 +128,29 @@ html, body, #root {
     background: #fff;
     font-size: 1.25rem;
     font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .benefit-add:hover {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+    transform: scale(1.1);
+  }
+
+  .benefit-add:active {
+    transform: scale(0.95);
   }
 
   /* 하단 고정 버튼 */
   .benefit-footer {
     display: flex;
     justify-content: center;
+    padding-top: 1rem;
   }
 
   .benefit-list-btn {
@@ -127,18 +158,101 @@ html, body, #root {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.75rem 0.75rem;
+    padding: 0.75rem 1.5rem;
     border-radius: 9999px;
-    background: #e5e7eb;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
     font-size: 1.5rem;
     font-weight: 700;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  }
+
+  .benefit-list-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+  }
+
+  .benefit-list-btn:active {
+    transform: translateY(0);
   }
 
   /* 반응형 */
   @media (max-width: 1024px) {
     .benefit-toolbar {
       grid-template-columns: 1fr 1fr 40px;
+    }
+  }
+
+  /* 모바일 반응형 - 대폭 개선 */
+  @media (max-width: 767px) {
+    .first-screen {
+      height: 100vh;
+      min-height: 100vh;
+      max-height: 100vh;
+    }
+
+    .slider-container {
+      flex: 1.5;
+      min-height: 50%;
+    }
+
+    .cards-container {
+      flex: 1;
+      min-height: 50%;
+    }
+
+    .second-screen {
+      padding: 1rem;
+      margin-top: 10vh;
+      gap: 1rem;
+      min-height: 100vh;
+    }
+
+    .benefit-toolbar {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: stretch;
+      padding-bottom: 1rem;
+    }
+
+    .benefit-title {
+      font-size: 1.5rem;
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .benefit-search {
+      width: 100%;
+      height: 48px;
+      padding: 0.5rem 1rem;
+    }
+
+    .benefit-search input {
+      font-size: 1rem;
+    }
+
+    .benefit-add {
+      width: 48px;
+      height: 48px;
+      align-self: center;
+      font-size: 1.5rem;
+    }
+
+    .benefit-list-btn {
+      width: 100%;
+      max-width: 300px;
+      padding: 1rem 1.5rem;
+      font-size: 1.25rem;
+      border-radius: 16px;
+    }
+
+    .third-screen {
+      min-height: 100vh;
+      padding: 0;
     }
   }
   
@@ -168,13 +282,16 @@ html, body, #root {
   /* 세 번째 화면: 달력 */
   .third-screen {
     height: 100vh;
+    min-height: 100vh;
     display: flex;
     scroll-snap-align: start;
+    position: relative;
   }
 
   .calender-container {
     width: 100%;
     display: flex;
+    height: 100%;
   }
   
   /* 배너 */
@@ -191,4 +308,15 @@ html, body, #root {
     height: auto;
     max-width: 100%;
     object-fit: contain;
+  }
+
+  /* 모바일 터치 최적화 */
+  @media (max-width: 767px) {
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button, a {
+      touch-action: manipulation;
+    }
   }
