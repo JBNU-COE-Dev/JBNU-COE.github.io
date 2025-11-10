@@ -272,6 +272,52 @@ html, body, #root {
       font-size: 0.9rem;
     }
   }
+
+  /* 높이가 800px 이하일 때 겹침 방지 */
+  @media (max-height: 800px) {
+    .second-screen {
+      margin-top: 0;
+      padding-top: calc(10vh + 1rem);
+      min-height: auto;
+      height: auto;
+      margin-bottom: 2rem; /* third-screen과의 간격 확보 */
+    }
+
+    .third-screen {
+      min-height: auto;
+      height: auto;
+      padding-top: 2rem; /* second-screen과의 간격 확보 */
+    }
+
+    .calender-container {
+      height: auto;
+      min-height: calc(100vh - 2rem);
+    }
+
+    .calender-container .monthly-calendar-page {
+      min-height: calc(100vh - 2rem);
+      padding-top: 2rem;
+    }
+  }
+
+  /* 높이가 800px 이하이고 너비가 767px 이하일 때 */
+  @media (max-height: 800px) and (max-width: 767px) {
+    .second-screen {
+      margin-top: 0;
+      padding-top: calc(10vh + 1rem);
+      margin-bottom: 1.5rem;
+    }
+
+    .third-screen {
+      padding-top: 1.5rem;
+    }
+
+    .calender-container .monthly-calendar-page {
+      padding: 1rem;
+      padding-top: 1.5rem;
+      min-height: calc(100vh - 1.5rem);
+    }
+  }
   
   /* 목록 보기 버튼 */
   .list-button {

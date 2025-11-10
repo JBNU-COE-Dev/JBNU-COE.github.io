@@ -190,6 +190,20 @@
   min-width: 0;
 }
 
+@media (max-width: 640px) {
+  .benefits-row .value {
+    white-space: normal; /* 모바일에서는 줄바꿈 허용 */
+    word-break: break-word; /* 긴 단어도 줄바꿈 */
+    text-overflow: clip; /* ellipsis 대신 clip 사용 */
+    overflow: visible; /* 넘치는 텍스트 표시 */
+  }
+  
+  .benefits-info {
+    overflow-y: auto; /* 필요시 스크롤 */
+    max-height: none; /* 높이 제한 제거 */
+  }
+}
+
 .benefits-divider {
   height: 1px;
   background: #e5e7eb;
@@ -221,12 +235,65 @@
   .benefits-grid {
     grid-template-columns: 1fr;
     height: auto;          /* 모바일에서는 내용에 맞게 자동 높이 */
+    min-height: auto;      /* 최소 높이 제한 제거 */
   }
   .benefits-map {
     height: 280px;
+    min-height: 200px;
+  }
+  .benefits-info {
+    min-height: auto;      /* 최소 높이 제한 제거 */
+    overflow-y: visible;   /* 스크롤 제거 */
   }
   .benefits-perks {
     max-height: none;      /* 모바일에서는 전체 내용 표시 */
+  }
+}
+
+@media (max-width: 640px) {
+  .benefits-grid {
+    height: auto;
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+  
+  .benefits-map {
+    height: 200px;
+    min-height: 180px;
+  }
+  
+  .benefits-info {
+    padding: 0.75rem;
+    gap: 0.4rem;
+    overflow-y: visible;
+  }
+  
+  .benefits-title {
+    font-size: 1.1rem;
+  }
+  
+  .benefits-row {
+    grid-template-columns: 70px 1fr;
+    gap: 0.4rem;
+    align-items: flex-start; /* 상단 정렬로 변경 */
+  }
+  
+  .benefits-row .label {
+    font-size: 0.85rem;
+  }
+  
+  .benefits-row .value {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  
+  .benefits-perks {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  
+  .benefits-perks li {
+    margin-bottom: 0.3rem;
   }
 }
 

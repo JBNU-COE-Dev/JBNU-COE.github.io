@@ -15,6 +15,7 @@ export default function StudySupport() {
   const [selectedMonth, setSelectedMonth] = useState(3);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isImageZoomed, setIsImageZoomed] = useState(false);
+  const [slideDirection, setSlideDirection] = useState(0); // 슬라이드 방향: 1 = 다음, -1 = 이전
 
   // 선택된 월의 이미지 경로 배열 생성
   const getMonthImages = (month) => {
@@ -31,14 +32,17 @@ export default function StudySupport() {
   const handleMonthChange = (month) => {
     setSelectedMonth(month);
     setCurrentImageIndex(0);
+    setSlideDirection(0); // 월 변경 시 방향 초기화
   };
 
   // 이미지 네비게이션
   const handlePrevImage = () => {
+    setSlideDirection(-1); // 이전 방향
     setCurrentImageIndex((prev) => (prev === 0 ? currentImages.length - 1 : prev - 1));
   };
 
   const handleNextImage = () => {
+    setSlideDirection(1); // 다음 방향
     setCurrentImageIndex((prev) => (prev === currentImages.length - 1 ? 0 : prev + 1));
   };
 
@@ -65,11 +69,13 @@ export default function StudySupport() {
   // 확대 모달에서 이미지 네비게이션
   const handleZoomPrevImage = (e) => {
     e.stopPropagation();
+    setSlideDirection(-1);
     setCurrentImageIndex((prev) => (prev === 0 ? currentImages.length - 1 : prev - 1));
   };
 
   const handleZoomNextImage = (e) => {
     e.stopPropagation();
+    setSlideDirection(1);
     setCurrentImageIndex((prev) => (prev === currentImages.length - 1 ? 0 : prev + 1));
   };
 
@@ -124,19 +130,29 @@ export default function StudySupport() {
 
           {/* 이미지와 인디케이터 */}
           <div className="image-section" onClick={handleImageClick} style={{ cursor: 'pointer' }}>
-            <motion.div
-              className="image-container"
-              key={`${selectedMonth}-${currentImageIndex}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-            >
-              <img
-                src={currentImages[currentImageIndex]}
-                alt={`${MONTH_NAMES[selectedMonth]} 행사 일정 ${currentImageIndex + 1}`}
-                className="calendar-image"
-              />
-            </motion.div>
+            <AnimatePresence mode="wait" custom={slideDirection}>
+              <motion.div
+                className="image-container"
+                key={`${selectedMonth}-${currentImageIndex}`}
+                custom={slideDirection}
+                initial={{ 
+                  opacity: 0, 
+                  x: slideDirection === 0 ? 0 : (slideDirection > 0 ? 100 : -100)
+                }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ 
+                  opacity: 0, 
+                  x: slideDirection === 0 ? 0 : (slideDirection > 0 ? -100 : 100)
+                }}
+                transition={{ duration: 0.3 }}
+              >
+                <img
+                  src={currentImages[currentImageIndex]}
+                  alt={`${MONTH_NAMES[selectedMonth]} 행사 일정 ${currentImageIndex + 1}`}
+                  className="calendar-image"
+                />
+              </motion.div>
+            </AnimatePresence>
 
             {/* 인디케이터 */}
             <div className="image-indicators" onClick={(e) => e.stopPropagation()}>
@@ -144,7 +160,10 @@ export default function StudySupport() {
                 <button
                   key={index}
                   className={`indicator-dot ${index === currentImageIndex ? 'active' : ''}`}
-                  onClick={() => setCurrentImageIndex(index)}
+                  onClick={() => {
+                    setSlideDirection(index > currentImageIndex ? 1 : -1);
+                    setCurrentImageIndex(index);
+                  }}
                   aria-label={`${index + 1}번째 이미지로 이동`}
                 />
               ))}
@@ -205,15 +224,25 @@ export default function StudySupport() {
               </button>
 
               {/* 확대된 이미지 */}
-              <motion.img
-                src={currentImages[currentImageIndex]}
-                alt={`${MONTH_NAMES[selectedMonth]} 행사 일정 ${currentImageIndex + 1}`}
-                className="zoomed-image"
-                key={`zoom-${selectedMonth}-${currentImageIndex}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.2 }}
-              />
+              <AnimatePresence mode="wait" custom={slideDirection}>
+                <motion.img
+                  src={currentImages[currentImageIndex]}
+                  alt={`${MONTH_NAMES[selectedMonth]} 행사 일정 ${currentImageIndex + 1}`}
+                  className="zoomed-image"
+                  key={`zoom-${selectedMonth}-${currentImageIndex}`}
+                  custom={slideDirection}
+                  initial={{ 
+                    opacity: 0, 
+                    x: slideDirection === 0 ? 0 : (slideDirection > 0 ? 100 : -100)
+                  }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ 
+                    opacity: 0, 
+                    x: slideDirection === 0 ? 0 : (slideDirection > 0 ? -100 : 100)
+                  }}
+                  transition={{ duration: 0.3 }}
+                />
+              </AnimatePresence>
 
               {/* 다음 버튼 */}
               <button

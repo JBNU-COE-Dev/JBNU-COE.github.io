@@ -352,8 +352,32 @@
   }
 
   .rbc-header {
-    padding: 8px 3px;
-    font-size: 0.85rem;
+    padding: 8px 2px;
+    font-size: 0.75rem;
+  }
+  
+  .rbc-date-cell {
+    padding: 4px 2px;
+    font-size: 0.8rem;
+  }
+  
+  .rbc-event {
+    font-size: 0.7rem;
+    padding: 1px 4px;
+    max-width: calc(100% - 2px) !important;
+  }
+  
+  .rbc-event-content {
+    font-size: 0.7rem;
+  }
+  
+  .rbc-month-row {
+    min-height: 80px;
+    max-height: 100px;
+  }
+  
+  .rbc-row-content {
+    max-height: 80px;
   }
 
   .events-box {

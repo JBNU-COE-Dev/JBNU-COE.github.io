@@ -305,20 +305,23 @@
       width: 70%;
       max-width: 300px;
       height: 100%;
-      padding: 2rem;
+      padding: 1.5rem 1rem;
       display: flex;
       flex-direction: column;    /* 세로 배치 */
-      gap: 2rem;
+      gap: 1.5rem;
       box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+      overflow-y: auto;          /* 스크롤 기능 추가 */
+      overflow-x: hidden;
     }
     
     .close-button {
       background: none;
       border: none;
       color: white;
-      font-size: 2rem;
+      font-size: 1.8rem;
       align-self: flex-end;
       cursor: pointer;
+      flex-shrink: 0; /* 닫기 버튼은 고정 */
     }
     
     .mobile-nav-list {
@@ -326,7 +329,9 @@
       padding: 0;
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 1rem;
+      flex: 1; /* 남은 공간 차지 */
+      overflow-y: auto; /* 스크롤 가능 */
     }
     
     .mobile-nav-list li {
@@ -337,10 +342,10 @@
       display: block;
       color: white;
       background-color: transparent;
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       text-decoration: none;
       font-weight: bold;
-      padding: 0.8rem 1rem;
+      padding: 0.7rem 1rem;
       border-radius: 8px;
       transition: all 0.2s ease;
     }
@@ -358,10 +363,10 @@
   background: none;
   border: none;
   color: white;
-  font-size: 1.4rem;
+  font-size: 1.15rem;
   font-weight: bold;
   text-align: left;
-  padding: 0.8rem 1rem;
+  padding: 0.7rem 1rem;
   width: 100%;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -379,14 +384,14 @@
   padding-left: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0.6rem;
 }
 
 .mobile-submenu li a {
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: white;
   text-decoration: none;
-  padding-left: 0.5rem;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
   transition: color 0.2s ease;
 }
 

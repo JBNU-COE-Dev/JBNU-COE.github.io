@@ -325,14 +325,14 @@
   }
 
   .custom-big-calendar .rbc-date-cell {
-    padding: 0.3rem;
+    padding: 0.2rem 0.1rem;
   }
 
   .custom-big-calendar .rbc-date-cell > a {
-    font-size: 0.85rem;
-    padding: 0.3rem;
+    font-size: 0.75rem;
+    padding: 0.2rem;
     display: inline-block;
-    min-width: 28px;
+    min-width: 24px;
     text-align: center;
     border-radius: 50%;
     transition: all 0.2s ease;
@@ -344,9 +344,35 @@
   }
 
   .custom-big-calendar .rbc-event {
-    font-size: 0.7rem;
-    padding: 2px 6px;
+    font-size: 0.65rem;
+    padding: 1px 4px;
     margin: 1px 0;
+    max-width: calc(100% - 2px) !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+  
+  .custom-big-calendar .rbc-event-content {
+    font-size: 0.65rem;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+  
+  .custom-big-calendar .rbc-month-row {
+    min-height: 70px;
+    max-height: 90px;
+  }
+  
+  .custom-big-calendar .rbc-row-content {
+    max-height: 70px;
+    overflow: hidden;
+  }
+  
+  .custom-big-calendar .rbc-header {
+    padding: 0.5rem 0.2rem;
+    font-size: 0.75rem;
   }
 
   .calendar-right {

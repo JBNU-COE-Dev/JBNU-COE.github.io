@@ -113,6 +113,7 @@
   overflow: hidden;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
   background: #f8f9fa;
+  position: relative;
 }
 
 .calendar-image {
