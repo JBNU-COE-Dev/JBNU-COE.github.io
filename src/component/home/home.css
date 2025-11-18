@@ -252,12 +252,12 @@ html, body, #root {
 
     .third-screen {
       min-height: 100vh;
-      padding: 0;
+      padding: 1rem 0;
     }
 
     .calender-container .monthly-calendar-page {
-      padding: 1rem;
-      padding-top: 10vh;
+      padding: 1rem 10px;
+      padding-top: 0;
     }
 
     .calender-container .page-title {
@@ -270,6 +270,10 @@ html, body, #root {
 
     .calender-container .page-title p {
       font-size: 0.9rem;
+    }
+
+    .calender-container .calendar-container {
+      margin-bottom: 1rem;
     }
   }
 
@@ -285,18 +289,20 @@ html, body, #root {
 
     .third-screen {
       min-height: auto;
-      height: auto;
-      padding-top: 2rem; /* second-screen과의 간격 확보 */
+      padding: 2rem 0;
     }
 
     .calender-container {
       height: auto;
-      min-height: calc(100vh - 2rem);
     }
 
     .calender-container .monthly-calendar-page {
-      min-height: calc(100vh - 2rem);
-      padding-top: 2rem;
+      min-height: auto;
+      padding-top: 0;
+    }
+
+    .calender-container .calendar-container {
+      margin-bottom: 2rem;
     }
   }
 
@@ -309,13 +315,17 @@ html, body, #root {
     }
 
     .third-screen {
-      padding-top: 1.5rem;
+      padding: 1.5rem 0;
     }
 
     .calender-container .monthly-calendar-page {
-      padding: 1rem;
-      padding-top: 1.5rem;
-      min-height: calc(100vh - 1.5rem);
+      padding: 1rem 10px;
+      padding-top: 0;
+      min-height: auto;
+    }
+
+    .calender-container .calendar-container {
+      margin-bottom: 1rem;
     }
   }
   
@@ -344,41 +354,40 @@ html, body, #root {
   
   /* 세 번째 화면: 달력 */
   .third-screen {
-    height: 100vh;
     min-height: 100vh;
     display: flex;
     scroll-snap-align: start;
     position: relative;
+    padding: 2rem 0;
+    box-sizing: border-box;
   }
 
   .calender-container {
     width: 100%;
     display: flex;
-    height: 100%;
-    overflow: hidden;
+    overflow: visible;
   }
 
   /* 홈화면에서 MonthlyCalendar 스타일 조정 */
   .calender-container .monthly-calendar-page {
     width: 100%;
-    height: 100%;
     max-width: 100%;
     margin: 0;
-    padding: 2rem;
-    padding-top: 0vh;
+    padding: 2rem 20px;
+    padding-top: 0;
     min-height: auto;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
   }
 
   .calender-container .page-title {
     margin-bottom: 2rem;
+    flex-shrink: 0;
   }
 
   .calender-container .calendar-container {
-    flex: 1;
-    min-height: 0;
+    flex-shrink: 0;
+    margin-bottom: 2rem;
   }
   
   /* 배너 */

@@ -28,23 +28,33 @@
 /* 캘린더 컨테이너 */
 .calendar-container {
   display: grid;
-  grid-template-columns: 1fr 400px;
+  grid-template-columns: 700px 400px; /* 달력 700px, 행사 400px 고정 */
   gap: 30px;
   background: white;
   border-radius: 20px;
   padding: 40px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  justify-content: center; /* 중앙 정렬 */
+  margin: 0 auto; /* 중앙 정렬 */
 }
 
 /* 캘린더 섹션 */
 .calendar-section {
   min-height: 600px;
+  width: 700px; /* 고정 너비 */
 }
 
 /* react-big-calendar 커스텀 스타일 */
 .big-calendar {
   height: 100%;
   font-family: inherit;
+  width: 100%; /* 너비 고정 */
+}
+
+/* 월 뷰 테이블 레이아웃 고정 */
+.big-calendar .rbc-month-view {
+  table-layout: fixed; /* 테이블 레이아웃 고정 */
+  width: 100%; /* 너비 100% */
 }
 
 /* 툴바 스타일 */
@@ -97,6 +107,8 @@
   color: #666;
   background: #f8f9fa;
   border-bottom: 2px solid #e0e0e0;
+  width: calc(100% / 7); /* 각 헤더 너비 고정 */
+  max-width: calc(100% / 7); /* 최대 너비도 고정 */
 }
 
 .rbc-date-cell {
@@ -184,6 +196,8 @@
 
 .rbc-day-bg {
   flex: 1 0 0%;
+  width: calc(100% / 7); /* 각 셀 너비 고정 */
+  max-width: calc(100% / 7); /* 최대 너비도 고정 */
 }
 
 /* 더보기 버튼 스타일 */
@@ -206,6 +220,7 @@
 .events-section {
   display: flex;
   flex-direction: column;
+  width: 400px; /* 고정 너비 */
 }
 
 .events-box {
@@ -298,13 +313,21 @@
   }
 
   .calendar-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* 세로 레이아웃 */
     gap: 30px;
     padding: 30px 25px;
+    justify-items: center; /* 중앙 정렬 */
+  }
+
+  .calendar-section {
+    width: 100%; /* 태블릿에서는 너비 100% */
+    max-width: 700px; /* 최대 너비 유지 */
   }
 
   .events-section {
     min-height: 300px;
+    width: 100%; /* 태블릿에서는 너비 100% */
+    max-width: 700px; /* 최대 너비 유지 */
   }
 
   .page-title h1 {
@@ -332,13 +355,19 @@
   }
 
   .calendar-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* 세로 레이아웃 */
     gap: 20px;
     padding: 20px 15px;
+    justify-items: center; /* 중앙 정렬 */
   }
 
   .calendar-section {
     min-height: 400px;
+    width: 100%; /* 모바일에서는 너비 100% */
+  }
+
+  .events-section {
+    width: 100%; /* 모바일에서는 너비 100% */
   }
 
   .toolbar-label {

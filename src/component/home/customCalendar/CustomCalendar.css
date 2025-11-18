@@ -9,13 +9,15 @@
   width: 100%;
   box-sizing: border-box;
   gap: 4rem;
+  justify-content: center; /* 중앙 정렬 */
 }
 
 .calendar-left {
-  flex: 1;
   display: flex;
   flex-direction: column;
   min-height: 600px;
+  width: 700px; /* 고정 너비 */
+  flex-shrink: 0; /* 축소 방지 */
 }
 
 /* react-big-calendar 커스텀 스타일 */
@@ -69,14 +71,18 @@
   padding: 0.8rem 0;
   font-weight: bold;
   font-size: 1.1rem;
-  color: white;
-  border-bottom: 2px solid white;
+  color: #626262; /* 골드 색상으로 변경 */
+  border-bottom: 2px solid #ffffff;
+  width: calc(100% / 7); /* 각 헤더 너비 고정 */
+  max-width: calc(100% / 7); /* 최대 너비도 고정 */
 }
 
 /* 월 뷰 */
 .custom-big-calendar .rbc-month-view {
   border: none;
   background-color: transparent;
+  table-layout: fixed; /* 테이블 레이아웃 고정 */
+  width: 100%; /* 너비 고정 */
 }
 
 .custom-big-calendar .rbc-month-row {
@@ -85,16 +91,32 @@
   min-height: 80px;
 }
 
+/* 헤더 행도 고정 레이아웃 적용 */
+.custom-big-calendar .rbc-header + .rbc-header + .rbc-header + .rbc-header + .rbc-header + .rbc-header + .rbc-header {
+  width: calc(100% / 7); /* 각 열이 동일한 너비 */
+}
+
 /* 날짜 셀 */
 .custom-big-calendar .rbc-day-bg {
   border: 1px solid rgba(255, 255, 255, 0.1);
   background-color: transparent;
   transition: background-color 0.2s;
+  width: calc(100% / 7); /* 각 셀 너비 고정 */
+  max-width: calc(100% / 7); /* 최대 너비도 고정 */
 }
 
 .custom-big-calendar .rbc-day-bg:hover {
   background-color: rgba(255, 255, 255, 0.05);
   cursor: pointer;
+}
+
+/* row-content의 overflow 방지 */
+.custom-big-calendar .rbc-row-content {
+  overflow: hidden;
+}
+
+.custom-big-calendar .rbc-row-segment {
+  max-width: 100%;
 }
 
 .custom-big-calendar .rbc-off-range-bg {
@@ -141,6 +163,10 @@
   padding: 2px 8px;
   font-size: 0.85rem;
   font-weight: bold;
+  max-width: 100%; /* 최대 너비 제한 */
+  overflow: hidden; /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* 말줄임표 표시 */
+  white-space: nowrap; /* 줄바꿈 방지 */
 }
 
 .custom-big-calendar .rbc-event:hover {
@@ -157,6 +183,9 @@
 
 .custom-big-calendar .rbc-event-content {
   font-family: 'Noto Sans KR', sans-serif;
+  overflow: hidden; /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* 말줄임표 표시 */
+  white-space: nowrap; /* 줄바꿈 방지 */
 }
 
 /* 더보기 링크 */
@@ -180,9 +209,10 @@
 
 /* 일정 박스 */
 .calendar-right {
-  flex: 1;
   display: flex;
   flex-direction: column;
+  width: 400px; /* 고정 너비 */
+  flex-shrink: 0; /* 축소 방지 */
 }
 
 .schedule-box {
@@ -259,10 +289,18 @@
     flex-direction: column;
     gap: 2rem;
     padding: 2rem 3%;
+    align-items: center; /* 세로 정렬 시 중앙 정렬 */
   }
 
   .calendar-left {
     min-height: 500px;
+    width: 100%; /* 태블릿에서는 너비 100% */
+    max-width: 700px; /* 최대 너비 유지 */
+  }
+
+  .calendar-right {
+    width: 100%; /* 태블릿에서는 너비 100% */
+    max-width: 700px; /* 최대 너비 유지 */
   }
 }
 
@@ -272,11 +310,12 @@
     gap: 1rem;
     flex-direction: column;
     min-height: 100vh;
+    align-items: center; /* 세로 정렬 시 중앙 정렬 */
   }
 
   .calendar-left {
     min-height: 400px;
-    width: 100%;
+    width: 100%; /* 모바일에서는 너비 100% */
   }
 
   .custom-big-calendar .rbc-toolbar {
