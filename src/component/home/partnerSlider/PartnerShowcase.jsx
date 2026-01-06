@@ -13,7 +13,7 @@ function shuffleArray(input) {
   return arr;
 }
 
-const AUTO_INTERVAL_MS = 5000;
+const AUTO_INTERVAL_MS = 10000;
 
 export default function PartnerShowcase({ query = '' }) {
   const items = useMemo(() => shuffleArray(partners).filter(p => p && p.name && p.address), []);

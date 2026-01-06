@@ -146,6 +146,47 @@ html, body, #root {
     transform: scale(0.95);
   }
 
+  /* 카테고리 탭 */
+  .benefit-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .benefit-category-tab {
+    padding: 0.5rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 9999px;
+    background: #fff;
+    color: #6b7280;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .benefit-category-tab:hover {
+    border-color: #3b82f6;
+    color: #3b82f6;
+    background: #eff6ff;
+    transform: translateY(-1px);
+  }
+
+  .benefit-category-tab.active {
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    border-color: #3b82f6;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+  }
+
+  .benefit-category-tab.active:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  }
+
   /* 하단 고정 버튼 */
   .benefit-footer {
     display: flex;
@@ -240,6 +281,25 @@ html, body, #root {
       height: 48px;
       align-self: center;
       font-size: 1.5rem;
+    }
+
+    .benefit-categories {
+      padding: 0.75rem 0;
+      gap: 0.375rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .benefit-categories::-webkit-scrollbar {
+      display: none;
+    }
+
+    .benefit-category-tab {
+      padding: 0.4rem 0.875rem;
+      font-size: 0.8rem;
+      flex-shrink: 0;
     }
 
     .benefit-list-btn {
