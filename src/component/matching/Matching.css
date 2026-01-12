@@ -1,0 +1,254 @@
+.matching-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  padding-top: calc(40px + 10vh + 2rem);
+  box-sizing: border-box;
+}
+
+.matching-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.matching-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.matching-subtitle {
+  font-size: 1.1rem;
+  color: #6b7280;
+}
+
+.matching-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+}
+
+.matching-tab {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.matching-tab:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.matching-tab.active {
+  color: #004ca5;
+  background: #eff6ff;
+}
+
+.matching-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #004ca5;
+}
+
+.matching-content {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 2rem;
+}
+
+.matching-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.matching-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.matching-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.matching-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 1rem;
+}
+
+.matching-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.matching-card-category {
+  background: #eff6ff;
+  color: #004ca5;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.matching-card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.matching-card-info {
+  display: flex;
+  gap: 1.5rem;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.matching-card-button {
+  padding: 0.5rem 1.25rem;
+  background: #004ca5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.matching-card-button:hover {
+  background: #003d8a;
+  transform: scale(1.05);
+}
+
+.matching-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.matching-sidebar-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.matching-sidebar-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.75rem 0;
+}
+
+.matching-sidebar-card p {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.matching-create-button {
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, #004ca5 0%, #0066cc 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.matching-create-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 76, 165, 0.3);
+}
+
+.matching-popular-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.matching-popular-list li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.matching-popular-list li:last-child {
+  border-bottom: none;
+}
+
+.matching-popular-list li:hover {
+  color: #004ca5;
+}
+
+/* 반응형 */
+@media (max-width: 1024px) {
+  .matching-content {
+    grid-template-columns: 1fr;
+  }
+
+  .matching-sidebar {
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .matching-container {
+    padding: 1.5rem 1rem;
+    padding-top: calc(40px + 10vh + 1rem);
+  }
+
+  .matching-title {
+    font-size: 2rem;
+  }
+
+  .matching-tabs {
+    flex-wrap: wrap;
+  }
+
+  .matching-tab {
+    flex: 1;
+    min-width: 100px;
+  }
+
+  .matching-card-body {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .matching-card-button {
+    width: 100%;
+  }
+}
+

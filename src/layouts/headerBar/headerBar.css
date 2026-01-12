@@ -138,6 +138,18 @@
     text-decoration: none;
 }
 
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.5rem;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+    color: #aaccff;
+}
+
 .menu-button {
   background: none;
   border: none;
@@ -353,6 +365,24 @@
     .mobile-nav-list li a:hover {
       background-color: white;
       color: #003f87; /* 파란색 텍스트 */
+      text-decoration: none;
+    }
+
+    .mobile-nav-link {
+      display: block;
+      color: white;
+      background-color: transparent;
+      font-size: 1.1rem;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-nav-link:hover {
+      background-color: white;
+      color: #003f87;
       text-decoration: none;
     }
 

@@ -78,9 +78,8 @@ function HeaderBar({ isMobile }) {
                   <div className="dropdown-container">
                     <li><Link to="/notice/announcement">공지사항</Link></li>
                     <li><Link to="/notice/calendar">월별 행사</Link></li>
-                    <li><Link to="/notice/study-support">학습필력</Link></li>
+                    <li><Link to="/notice/study-support">심과함께</Link></li>
                     <li><Link to="/notice/pledge">공약 이행률</Link></li>
-                    <li><Link to="/notice/gallery">갤러리</Link></li>
                   </div>
                 )}
               </li>
@@ -95,11 +94,13 @@ function HeaderBar({ isMobile }) {
               </li>
 
               <li className="dropdown" onMouseEnter={() => toggleMenu('contact')} onMouseLeave={() => toggleMenu(null)}>
-                <ul>문의</ul>
+                <ul>소통</ul>
                 {activeMenu === 'contact' && (
                   <div className="dropdown-container">
                     <li><Link to="/contact/board-inquiry">게시판 이용 문의</Link></li>
                     <li><Link to="/contact/report">민원 접수</Link></li>
+                    <li><Link to="/contact/kakao-channel">카카오톡 채널</Link></li>
+                    <li><Link to="/matching">매칭 플랫폼</Link></li>
                   </div>
                 )}
               </li>
@@ -113,6 +114,7 @@ function HeaderBar({ isMobile }) {
                     <li><Link to="/resources/constitution">공과대학 학생회칙</Link></li>
                     <li><Link to="/resources/finance">회계 내역 공개</Link></li>
                     <li><Link to="/resources/inspection">시설 정기 점검 결과</Link></li>
+                    <li><Link to="/notice/gallery">갤러리</Link></li>
                   </div>
                 )}
               </li>
@@ -166,11 +168,13 @@ function HeaderBar({ isMobile }) {
                       )}
                     </li>
                     <li>
-                      <button className={`mobile-nav-button ${activeMenu === 'contact' ? 'active' : ''}`} onClick={() => toggleMenu('contact')}>문의</button>
+                      <button className={`mobile-nav-button ${activeMenu === 'contact' ? 'active' : ''}`} onClick={() => toggleMenu('contact')}>소통</button>
                       {activeMenu === 'contact' && (
                         <ul className="mobile-submenu">
                           <li><Link to="/contact/board-inquiry" onClick={() => setMenuOpen(false)}>게시판 이용 문의</Link></li>
                           <li><Link to="/contact/report" onClick={() => setMenuOpen(false)}>민원 접수</Link></li>
+                          <li><Link to="/contact/kakao-channel" onClick={() => setMenuOpen(false)}>카카오톡 채널</Link></li>
+                          <li><Link to="/matching" onClick={() => setMenuOpen(false)}>매칭 플랫폼</Link></li>
                         </ul>
                       )}
                     </li>

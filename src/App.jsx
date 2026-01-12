@@ -21,6 +21,8 @@ import Finance from './component/resources/finance/Finance.jsx';
 import Pledge from './component/pledge/pledge.jsx';
 import Report from './component/contact/report/Report.jsx';
 import BoardInquiry from './component/contact/boardInquiry/BoardInquiry.jsx';
+import KakaoChannel from './component/contact/kakaoChannel/KakaoChannel.jsx';
+import Matching from './component/matching/Matching.jsx';
 import HeaderBar from './layouts/headerBar/headerBar.jsx';
 import Banner from './layouts/banner/banner.jsx';
 import TopBar from './layouts/topBar/topBar.jsx';
@@ -54,6 +56,7 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/contact/report" element={<Report />} />
               <Route path="/contact/board-inquiry" element={<BoardInquiry />} />
+              <Route path="/contact/kakao-channel" element={<KakaoChannel />} />
               <Route path="/resources" element={<Resources />} />
               <Route path="/resources/map" element={<BuildingMap />} />
               <Route path="/resources/constitution" element={<Constitution />} />
@@ -63,6 +66,7 @@ function App() {
               <Route path="/about/intro" element={<Intro />} />
               <Route path="/about/organization" element={<Organization />} />
               <Route path="/notice/pledge" element={<Pledge />} />
+              <Route path="/matching" element={<Matching />} />
             </Routes>
           </main>
 
