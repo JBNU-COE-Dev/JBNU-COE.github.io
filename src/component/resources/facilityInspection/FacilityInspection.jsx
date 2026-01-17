@@ -9,72 +9,72 @@ const inspectionData = [
     month: '2024년 12월',
     period: '2024-12',
     images: [
-      { id: 1, src: require('../../../img/2024-12/post1.jpeg'), alt: '2024년 12월 시설 점검 1' },
-      { id: 2, src: require('../../../img/2024-12/post2.jpeg'), alt: '2024년 12월 시설 점검 2' }
+      { id: 1, src: require('../../../img/inspection/2024-12/post1.jpeg'), alt: '2024년 12월 시설 점검 1' },
+      { id: 2, src: require('../../../img/inspection/2024-12/post2.jpeg'), alt: '2024년 12월 시설 점검 2' }
     ]
   },
   {
     month: '2025년 1월',
     period: '2025-01',
     images: [
-      { id: 1, src: require('../../../img/2025-01/post1.jpeg'), alt: '2025년 1월 시설 점검 1' },
-      { id: 2, src: require('../../../img/2025-01/post2.jpeg'), alt: '2025년 1월 시설 점검 2' }
+      { id: 1, src: require('../../../img/inspection/2025-01/post1.jpeg'), alt: '2025년 1월 시설 점검 1' },
+      { id: 2, src: require('../../../img/inspection/2025-01/post2.jpeg'), alt: '2025년 1월 시설 점검 2' }
     ]
   },
   {
     month: '2025년 2월',
     period: '2025-02',
     images: [
-      { id: 1, src: require('../../../img/2025-02/post1.jpeg'), alt: '2025년 2월 시설 점검 1' },
-      { id: 2, src: require('../../../img/2025-02/post2.jpeg'), alt: '2025년 2월 시설 점검 2' }
+      { id: 1, src: require('../../../img/inspection/2025-02/post1.jpeg'), alt: '2025년 2월 시설 점검 1' },
+      { id: 2, src: require('../../../img/inspection/2025-02/post2.jpeg'), alt: '2025년 2월 시설 점검 2' }
     ]
   },
   {
     month: '2025년 3월',
     period: '2025-03',
     images: [
-      { id: 1, src: require('../../../img/2025-03/post1.jpeg'), alt: '2025년 3월 시설 점검 1' },
-      { id: 2, src: require('../../../img/2025-03/post2.jpeg'), alt: '2025년 3월 시설 점검 2' }
+      { id: 1, src: require('../../../img/inspection/2025-03/post1.jpeg'), alt: '2025년 3월 시설 점검 1' },
+      { id: 2, src: require('../../../img/inspection/2025-03/post2.jpeg'), alt: '2025년 3월 시설 점검 2' }
     ]
   },
   {
     month: '2025년 4월',
     period: '2025-04',
     images: [
-      { id: 1, src: require('../../../img/2025-04/post1.jpeg'), alt: '2025년 4월 시설 점검 1' },
-      { id: 2, src: require('../../../img/2025-04/post2.jpeg'), alt: '2025년 4월 시설 점검 2' }
+      { id: 1, src: require('../../../img/inspection/2025-04/post1.jpeg'), alt: '2025년 4월 시설 점검 1' },
+      { id: 2, src: require('../../../img/inspection/2025-04/post2.jpeg'), alt: '2025년 4월 시설 점검 2' }
     ]
   },
   {
     month: '2025년 5월',
     period: '2025-05',
     images: [
-      { id: 1, src: require('../../../img/2025-05/post1.jpeg'), alt: '2025년 5월 시설 점검 1' },
-      { id: 2, src: require('../../../img/2025-05/post2.jpeg'), alt: '2025년 5월 시설 점검 2' }
+      { id: 1, src: require('../../../img/inspection/2025-05/post1.jpeg'), alt: '2025년 5월 시설 점검 1' },
+      { id: 2, src: require('../../../img/inspection/2025-05/post2.jpeg'), alt: '2025년 5월 시설 점검 2' }
     ]
   },
   {
     month: '2025년 7월',
     period: '2025-07',
     images: [
-      { id: 1, src: require('../../../img/2025-07/post1.jpeg'), alt: '2025년 7월 시설 점검 1' },
-      { id: 2, src: require('../../../img/2025-07/post2.jpeg'), alt: '2025년 7월 시설 점검 2' }
+      { id: 1, src: require('../../../img/inspection/2025-07/post1.jpeg'), alt: '2025년 7월 시설 점검 1' },
+      { id: 2, src: require('../../../img/inspection/2025-07/post2.jpeg'), alt: '2025년 7월 시설 점검 2' }
     ]
   },
   {
     month: '2025년 8월',
     period: '2025-08',
     images: [
-      { id: 1, src: require('../../../img/2025-08/post1.jpeg'), alt: '2025년 8월 시설 점검 1' },
-      { id: 2, src: require('../../../img/2025-08/post2.jpeg'), alt: '2025년 8월 시설 점검 2' }
+      { id: 1, src: require('../../../img/inspection/2025-08/post1.jpeg'), alt: '2025년 8월 시설 점검 1' },
+      { id: 2, src: require('../../../img/inspection/2025-08/post2.jpeg'), alt: '2025년 8월 시설 점검 2' }
     ]
   },
   {
     month: '2025년 9월',
     period: '2025-09',
     images: [
-      { id: 1, src: require('../../../img/2025-09/post1.png'), alt: '2025년 9월 시설 점검 1' },
-      { id: 2, src: require('../../../img/2025-09/post2.png'), alt: '2025년 9월 시설 점검 2' }
+      { id: 1, src: require('../../../img/inspection/2025-09/post1.png'), alt: '2025년 9월 시설 점검 1' },
+      { id: 2, src: require('../../../img/inspection/2025-09/post2.png'), alt: '2025년 9월 시설 점검 2' }
     ]
   }
 ];
@@ -181,7 +181,7 @@ export default function FacilityInspection() {
 
   const slideVariants = {
     enter: (direction) => ({
-      x: direction > 0 ? 1000 : -1000,
+      x: direction > 0 ? '100%' : '-100%',
       opacity: 0
     }),
     center: {
@@ -191,7 +191,7 @@ export default function FacilityInspection() {
     },
     exit: (direction) => ({
       zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
+      x: direction < 0 ? '100%' : '-100%',
       opacity: 0
     })
   };
@@ -235,8 +235,8 @@ export default function FacilityInspection() {
                 animate="center"
                 exit="exit"
                 transition={{
-                  x: { type: "spring", stiffness: 300, damping: 30 },
-                  opacity: { duration: 0.2 }
+                  x: { type: "spring", stiffness: 300, damping: 30, duration: 0.4 },
+                  opacity: { duration: 0.3 }
                 }}
                 className="slide"
               >
@@ -286,8 +286,6 @@ export default function FacilityInspection() {
           </button>
         </div>
 
-        
-
         {/* 슬라이드 카운터 */}
         <div className="slider-counter-display">
           <span className="current-slide">{currentSlide + 1}</span>
@@ -295,16 +293,6 @@ export default function FacilityInspection() {
           <span className="total-slides">{inspectionData.length}</span>
         </div>
       </div>
-
-      {/* 안내 메시지 */}
-      <motion.div
-        className="inspection-notice"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5, duration: 0.5 }}
-      >
-        <p>📋 시설 점검은 매월 정기적으로 진행되며, 학우들의 편의를 위해 지속적으로 개선하고 있습니다.</p>
-      </motion.div>
 
       {/* 이미지 모달 */}
       <AnimatePresence>
@@ -319,6 +307,7 @@ export default function FacilityInspection() {
           />
         )}
       </AnimatePresence>
+      
     </div>
   );
 }

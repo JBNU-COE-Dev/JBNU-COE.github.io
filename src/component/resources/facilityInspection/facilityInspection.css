@@ -4,6 +4,8 @@
   margin: 12vh auto 2rem;
   padding: 2rem;
   min-height: calc(100vh - 20vh);
+  position: relative;
+  isolation: isolate;
 }
 
 /* 헤더 */
@@ -47,7 +49,9 @@
 /* 슬라이더 컨테이너 */
 .slider-container {
   position: relative;
+  margin-top: 16rem;
   margin-bottom: 3rem;
+  overflow: hidden;
 }
 
 .slider-wrapper {
@@ -55,7 +59,8 @@
   display: flex;
   align-items: center;
   gap: 2rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
+  width: 100%;
 }
 
 /* 슬라이더 컨트롤 버튼 */
@@ -74,7 +79,8 @@
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 12px rgba(41, 85, 166, 0.3);
-  z-index: 10;
+  z-index: 5;
+  position: relative;
 }
 
 .slider-control-button:hover:not(:disabled) {
@@ -98,11 +104,20 @@
   flex: 1;
   overflow: hidden;
   position: relative;
-  min-height: 450px;
+  min-height: 600px;
+  width: 100%;
+  isolation: isolate;
 }
 
 .slide {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  will-change: transform, opacity;
 }
 
 /* 월 헤더 (슬라이드용) */
@@ -110,6 +125,8 @@
   display: flex;
   justify-content: center;
   margin-bottom: 2.5rem;
+  position: relative;
+  z-index: 1;
 }
 
 .month-badge {
@@ -123,6 +140,7 @@
   border-radius: 50px;
   box-shadow: 0 4px 16px rgba(41, 85, 166, 0.3);
   white-space: nowrap;
+  margin: 0 auto;
 }
 
 /* 점검 그리드 */
@@ -132,6 +150,9 @@
   gap: 2rem;
   max-width: 1000px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  flex: 1;
 }
 
 /* 점검 카드 */
@@ -261,7 +282,9 @@
   font-size: 1.5rem;
   font-weight: 800;
   color: #0b1526;
-  margin-bottom: 2rem;
+  margin-top: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
 .current-slide {
@@ -305,23 +328,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: 10000;
   padding: 2rem;
+  overflow: auto;
 }
 
 .image-modal-container {
   position: relative;
   width: 100%;
   max-width: 1200px;
-  height: 90vh;
+  max-height: 90vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: auto;
 }
 
 .modal-close-button {
   position: absolute;
-  top: -3rem;
+  top: -4rem;
   right: 0;
   background: rgba(255, 255, 255, 0.2);
   color: white;
@@ -336,7 +361,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
-  z-index: 10;
+  z-index: 10001;
 }
 
 .modal-close-button:hover {
@@ -358,7 +383,7 @@
   font-size: 2rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  z-index: 10;
+  z-index: 10001;
   backdrop-filter: blur(10px);
 }
 
@@ -419,6 +444,7 @@
   font-weight: 700;
   font-size: 1rem;
   backdrop-filter: blur(10px);
+  z-index: 10001;
 }
 
 /* 반응형 */
@@ -484,7 +510,11 @@
   }
 
   .slider-content {
-    min-height: 400px;
+    min-height: 500px;
+  }
+  
+  .slide {
+    min-height: 500px;
   }
 
   .month-badge {
@@ -559,7 +589,7 @@
   }
 
   .modal-close-button {
-    top: -2.5rem;
+    top: -3rem;
     width: 40px;
     height: 40px;
     font-size: 1.5rem;

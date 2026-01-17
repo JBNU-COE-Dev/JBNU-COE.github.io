@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiChevronLeft, FiChevronRight, FiX } from 'react-icons/fi';
 import './studySupport.css';
 
-// 월별 데이터 구조: 3월~11월
-const AVAILABLE_MONTHS = [3, 4, 5, 6, 7, 8, 9, 10, 11];
+// 월별 데이터 구조: 1월~11월
+const AVAILABLE_MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
 const MONTH_NAMES = {
-  3: '3월', 4: '4월', 5: '5월', 6: '6월', 7: '7월',
+  1: '1월', 2: '2월', 3: '3월', 4: '4월', 5: '5월', 6: '6월', 7: '7월',
   8: '8월', 9: '9월', 10: '10월', 11: '11월'
 };
 
