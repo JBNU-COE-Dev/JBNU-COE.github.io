@@ -6,9 +6,10 @@ import noticesApi from './noticesApi';
 import galleryApi from './galleryApi';
 import resourcesApi from './resourcesApi';
 import calendarApi from './calendarApi';
+import rentalApi from './rentalApi';
 
 // Named exports
-export { api, noticesApi, galleryApi, resourcesApi, calendarApi };
+export { api, noticesApi, galleryApi, resourcesApi, calendarApi, rentalApi };
 
 // Default export
 export default {
@@ -17,4 +18,5 @@ export default {
   galleryApi,
   resourcesApi,
   calendarApi,
+  rentalApi,
 };

@@ -30,6 +30,13 @@ export default function ImageSlider({ images, initialIndex = 0, onClose }) {
   const currentImage = images[currentIndex];
   const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
+  // 이미지 URL 처리 (절대 URL이면 그대로, 상대 URL이면 API_URL 추가)
+  const getImageUrl = (url) => {
+    if (!url) return '/logo192.png';
+    if (url.startsWith('http')) return url;
+    return `${API_URL}${url}`;
+  };
+
   return (
     <motion.div
       className="image-slider-overlay"
@@ -58,7 +65,7 @@ export default function ImageSlider({ images, initialIndex = 0, onClose }) {
           <AnimatePresence mode="wait">
             <motion.img
               key={currentIndex}
-              src={`${API_URL}${currentImage.imageUrl}`}
+              src={getImageUrl(currentImage.imageUrl)}
               alt={currentImage.title}
               className="slider-image"
               initial={{ opacity: 0, x: 100 }}

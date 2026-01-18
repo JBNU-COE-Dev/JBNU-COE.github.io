@@ -134,6 +134,39 @@
   font-size: 1.1rem;
 }
 
+/* 검색 결과 정보 */
+.search-result-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.search-result-info strong {
+  color: #2955a6;
+  font-weight: 700;
+}
+
+.search-reset-btn {
+  padding: 0.4rem 0.8rem;
+  background: #f3f4f6;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.search-reset-btn:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
 /* ========================================
    갤러리 그리드
    ======================================== */
@@ -323,6 +356,10 @@
    에러 및 빈 상태
    ======================================== */
 .gallery-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
   text-align: center;
   padding: 2rem;
   color: #dc2626;
@@ -330,6 +367,22 @@
   border: 1px solid #fecaca;
   border-radius: 8px;
   margin-bottom: 2rem;
+}
+
+.error-retry-btn {
+  padding: 0.5rem 1.25rem;
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.error-retry-btn:hover {
+  background: #b91c1c;
 }
 
 .no-galleries {
@@ -676,6 +729,12 @@
   .search-btn {
     width: 100%;
     justify-content: center;
+  }
+  
+  .search-result-info {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
   }
   
   .gallery-grid {

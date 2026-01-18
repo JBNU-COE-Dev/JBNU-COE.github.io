@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiSearch, FiEye, FiPaperclip, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
 import ImageSlider from './ImageSlider';
+import { galleryApi } from '../../../services';
 import './gallery.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
@@ -12,8 +13,10 @@ export default function Gallery() {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [searchType, setSearchType] = useState('all'); // 검색 타입: all, title, content
+  const [appliedKeyword, setAppliedKeyword] = useState(''); // 실제 적용된 검색어
+  const [searchType, setSearchType] = useState('all');
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
   const searchTypes = [
@@ -22,51 +25,74 @@ export default function Gallery() {
     { id: 'content', label: '내용' }
   ];
 
+  // 갤러리 목록 조회
   const fetchGalleries = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      let url = `${API_URL}/api/gallery?page=${currentPage}&size=15`;
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('갤러리를 불러오는데 실패했습니다.');
-      const data = await response.json();
-      setGalleries(data.content);
-      setTotalPages(data.totalPages);
+      const response = await galleryApi.getGalleries({
+        page: currentPage,
+        size: 15,
+        keyword: appliedKeyword,
+        searchType: searchType,
+      });
+
+      // API 응답 처리 (Spring Data Page 형식 또는 직접 배열)
+      if (response && response.content) {
+        setGalleries(response.content);
+        setTotalPages(response.totalPages || 1);
+        setTotalElements(response.totalElements || response.content.length);
+      } else if (Array.isArray(response)) {
+        setGalleries(response);
+        setTotalPages(1);
+        setTotalElements(response.length);
+      } else {
+        setGalleries([]);
+        setTotalPages(0);
+        setTotalElements(0);
+      }
     } catch (err) {
-      setError(err.message);
+      console.error('갤러리 조회 실패:', err);
+      setError(err.message || '갤러리를 불러오는데 실패했습니다.');
+      setGalleries([]);
     } finally {
       setLoading(false);
     }
-  }, [currentPage]);
+  }, [currentPage, appliedKeyword, searchType]);
 
   useEffect(() => {
     fetchGalleries();
   }, [fetchGalleries]);
 
-  const handleSearch = async (e) => {
+  // 검색 실행
+  const handleSearch = (e) => {
     e.preventDefault();
-    if (!searchKeyword.trim()) {
-      fetchGalleries();
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-    try {
-      let url = `${API_URL}/api/gallery/search?keyword=${encodeURIComponent(searchKeyword)}&searchType=${searchType}&page=${currentPage}&size=15`;
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('검색에 실패했습니다.');
-      const data = await response.json();
-      setGalleries(data.content);
-      setTotalPages(data.totalPages);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    setCurrentPage(0); // 검색 시 첫 페이지로 이동
+    setAppliedKeyword(searchKeyword.trim());
   };
 
-  const handleImageClick = (index) => {
+  // 검색 초기화
+  const handleResetSearch = () => {
+    setSearchKeyword('');
+    setAppliedKeyword('');
+    setSearchType('all');
+    setCurrentPage(0);
+  };
+
+  // 이미지 클릭 시 슬라이더 열기 및 조회수 증가
+  const handleImageClick = async (index) => {
+    const gallery = galleries[index];
+    if (gallery && gallery.id) {
+      try {
+        await galleryApi.incrementViewCount(gallery.id);
+        // 로컬 상태 업데이트
+        setGalleries(prev => prev.map((g, i) => 
+          i === index ? { ...g, viewCount: (g.viewCount || 0) + 1 } : g
+        ));
+      } catch (err) {
+        console.error('조회수 증가 실패:', err);
+      }
+    }
     setSelectedImageIndex(index);
   };
 
@@ -116,10 +142,10 @@ export default function Gallery() {
   return (
     <div className="gallery-page">
       {/* 페이지 타이틀 섹션 */}
-        <div className="gallery-title">
-          <h1>갤러리</h1>
-          <p>공과대학 학생회의 다양한 활동을 사진으로 만나보세요</p>
-        </div>
+      <div className="gallery-title">
+        <h1>갤러리</h1>
+        <p>공과대학 학생회의 다양한 활동을 사진으로 만나보세요</p>
+      </div>
 
       {/* 메인 컨텐츠 */}
       <div className="gallery-main">
@@ -156,6 +182,22 @@ export default function Gallery() {
               <span>검색</span>
             </button>
           </form>
+
+          {/* 검색 결과 정보 */}
+          {appliedKeyword && (
+            <div className="search-result-info">
+              <span>
+                '{appliedKeyword}' 검색 결과: <strong>{totalElements}건</strong>
+              </span>
+              <button 
+                type="button" 
+                className="search-reset-btn"
+                onClick={handleResetSearch}
+              >
+                검색 초기화
+              </button>
+            </div>
+          )}
         </motion.div>
 
         {/* 에러 메시지 */}
@@ -166,6 +208,12 @@ export default function Gallery() {
             animate={{ opacity: 1, scale: 1 }}
           >
             {error}
+            <button 
+              className="error-retry-btn"
+              onClick={fetchGalleries}
+            >
+              다시 시도
+            </button>
           </motion.div>
         )}
 
@@ -180,7 +228,12 @@ export default function Gallery() {
             [...Array(15)].map((_, i) => <SkeletonCard key={i} />)
           ) : galleries.length === 0 ? (
             <div className="no-galleries">
-              <p>등록된 갤러리가 없습니다.</p>
+              <p>
+                {appliedKeyword 
+                  ? `'${appliedKeyword}'에 대한 검색 결과가 없습니다.` 
+                  : '등록된 갤러리가 없습니다.'
+                }
+              </p>
             </div>
           ) : (
             galleries.map((gallery, index) => (
@@ -194,9 +247,16 @@ export default function Gallery() {
               >
                 <div className="gallery-card-image">
                   <img
-                    src={`${API_URL}${gallery.imageUrl}`}
+                    src={gallery.imageUrl?.startsWith('http') 
+                      ? gallery.imageUrl 
+                      : `${API_URL}${gallery.imageUrl}`
+                    }
                     alt={gallery.title}
                     loading="lazy"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = '/logo192.png'; // 기본 이미지
+                    }}
                   />
                   <div className="gallery-card-hover">
                     <span>자세히 보기</span>
