@@ -10,6 +10,7 @@
 /* 페이지 타이틀 */
 .page-title {
   text-align: center;
+  margin-top: 50px;
   margin-bottom: 50px;
 }
 

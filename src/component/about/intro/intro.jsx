@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import ImageSlider from '../../home/imageSlider/imageSlider.jsx';
-import image1 from '../../../img/imageSlider4.jpg';
-import image2 from '../../../img/imageSlider5.jpg';
-import image3 from '../../../img/imageSlider6.jpg';
-import organizationImg from '../../../img/organization.jpg';
+import organizationImg from '../../../img/organization/organization.jpg';
+import mainSlider1 from '../../../img/main-slider/main-slider1.JPG';
+import mainSlider2 from '../../../img/main-slider/main-slider2.JPG';
+import mainSlider3 from '../../../img/main-slider/main-slider3.JPG';
+import mainSlider4 from '../../../img/main-slider/main-slider4.JPG';
+import mainSlider5 from '../../../img/main-slider/main-slider5.JPG';
 import { FaHome, FaChevronDown, FaUser } from 'react-icons/fa';
 
 import './intro.css';
 
 const Intro = () => {
-    const slides = [{image: image1}, {image: image2}, {image: image3}];
+    const slides = [{image: mainSlider1}, {image: mainSlider2}, {image: mainSlider3}, {image: mainSlider4}, {image: mainSlider5}];
     const [currentContent, setCurrentContent] = useState('intro'); // 'intro', 'president', 'vice-president'
 
     const handleMenuClick = (content) => {
