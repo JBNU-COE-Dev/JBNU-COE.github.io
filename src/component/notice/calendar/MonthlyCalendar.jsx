@@ -5,6 +5,8 @@ import 'moment/locale/ko';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './monthlyCalendar.css';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { calendarApi } from '../../../services';
+import { getHolidaysAsEvents } from '../../../utils/holidays';
 
 // moment 한국어 설정
 moment.locale('ko');
@@ -14,30 +16,120 @@ function MonthlyCalendar() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [currentDate, setCurrentDate] = useState(new Date());
   const [eventsData, setEventsData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // calendar.json 파일 로드 및 파싱
+  // 백엔드 API에서 행사 일정 로드 및 파싱
   useEffect(() => {
-    fetch(`${process.env.PUBLIC_URL}/calendar.json`)
-      .then(response => response.json())
-      .then(data => {
-        const parsedEvents = parseCalendarData(data);
+    const loadCalendarEvents = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // 백엔드 API에서 일정 데이터 가져오기
+        const data = await calendarApi.getAllCalendarEvents();
+        
+        // API 응답이 배열인 경우 그대로 사용, 객체인 경우 data 필드 확인
+        const events = Array.isArray(data) ? data : (data.content || data.data || []);
+        
+        // 파싱하여 eventsData에 설정
+        const parsedEvents = parseCalendarData(events);
         setEventsData(parsedEvents);
-      })
-      .catch(error => console.error('Failed to load calendar.json:', error));
+      } catch (err) {
+        console.error('Failed to load calendar events:', err);
+        setError(err.message || '행사 일정을 불러오는데 실패했습니다.');
+        
+        // API 실패 시 fallback: 기존 calendar.json 파일 사용
+        try {
+          const fallbackResponse = await fetch(`${process.env.PUBLIC_URL}/calendar.json`);
+          if (fallbackResponse.ok) {
+            const fallbackData = await fallbackResponse.json();
+            const parsedEvents = parseCalendarData(fallbackData);
+            setEventsData(parsedEvents);
+            setError(null); // fallback 성공 시 에러 제거
+          }
+        } catch (fallbackErr) {
+          console.error('Failed to load fallback calendar.json:', fallbackErr);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCalendarEvents();
   }, []);
 
-  // calendar.json 파싱 함수
+  // 현재 월이 변경될 때 공휴일 업데이트
+  useEffect(() => {
+    if (Object.keys(eventsData).length === 0) return;
+    
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
+    const startDate = new Date(currentYear, currentMonth - 1, 1);
+    const endDate = new Date(currentYear, currentMonth + 2, 0);
+    const holidays = getHolidaysAsEvents(startDate, endDate);
+    
+    // 기존 이벤트에서 공휴일만 제거하고 새 공휴일 추가
+    const updatedEvents = {};
+    
+    // 기존 이벤트 중 공휴일이 아닌 것만 복사
+    Object.keys(eventsData).forEach(date => {
+      const nonHolidayEvents = eventsData[date].filter(e => !e.isHoliday);
+      if (nonHolidayEvents.length > 0) {
+        updatedEvents[date] = nonHolidayEvents;
+      }
+    });
+    
+    // 새로운 공휴일 추가
+    Object.keys(holidays).forEach(date => {
+      if (!updatedEvents[date]) {
+        updatedEvents[date] = [];
+      }
+      updatedEvents[date].push(...holidays[date]);
+    });
+    
+    setEventsData(updatedEvents);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentDate]);
+
+  // 백엔드 API 응답 데이터 파싱 함수
+  // API 응답 형식: { date_start, date_end, event_korean, event_english, ... }
   const parseCalendarData = (jsonData) => {
     const events = {};
 
+    // jsonData가 배열인지 확인
+    if (!Array.isArray(jsonData)) {
+      console.warn('Calendar data is not an array:', jsonData);
+      return events;
+    }
+
     jsonData.forEach(item => {
-      const startDate = new Date(item.date_start);
-      const endDate = new Date(item.date_end);
+      // 날짜 필드 확인 (API 응답에 따라 date_start 또는 startDate 등일 수 있음)
+      const startDateStr = item.date_start || item.startDate || item.start;
+      const endDateStr = item.date_end || item.endDate || item.end;
+
+      if (!startDateStr || !endDateStr) {
+        console.warn('Invalid calendar item (missing dates):', item);
+        return;
+      }
+
+      const startDate = new Date(startDateStr);
+      const endDate = new Date(endDateStr);
+
+      // 유효한 날짜인지 확인
+      if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+        console.warn('Invalid date format in calendar item:', item);
+        return;
+      }
+
+      // 행사명 필드 확인 (API 응답에 따라 event_korean 또는 title 등일 수 있음)
+      const eventTitle = item.event_korean || item.title || item.name || '행사';
+      const eventTitleEn = item.event_english || item.titleEn || item.nameEn || '';
 
       const eventData = {
-        title: item.event_korean,
-        titleEn: item.event_english,
-        dateRange: item.date_start === item.date_end
+        title: eventTitle,
+        titleEn: eventTitleEn,
+        dateRange: startDateStr === endDateStr
           ? moment(startDate).format('M/D')
           : `${moment(startDate).format('M/D')} - ${moment(endDate).format('M/D')}`
       };
@@ -119,13 +211,25 @@ function MonthlyCalendar() {
     const hasEvent = events.some(event =>
       moment(event.start).format('YYYY-MM-DD') === moment(date).format('YYYY-MM-DD')
     );
-
+    
+    const dayOfWeek = date.getDay(); // 0 = 일요일, 6 = 토요일
+    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+    
+    const className = [];
     if (hasEvent) {
-      return {
-        className: 'has-event'
-      };
+      className.push('has-event');
     }
-    return {};
+    if (isWeekend) {
+      className.push('weekend-day');
+    }
+
+    return {
+      className: className.join(' '),
+      style: isWeekend ? {
+        color: '#dc2626', // 빨간색
+        fontWeight: '600'
+      } : {}
+    };
   };
 
   // 한국어 메시지
@@ -173,6 +277,21 @@ function MonthlyCalendar() {
         <h1>월별 행사 일정</h1>
         <p>공과대학 학생회 행사 일정을 확인하세요</p>
       </div>
+
+      {loading && (
+        <div className="calendar-loading">
+          <p>행사 일정을 불러오는 중...</p>
+        </div>
+      )}
+
+      {error && !loading && (
+        <div className="calendar-error">
+          <p>⚠️ {error}</p>
+          <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '0.5rem' }}>
+            로컬 캐시 파일을 사용하고 있습니다.
+          </p>
+        </div>
+      )}
 
       <div className="calendar-container">
         <div className="calendar-section">

@@ -1,7 +1,7 @@
 import React from 'react';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import './banner.css';
-import feelLogo from '../../img/feel_logo.png';
+import feelLogo from '../../img/embulum/feel_logo.png';
 
 function Banner() {
   return (

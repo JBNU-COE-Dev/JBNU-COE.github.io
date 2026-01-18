@@ -213,7 +213,7 @@ export default function FacilityInspection() {
       </motion.div>
 
       {/* 슬라이더 */}
-      <div className="slider-container">
+      <div className="facility-inspection-slider-container">
         <div className="slider-wrapper">
           {/* 이전 버튼 */}
           <button

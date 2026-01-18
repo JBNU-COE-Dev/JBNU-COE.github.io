@@ -47,20 +47,10 @@
 }
 
 /* 슬라이더 컨테이너 */
-.slider-container {
+.facility-inspection-slider-container {
   position: relative;
   margin-top: 16rem;
   margin-bottom: 3rem;
-  overflow: hidden;
-}
-
-.slider-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  width: 100%;
 }
 
 /* 슬라이더 컨트롤 버튼 */

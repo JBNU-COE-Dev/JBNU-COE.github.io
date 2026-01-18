@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiSearch, FiEye, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiSearch, FiEye, FiPaperclip, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
 import ImageSlider from './ImageSlider';
 import './gallery.css';
 
@@ -13,24 +13,20 @@ export default function Gallery() {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchType, setSearchType] = useState('all'); // 검색 타입: all, title, content
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
-  const categories = [
-    { id: 'all', label: '전체' },
-    { id: '행사', label: '행사' },
-    { id: '일상', label: '일상' },
-    { id: '기타', label: '기타' }
+  const searchTypes = [
+    { id: 'all', label: '제목 + 내용' },
+    { id: 'title', label: '제목' },
+    { id: 'content', label: '내용' }
   ];
 
   const fetchGalleries = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      let url = `${API_URL}/api/gallery?page=${currentPage}&₩ize=12`;
-      if (selectedCategory !== 'all') {
-        url += `&category=${encodeURIComponent(selectedCategory)}`;
-      }
+      let url = `${API_URL}/api/gallery?page=${currentPage}&size=15`;
       const response = await fetch(url);
       if (!response.ok) throw new Error('갤러리를 불러오는데 실패했습니다.');
       const data = await response.json();
@@ -41,7 +37,7 @@ export default function Gallery() {
     } finally {
       setLoading(false);
     }
-  }, [currentPage, selectedCategory]);
+  }, [currentPage]);
 
   useEffect(() => {
     fetchGalleries();
@@ -57,10 +53,7 @@ export default function Gallery() {
     setLoading(true);
     setError(null);
     try {
-      let url = `${API_URL}/api/gallery/search?keyword=${encodeURIComponent(searchKeyword)}&page=${currentPage}&size=12`;
-      if (selectedCategory !== 'all') {
-        url += `&category=${encodeURIComponent(selectedCategory)}`;
-      }
+      let url = `${API_URL}/api/gallery/search?keyword=${encodeURIComponent(searchKeyword)}&searchType=${searchType}&page=${currentPage}&size=15`;
       const response = await fetch(url);
       if (!response.ok) throw new Error('검색에 실패했습니다.');
       const data = await response.json();
@@ -73,12 +66,6 @@ export default function Gallery() {
     }
   };
 
-  const handleCategoryChange = (categoryId) => {
-    setSelectedCategory(categoryId);
-    setCurrentPage(0);
-    setSearchKeyword('');
-  };
-
   const handleImageClick = (index) => {
     setSelectedImageIndex(index);
   };
@@ -87,149 +74,218 @@ export default function Gallery() {
     setSelectedImageIndex(null);
   };
 
+  // 날짜 포맷팅
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  };
+
+  // 페이지네이션 번호 생성
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxVisiblePages = 5;
+    let startPage = Math.max(0, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages - 1, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage < maxVisiblePages - 1) {
+      startPage = Math.max(0, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  };
+
   // 스켈레톤 로딩
   const SkeletonCard = () => (
-    <div className="gallery-card skeleton-card">
-      <div className="skeleton-image"></div>
-      <div className="skeleton-title"></div>
-    </div>
+    <motion.div 
+      className="gallery-card skeleton-card"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+    >
+      <div className="gallery-card-image skeleton-image"></div>
+      <div className="gallery-card-content">
+        <div className="skeleton-title"></div>
+        <div className="skeleton-meta"></div>
+      </div>
+    </motion.div>
   );
 
   return (
-    <div className="gallery-container">
-      {/* 헤더 */}
-      <motion.div
-        className="gallery-header"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h1>갤러리</h1>
-        <form className="search-form" onSubmit={handleSearch}>
-          <div className="search-input-wrapper">
-            <FiSearch className="search-icon" />
-            <input
-              type="text"
-              className="search-input"
-              placeholder="검색어를 입력하세요"
-              value={searchKeyword}
-              onChange={(e) => setSearchKeyword(e.target.value)}
-            />
-          </div>
-          <button type="submit" className="search-button">
-            검색
-          </button>
-        </form>
-      </motion.div>
+    <div className="gallery-page">
+      {/* 페이지 타이틀 섹션 */}
+        <div className="gallery-title">
+          <h1>갤러리</h1>
+          <p>공과대학 학생회의 다양한 활동을 사진으로 만나보세요</p>
+        </div>
 
-      {/* 카테고리 필터 */}
-      <motion.div
-        className="category-filter"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-      >
-        {categories.map((category) => (
-          <motion.button
-            key={category.id}
-            className={`category-button ${selectedCategory === category.id ? 'active' : ''}`}
-            onClick={() => handleCategoryChange(category.id)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {category.label}
-          </motion.button>
-        ))}
-      </motion.div>
-
-      {/* 에러 메시지 */}
-      {error && (
-        <motion.div
-          className="gallery-error"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-        >
-          {error}
-        </motion.div>
-      )}
-
-      {/* 갤러리 그리드 */}
-      <motion.div
-        className="gallery-grid"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
-      >
-        {loading ? (
-          // 스켈레톤 로딩
-          [...Array(12)].map((_, i) => <SkeletonCard key={i} />)
-        ) : galleries.length === 0 ? (
-          <div className="no-galleries">갤러리 항목이 없습니다.</div>
-        ) : (
-          galleries.map((gallery, index) => (
-            <motion.div
-              key={gallery.id}
-              className="gallery-card"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-              whileHover={{ y: -8 }}
-              onClick={() => handleImageClick(index)}
-            >
-              <div className="gallery-image-container">
-                <img
-                  src={`${API_URL}${gallery.imageUrl}`}
-                  alt={gallery.title}
-                  className="gallery-image"
-                  loading="lazy"
-                />
-                <div className="gallery-overlay">
-                  <FiEye className="view-icon" />
-                  <span>{gallery.viewCount}</span>
-                </div>
-              </div>
-              <div className="gallery-info">
-                <h3>{gallery.title}</h3>
-                {gallery.category && (
-                  <span className="gallery-category">{gallery.category}</span>
-                )}
-              </div>
-            </motion.div>
-          ))
-        )}
-      </motion.div>
-
-      {/* 페이지네이션 */}
-      {totalPages > 1 && (
-        <motion.div
-          className="pagination"
+      {/* 메인 컨텐츠 */}
+      <div className="gallery-main">
+        {/* 검색 영역 */}
+        <motion.div 
+          className="gallery-search-section"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
+          transition={{ delay: 0.1 }}
         >
-          <motion.button
-            onClick={() => setCurrentPage((prev) => Math.max(0, prev - 1))}
-            disabled={currentPage === 0}
-            className="pagination-button"
-            whileHover={{ scale: currentPage === 0 ? 1 : 1.05 }}
-            whileTap={{ scale: currentPage === 0 ? 1 : 0.95 }}
-          >
-            <FiChevronLeft /> 이전
-          </motion.button>
-          <span className="pagination-info">
-            {currentPage + 1} / {totalPages}
-          </span>
-          <motion.button
-            onClick={() => setCurrentPage((prev) => Math.min(totalPages - 1, prev + 1))}
-            disabled={currentPage >= totalPages - 1}
-            className="pagination-button"
-            whileHover={{ scale: currentPage >= totalPages - 1 ? 1 : 1.05 }}
-            whileTap={{ scale: currentPage >= totalPages - 1 ? 1 : 0.95 }}
-          >
-            다음 <FiChevronRight />
-          </motion.button>
+          <form className="gallery-search-form" onSubmit={handleSearch}>
+            <div className="search-select-wrapper">
+              <select 
+                value={searchType} 
+                onChange={(e) => setSearchType(e.target.value)}
+                className="search-select"
+              >
+                {searchTypes.map(type => (
+                  <option key={type.id} value={type.id}>{type.label}</option>
+                ))}
+              </select>
+            </div>
+            <div className="search-input-wrapper">
+              <input
+                type="text"
+                className="search-input"
+                placeholder="검색어를 입력하세요"
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)}
+              />
+            </div>
+            <button type="submit" className="search-btn">
+              <FiSearch />
+              <span>검색</span>
+            </button>
+          </form>
         </motion.div>
-      )}
+
+        {/* 에러 메시지 */}
+        {error && (
+          <motion.div
+            className="gallery-error"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+          >
+            {error}
+          </motion.div>
+        )}
+
+        {/* 갤러리 그리드 */}
+        <motion.div 
+          className="gallery-grid"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          {loading ? (
+            [...Array(15)].map((_, i) => <SkeletonCard key={i} />)
+          ) : galleries.length === 0 ? (
+            <div className="no-galleries">
+              <p>등록된 갤러리가 없습니다.</p>
+            </div>
+          ) : (
+            galleries.map((gallery, index) => (
+              <motion.div
+                key={gallery.id}
+                className="gallery-card"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.03 }}
+                onClick={() => handleImageClick(index)}
+              >
+                <div className="gallery-card-image">
+                  <img
+                    src={`${API_URL}${gallery.imageUrl}`}
+                    alt={gallery.title}
+                    loading="lazy"
+                  />
+                  <div className="gallery-card-hover">
+                    <span>자세히 보기</span>
+                  </div>
+                </div>
+                <div className="gallery-card-content">
+                  <h3 className="gallery-card-title">{gallery.title}</h3>
+                  <div className="gallery-card-meta">
+                    <span className="meta-date">
+                      작성일 {formatDate(gallery.createdAt)}
+                    </span>
+                    <span className="meta-views">
+                      <FiEye />
+                      조회수 {gallery.viewCount || 0}
+                    </span>
+                    <span className="meta-files">
+                      <FiPaperclip />
+                      첨부파일 ({gallery.attachmentCount || 0})
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            ))
+          )}
+        </motion.div>
+
+        {/* 페이지네이션 */}
+        {totalPages > 1 && (
+          <motion.div 
+            className="gallery-pagination"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            {/* 처음으로 */}
+            <button
+              className="pagination-nav-btn"
+              onClick={() => setCurrentPage(0)}
+              disabled={currentPage === 0}
+              aria-label="첫 페이지로 이동"
+            >
+              <FiChevronsLeft />
+            </button>
+            
+            {/* 이전 */}
+            <button
+              className="pagination-nav-btn"
+              onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}
+              disabled={currentPage === 0}
+              aria-label="이전 페이지로 이동"
+            >
+              <FiChevronLeft />
+            </button>
+            
+            {/* 페이지 번호 */}
+            <div className="pagination-numbers">
+              {getPageNumbers().map(pageNum => (
+                <button
+                  key={pageNum}
+                  className={`pagination-num-btn ${currentPage === pageNum ? 'active' : ''}`}
+                  onClick={() => setCurrentPage(pageNum)}
+                >
+                  {pageNum + 1}
+                </button>
+              ))}
+            </div>
+            
+            {/* 다음 */}
+            <button
+              className="pagination-nav-btn"
+              onClick={() => setCurrentPage(prev => Math.min(totalPages - 1, prev + 1))}
+              disabled={currentPage >= totalPages - 1}
+              aria-label="다음 페이지로 이동"
+            >
+              <FiChevronRight />
+            </button>
+            
+            {/* 마지막으로 */}
+            <button
+              className="pagination-nav-btn"
+              onClick={() => setCurrentPage(totalPages - 1)}
+              disabled={currentPage >= totalPages - 1}
+              aria-label="마지막 페이지로 이동"
+            >
+              <FiChevronsRight />
+            </button>
+          </motion.div>
+        )}
+      </div>
 
       {/* 이미지 슬라이더 모달 */}
       <AnimatePresence>

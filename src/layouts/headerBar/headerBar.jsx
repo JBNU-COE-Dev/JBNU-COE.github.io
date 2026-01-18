@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { HiMenu, HiX } from 'react-icons/hi';
 import './headerBar.css';
-import logoImg_white from '../../img/embulum_white.png';
+import logoImg_white from '../../img/embulum/embulum_white.png';
 
 function HeaderBar({ isMobile }) {
   const [menuOpen, setMenuOpen] = useState(false);
