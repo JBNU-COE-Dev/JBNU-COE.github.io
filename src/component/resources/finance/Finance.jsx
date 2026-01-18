@@ -1,102 +1,187 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
+import { FiSearch, FiDownload, FiEye, FiFileText, FiCalendar, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { financeApi } from '../../../services';
 import './Finance.css';
-import { financeTransactions, financeSummary } from './financeData.js';
-import { financeIncome, incomeSummary } from './income.js';
+
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+
+// 기본 데이터 (API 실패 시 fallback)
+const defaultReports = [
+  {
+    id: 1,
+    title: '2025년 미리보기 회계 보고서',
+    description: '2025년 미리보기 회계 내역 보고서입니다.',
+    fileName: '2025_1학기_회계보고서.pdf',
+    fileUrl: '/finance/2025_1학기_회계보고서.pdf',
+    fileSize: 2458624,
+    year: 2025,
+    month: 6,
+    createdAt: '2025-06-30T10:00:00',
+  },
+];
 
 export default function Finance() {
-  const [activeTab, setActiveTab] = useState('지출');
+  const [reports, setReports] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('전체');
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 20;
+  const [appliedKeyword, setAppliedKeyword] = useState('');
+  const [sortOrder, setSortOrder] = useState('desc'); // desc: 최신순, asc: 오래된순
+  const [selectedYear, setSelectedYear] = useState('전체');
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
+  const [previewUrl, setPreviewUrl] = useState(null);
 
-  // 필터링된 거래 내역 (지출)
-  const filteredTransactions = useMemo(() => {
-    return financeTransactions.filter(transaction => {
-      const matchesSearch = 
-        transaction.detail?.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-        transaction.content?.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-        transaction.vendor?.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-        transaction.items?.some(item => item.item?.toLowerCase().includes(searchKeyword.toLowerCase()));
-      
-      const category = transaction.eventManagement > 0 ? '행사관리' :
-                      transaction.officeManagement > 0 ? '사무관리' :
-                      transaction.organizationManagement > 0 ? '조직관리' :
-                      transaction.other > 0 ? '기타' : '';
-      
-      const matchesCategory = selectedCategory === '전체' || category === selectedCategory;
-      
-      return matchesSearch && matchesCategory;
-    });
-  }, [searchKeyword, selectedCategory]);
+  // 연도 목록 생성 (현재 연도부터 5년 전까지)
+  const currentYear = new Date().getFullYear();
+  const years = ['전체', ...Array.from({ length: 6 }, (_, i) => currentYear - i)];
 
-  // 필터링된 수입 내역
-  const filteredIncome = useMemo(() => {
-    return financeIncome.filter(income => {
-      const matchesSearch = 
-        income.detail?.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-        income.content?.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-        income.categoryItem?.toLowerCase().includes(searchKeyword.toLowerCase());
-      
-      const matchesCategory = selectedCategory === '전체' || income.categoryItem === selectedCategory;
-      
-      return matchesSearch && matchesCategory;
-    });
-  }, [searchKeyword, selectedCategory]);
+  // 회계 보고서 목록 조회
+  const fetchReports = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await financeApi.getFinanceReports({
+        page: currentPage,
+        size: 10,
+        keyword: appliedKeyword,
+        sortBy: 'createdAt',
+        sortOrder: sortOrder,
+        year: selectedYear !== '전체' ? selectedYear : undefined,
+      });
 
-  // 페이지별 데이터
-  const paginatedTransactions = useMemo(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    return filteredTransactions.slice(startIndex, startIndex + itemsPerPage);
-  }, [filteredTransactions, currentPage]);
+      if (response && response.content) {
+        setReports(response.content);
+        setTotalPages(response.totalPages || 1);
+        setTotalElements(response.totalElements || response.content.length);
+      } else if (Array.isArray(response)) {
+        setReports(response);
+        setTotalPages(1);
+        setTotalElements(response.length);
+      } else {
+        // API 응답이 없으면 기본 데이터 사용
+        setReports(defaultReports);
+        setTotalPages(1);
+        setTotalElements(defaultReports.length);
+      }
+    } catch (err) {
+      console.error('회계 보고서 조회 실패:', err);
+      // API 실패 시 기본 데이터 사용
+      setReports(defaultReports);
+      setTotalPages(1);
+      setTotalElements(defaultReports.length);
+      setError(null);
+    } finally {
+      setLoading(false);
+    }
+  }, [currentPage, appliedKeyword, sortOrder, selectedYear]);
 
-  const paginatedIncome = useMemo(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    return filteredIncome.slice(startIndex, startIndex + itemsPerPage);
-  }, [filteredIncome, currentPage]);
+  useEffect(() => {
+    fetchReports();
+  }, [fetchReports]);
 
-  const totalPages = useMemo(() => {
-    const total = activeTab === '지출' ? filteredTransactions.length : filteredIncome.length;
-    return Math.ceil(total / itemsPerPage);
-  }, [activeTab, filteredTransactions.length, filteredIncome.length]);
+  // 검색 실행
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setCurrentPage(0);
+    setAppliedKeyword(searchKeyword.trim());
+  };
 
-  // 금액 포맷팅
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('ko-KR').format(amount);
+  // 검색 초기화
+  const handleResetSearch = () => {
+    setSearchKeyword('');
+    setAppliedKeyword('');
+    setSelectedYear('전체');
+    setSortOrder('desc');
+    setCurrentPage(0);
+  };
+
+  // 정렬 변경
+  const handleSortChange = (order) => {
+    setSortOrder(order);
+    setCurrentPage(0);
+  };
+
+  // 연도 필터 변경
+  const handleYearChange = (year) => {
+    setSelectedYear(year);
+    setCurrentPage(0);
+  };
+
+  // 파일 크기 포맷팅
+  const formatFileSize = (bytes) => {
+    if (!bytes) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
   // 날짜 포맷팅
   const formatDate = (dateString) => {
-    return dateString;
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
   };
 
-  const categories = ['전체', '행사관리', '사무관리', '조직관리', '기타'];
-
-  // 지출 사용 비율 계산
-  const totalExpenditure = financeSummary.totalExpenditure;
-  const calculateExpenditurePercentage = (amount) => {
-    if (totalExpenditure === 0) return 0;
-    return ((amount / totalExpenditure) * 100).toFixed(2);
+  // PDF 미리보기 열기
+  const handlePreview = (report) => {
+    const url = report.fileUrl?.startsWith('http') 
+      ? report.fileUrl 
+      : `${API_URL}${report.fileUrl}`;
+    setPreviewUrl(url);
   };
 
-  const expenditureRates = {
-    event: calculateExpenditurePercentage(financeSummary.eventManagement),
-    office: calculateExpenditurePercentage(financeSummary.officeManagement),
-    organization: calculateExpenditurePercentage(financeSummary.organizationManagement),
-    other: calculateExpenditurePercentage(financeSummary.other)
+  // PDF 미리보기 닫기
+  const handleClosePreview = () => {
+    setPreviewUrl(null);
   };
 
-  // 수입 대비 지출 비율 계산
-  const totalIncome = incomeSummary.totalIncome;
-  const incomeOrganizationRate = 3.05; // 수입에 대한 조직 관리 사용비율
-  
-  // 탭 변경 시 페이지 초기화
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    setCurrentPage(1);
-    setSelectedCategory('전체');
+  // PDF 다운로드
+  const handleDownload = (report) => {
+    const url = report.fileUrl?.startsWith('http') 
+      ? report.fileUrl 
+      : `${API_URL}${report.fileUrl}`;
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = report.fileName || 'report.pdf';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
+
+  // 페이지네이션 번호 생성
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxVisiblePages = 5;
+    let startPage = Math.max(0, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages - 1, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage < maxVisiblePages - 1) {
+      startPage = Math.max(0, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  };
+
+  // 스켈레톤 로딩
+  const SkeletonCard = () => (
+    <div className="finance-report-card skeleton">
+      <div className="skeleton-icon"></div>
+      <div className="skeleton-content">
+        <div className="skeleton-title"></div>
+        <div className="skeleton-desc"></div>
+        <div className="skeleton-meta"></div>
+      </div>
+    </div>
+  );
 
   return (
     <motion.div
@@ -108,266 +193,238 @@ export default function Finance() {
       {/* 헤더 */}
       <div className="finance-header">
         <h1>회계 내역 공개</h1>
-        <div className="finance-search">
-          <input
-            type="text"
-            placeholder="검색어를 입력하세요 (내역, 거래처, 품목 등)..."
-            value={searchKeyword}
-            onChange={(e) => setSearchKeyword(e.target.value)}
-            className="finance-search-input"
-          />
-        </div>
+        <p className="finance-subtitle">공과대학 학생회의 투명한 재정 운영을 위한 회계 보고서</p>
       </div>
 
-      {/* 탭 */}
-      <div className="finance-tabs">
-        <button
-          className={`finance-tab ${activeTab === '지출' ? 'active' : ''}`}
-          onClick={() => handleTabChange('지출')}
-        >
-          지출
-        </button>
-        <button
-          className={`finance-tab income-tab ${activeTab === '수입' ? 'active' : ''}`}
-          onClick={() => handleTabChange('수입')}
-        >
-          수입
-        </button>
-      </div>
+      {/* 검색 및 필터 영역 */}
+      <motion.div 
+        className="finance-filter-section"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+      >
+        <form className="finance-search-form" onSubmit={handleSearch}>
+          <div className="search-input-wrapper">
+            <FiSearch className="search-icon" />
+            <input
+              type="text"
+              placeholder="보고서 제목 또는 내용 검색..."
+              value={searchKeyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+              className="finance-search-input"
+            />
+          </div>
+          <button type="submit" className="search-btn">검색</button>
+        </form>
 
-      {/* 카테고리 필터 */}
-      {activeTab === '지출' && (
-        <div className="finance-category-filter">
-          {categories.map((category) => (
-            <button
-              key={category}
-              className={`finance-category-button ${selectedCategory === category ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(category)}
+        <div className="finance-filters">
+          {/* 연도 필터 */}
+          <div className="filter-group">
+            <label>연도</label>
+            <select 
+              value={selectedYear} 
+              onChange={(e) => handleYearChange(e.target.value)}
+              className="filter-select"
             >
-              {category}
+              {years.map(year => (
+                <option key={year} value={year}>{year}{year !== '전체' && '년'}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* 정렬 */}
+          <div className="filter-group">
+            <label>정렬</label>
+            <select 
+              value={sortOrder} 
+              onChange={(e) => handleSortChange(e.target.value)}
+              className="filter-select"
+            >
+              <option value="desc">최신순</option>
+              <option value="asc">오래된순</option>
+            </select>
+          </div>
+        </div>
+
+        {/* 검색 결과 정보 */}
+        {appliedKeyword && (
+          <div className="search-result-info">
+            <span>
+              '{appliedKeyword}' 검색 결과: <strong>{totalElements}건</strong>
+            </span>
+            <button 
+              type="button" 
+              className="search-reset-btn"
+              onClick={handleResetSearch}
+            >
+              초기화
             </button>
-          ))}
-        </div>
+          </div>
+        )}
+      </motion.div>
+
+      {/* 에러 메시지 */}
+      {error && (
+        <motion.div
+          className="finance-error"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+        >
+          {error}
+          <button className="error-retry-btn" onClick={fetchReports}>다시 시도</button>
+        </motion.div>
       )}
 
-      {/* 요약 정보 */}
-      {activeTab === '지출' ? (
-        <div className="finance-summary">
-          <div className="summary-card">
-            <div className="summary-label">총 지출액</div>
-            <div className="summary-value total">{formatCurrency(financeSummary.totalExpenditure)}원</div>
+      {/* 보고서 목록 */}
+      <motion.div 
+        className="finance-reports-list"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
+        {loading ? (
+          [...Array(5)].map((_, i) => <SkeletonCard key={i} />)
+        ) : reports.length === 0 ? (
+          <div className="no-reports">
+            <FiFileText className="no-reports-icon" />
+            <p>
+              {appliedKeyword 
+                ? `'${appliedKeyword}'에 대한 검색 결과가 없습니다.`
+                : '등록된 회계 보고서가 없습니다.'
+              }
+            </p>
           </div>
-          <div className="summary-card">
-            <div className="summary-label">행사관리</div>
-            <div className="summary-value event">{formatCurrency(financeSummary.eventManagement)}원</div>
-            <div className="summary-percentage">사용 비율: {expenditureRates.event}%</div>
-            <div className="summary-progress">
-              <div className="progress-bar event" style={{ width: `${expenditureRates.event}%` }}></div>
-            </div>
-          </div>
-          <div className="summary-card">
-            <div className="summary-label">사무관리</div>
-            <div className="summary-value office">{formatCurrency(financeSummary.officeManagement)}원</div>
-            <div className="summary-percentage">사용 비율: {expenditureRates.office}%</div>
-            <div className="summary-progress">
-              <div className="progress-bar office" style={{ width: `${expenditureRates.office}%` }}></div>
-            </div>
-          </div>
-          <div className="summary-card">
-            <div className="summary-label">조직관리</div>
-            <div className="summary-value org">{formatCurrency(financeSummary.organizationManagement)}원</div>
-            <div className="summary-percentage">사용 비율: {expenditureRates.organization}%</div>
-            <div className="summary-progress">
-              <div className="progress-bar org" style={{ width: `${expenditureRates.organization}%` }}></div>
-            </div>
-          </div>
-          <div className="summary-card">
-            <div className="summary-label">기타</div>
-            <div className="summary-value other">{formatCurrency(financeSummary.other)}원</div>
-            <div className="summary-percentage">사용 비율: {expenditureRates.other}%</div>
-            <div className="summary-progress">
-              <div className="progress-bar other" style={{ width: `${expenditureRates.other}%` }}></div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="finance-summary">
-          <div className="summary-card">
-            <div className="summary-label">총 수입액</div>
-            <div className="summary-value total">{formatCurrency(incomeSummary.totalIncome)}원</div>
-          </div>
-          <div className="summary-card">
-            <div className="summary-label">총 지출액</div>
-            <div className="summary-value total">{formatCurrency(financeSummary.totalExpenditure)}원</div>
-          </div>
-          <div className="summary-card income-summary-card" style={{ borderColor: '#10b981', background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)' }}>
-            <div className="summary-label">잔액</div>
-            <div className="summary-value income-org" style={{ color: '#10b981' }}>
-              {formatCurrency(incomeSummary.totalIncome - financeSummary.totalExpenditure)}원
-            </div>
-            <div className="summary-percentage">수입 - 지출</div>
-          </div>
-          <div className="summary-card income-summary-card">
-            <div className="summary-label">조직관리 사용비율</div>
-            <div className="summary-value income-org">{incomeOrganizationRate}%</div>
-            <div className="summary-percentage">수입 대비 조직관리 사용 비율</div>
-            <div className="summary-progress">
-              <div className="progress-bar org" style={{ width: `${incomeOrganizationRate}%` }}></div>
-            </div>
-          </div>
-          <div className="summary-card income-summary-card">
-            <div className="summary-label">수입 대비 지출 비율</div>
-            <div className="summary-value income-org">
-              {totalIncome > 0 ? ((financeSummary.totalExpenditure / totalIncome) * 100).toFixed(2) : 0}%
-            </div>
-            <div className="summary-percentage">전체 사용률</div>
-            <div className="summary-progress">
-              <div className="progress-bar event" style={{ width: `${totalIncome > 0 ? ((financeSummary.totalExpenditure / totalIncome) * 100) : 0}%` }}></div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 거래 내역 테이블 */}
-      {activeTab === '지출' ? (
-        <div className="finance-table-wrapper">
-          <div className="finance-table-container">
-            <table className="finance-table">
-              <thead>
-                <tr>
-                  <th>번호</th>
-                  <th>영수증<br/>날짜</th>
-                  <th>내역</th>
-                  <th>내용</th>
-                  <th>거래처</th>
-                  <th>품목</th>
-                  <th>행사관리</th>
-                  <th>사무관리</th>
-                  <th>조직관리</th>
-                  <th>기타</th>
-                  <th>합계</th>
-                  <th>비고</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedTransactions.length > 0 ? (
-                  paginatedTransactions.map((transaction, index) => (
-                    <motion.tr
-                      key={transaction.no}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.02 }}
-                      className="finance-table-row"
-                    >
-                      <td className="text-center">{transaction.no}</td>
-                      <td className="text-center date">{formatDate(transaction.receiptDate)}</td>
-                      <td>{transaction.detail || '-'}</td>
-                      <td>{transaction.content || '-'}</td>
-                      <td>{transaction.vendor || '-'}</td>
-                      <td className="items-cell">
-                        {transaction.items?.map((item, idx) => (
-                          <div key={idx} className="item-detail">
-                            {item.item} ({formatCurrency(item.amount)}원)
-                          </div>
-                        )) || '-'}
-                      </td>
-                      <td className="text-right amount">{transaction.eventManagement > 0 ? formatCurrency(transaction.eventManagement) : '-'}</td>
-                      <td className="text-right amount">{transaction.officeManagement > 0 ? formatCurrency(transaction.officeManagement) : '-'}</td>
-                      <td className="text-right amount">{transaction.organizationManagement > 0 ? formatCurrency(transaction.organizationManagement) : '-'}</td>
-                      <td className="text-right amount">{transaction.other > 0 ? formatCurrency(transaction.other) : '-'}</td>
-                      <td className="text-right total-amount">{formatCurrency(transaction.total)}</td>
-                      <td className="remarks">{transaction.remarks || '-'}</td>
-                    </motion.tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="12" className="no-results">
-                      검색 결과가 없습니다.
-                    </td>
-                  </tr>
+        ) : (
+          reports.map((report, index) => (
+            <motion.div
+              key={report.id}
+              className="finance-report-card"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.05 }}
+            >
+              <div className="report-icon">
+                <FiFileText />
+              </div>
+              <div className="report-content">
+                <h3 className="report-title">{report.title}</h3>
+                {report.description && (
+                  <p className="report-description">{report.description}</p>
                 )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      ) : (
-        <div className="finance-table-wrapper">
-          <div className="finance-table-container">
-            <table className="income-table">
-              <thead>
-                <tr>
-                  <th>번호</th>
-                  <th>카테고리</th>
-                  <th>세부내역</th>
-                  <th>내용</th>
-                  <th>금액</th>
-                  <th>비고</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedIncome.length > 0 ? (
-                  paginatedIncome.map((income, index) => (
-                    <motion.tr
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.02 }}
-                      className="finance-table-row"
-                    >
-                      <td className="text-center">{index + 1 + (currentPage - 1) * itemsPerPage}</td>
-                      <td>{income.categoryItem || '-'}</td>
-                      <td>{income.detail || '-'}</td>
-                      <td>{income.content || '-'}</td>
-                      <td className="text-right amount">{formatCurrency(income.amount)}</td>
-                      <td className="remarks">{income.remarks || '-'}</td>
-                    </motion.tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="6" className="no-results">
-                      검색 결과가 없습니다.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
+                <div className="report-meta">
+                  <span className="meta-item">
+                    <FiCalendar />
+                    {formatDate(report.createdAt)}
+                  </span>
+                  <span className="meta-item file-info">
+                    {report.fileName} ({formatFileSize(report.fileSize)})
+                  </span>
+                </div>
+              </div>
+              <div className="report-actions">
+                <button 
+                  className="action-btn preview-btn"
+                  onClick={() => handlePreview(report)}
+                  title="미리보기"
+                >
+                  <FiEye />
+                  <span>미리보기</span>
+                </button>
+                <button 
+                  className="action-btn download-btn"
+                  onClick={() => handleDownload(report)}
+                  title="다운로드"
+                >
+                  <FiDownload />
+                  <span>다운로드</span>
+                </button>
+              </div>
+            </motion.div>
+          ))
+        )}
+      </motion.div>
 
       {/* 페이지네이션 */}
       {totalPages > 1 && (
-        <div className="finance-pagination">
+        <motion.div 
+          className="finance-pagination"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
           <button
-            className="pagination-button"
-            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-            disabled={currentPage === 1}
+            className="pagination-nav-btn"
+            onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}
+            disabled={currentPage === 0}
           >
-            이전
+            <FiChevronLeft />
           </button>
-          <span className="pagination-info">
-            {currentPage} / {totalPages}
-          </span>
+          
+          <div className="pagination-numbers">
+            {getPageNumbers().map(pageNum => (
+              <button
+                key={pageNum}
+                className={`pagination-num-btn ${currentPage === pageNum ? 'active' : ''}`}
+                onClick={() => setCurrentPage(pageNum)}
+              >
+                {pageNum + 1}
+              </button>
+            ))}
+          </div>
+          
           <button
-            className="pagination-button"
-            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-            disabled={currentPage === totalPages}
+            className="pagination-nav-btn"
+            onClick={() => setCurrentPage(prev => Math.min(totalPages - 1, prev + 1))}
+            disabled={currentPage >= totalPages - 1}
           >
-            다음
+            <FiChevronRight />
           </button>
-        </div>
+        </motion.div>
       )}
 
       {/* 안내 메시지 */}
       <div className="finance-notice">
-        <h3>📋 회계 내역 안내</h3>
+        <h3>📋 회계 공개 안내</h3>
         <ul>
-          <li>위 회계 내역은 공과대학 학생회의 투명한 재정 운영을 위해 공개됩니다.</li>
-          <li>모든 거래 내역은 영수증과 함께 보관되며, 감사 시 확인 가능합니다.</li>
+          <li>회계 보고서는 PDF 형식으로 제공됩니다.</li>
           <li>문의사항이 있으시면 학생회로 연락 부탁드립니다.</li>
         </ul>
       </div>
+
+      {/* PDF 미리보기 모달 */}
+      {previewUrl && (
+        <motion.div
+          className="pdf-preview-overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={handleClosePreview}
+        >
+          <div className="pdf-preview-container" onClick={(e) => e.stopPropagation()}>
+            <div className="pdf-preview-header">
+              <h3>PDF 미리보기</h3>
+              <button className="preview-close-btn" onClick={handleClosePreview}>×</button>
+            </div>
+            <div className="pdf-preview-content">
+              <iframe
+                src={previewUrl}
+                title="PDF Preview"
+                className="pdf-iframe"
+              />
+            </div>
+            <div className="pdf-preview-footer">
+              <a 
+                href={previewUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="new-tab-btn"
+              >
+                새 탭에서 열기
+              </a>
+            </div>
+          </div>
+        </motion.div>
+      )}
     </motion.div>
   );
 }
-

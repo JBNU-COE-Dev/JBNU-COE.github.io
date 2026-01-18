@@ -49,8 +49,16 @@
 /* 슬라이더 컨테이너 */
 .facility-inspection-slider-container {
   position: relative;
-  margin-top: 16rem;
   margin-bottom: 3rem;
+}
+
+/* 슬라이더 래퍼 */
+.slider-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* 슬라이더 컨트롤 버튼 */
@@ -94,17 +102,12 @@
   flex: 1;
   overflow: hidden;
   position: relative;
-  min-height: 600px;
   width: 100%;
   isolation: isolate;
 }
 
 .slide {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  min-height: 600px;
   display: flex;
   flex-direction: column;
   will-change: transform, opacity;
@@ -136,9 +139,9 @@
 /* 점검 그리드 */
 .inspection-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  max-width: 1000px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 100%;
   margin: 0 auto;
   position: relative;
   z-index: 1;
@@ -454,6 +457,7 @@
   }
 
   .inspection-grid {
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
 
@@ -470,7 +474,7 @@
   }
 
   .facility-inspection-header {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
   }
 
   .header-icon {
@@ -489,8 +493,8 @@
   }
 
   .slider-wrapper {
-    gap: 0.5rem;
-    margin-bottom: 2rem;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
   }
 
   .slider-control-button {
@@ -499,21 +503,13 @@
     font-size: 1.5rem;
   }
 
-  .slider-content {
-    min-height: 500px;
-  }
-  
-  .slide {
-    min-height: 500px;
-  }
-
   .month-badge {
     font-size: 1.1rem;
     padding: 0.7rem 1.8rem;
   }
 
   .month-header-slide {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 
   .inspection-grid {
