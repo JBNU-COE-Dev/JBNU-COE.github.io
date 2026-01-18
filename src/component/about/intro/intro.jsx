@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ImageSlider from '../../home/imageSlider/imageSlider.jsx';
-import organizationImg from '../../../img/organization/organization.jpg';
+import organizationImg from '../../../img/student-council/2026/2026_organization.jpg';
 import mainSlider1 from '../../../img/main-slider/main-slider1.JPG';
 import mainSlider2 from '../../../img/main-slider/main-slider2.JPG';
 import mainSlider3 from '../../../img/main-slider/main-slider3.JPG';
@@ -57,9 +57,9 @@ const Intro = () => {
                         <div className="main-container">
                             <div className="left-container">
                                 <div className="image-container">
-                                    <img src={require('../../../img/ryu.png')} alt="공과대학 학생회장" />
+                                    <img src={require('../../../img/student-council/2026/2026_tak.jpg')} alt="공과대학 학생회장" />
                                     <div className="title-box">공과대학 학생회장</div>
-                                    <div className="name">류이노</div>
+                                    <div className="name">탁형진</div>
                                 </div>
                             </div>
                             <div className="right-container">
@@ -92,9 +92,9 @@ const Intro = () => {
                         <div className="main-container">
                             <div className="left-container">
                                 <div className="image-container">
-                                    <img src={require('../../../img/kim.png')} alt="공과대학 학생회 부회장" />
+                                    <img src={require('../../../img/student-council/2026/2026_choi.jpg')} alt="공과대학 학생회 부회장" />
                                     <div className="title-box">공과대학 학생회 부회장</div>
-                                    <div className="name">김범준</div>
+                                    <div className="name">최용준</div>
                                 </div>
                             </div>
                             <div className="right-container">
@@ -137,7 +137,7 @@ const Intro = () => {
 
     return (
         <div className="intro-container">
-            <div id="slider-container" className="imageSlider-container">
+            <div className="imageSlider-container">
                 <ImageSlider slides={slides} />
                 {/* 분류바 추가 */}
                 <div className="category-bar">

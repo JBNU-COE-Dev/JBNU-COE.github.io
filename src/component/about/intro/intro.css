@@ -15,11 +15,12 @@ html, body, #root {
   
 .imageSlider-container{
     width: 100% !important;
-    height: 35vh !important;
+    height: 70vh !important;
     overflow: hidden !important;
     position: relative !important;
     min-height: 300px !important;
     max-height: 500px !important;
+    margin-top: 12vh;
 }
 
 /* 분류바 스타일 */
@@ -263,6 +264,7 @@ html, body, #root {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 3rem;
 }
 .image-container {
   width: 50%;
@@ -275,9 +277,8 @@ html, body, #root {
 
 .image-container img {
   border-radius: 1rem;
-
-  width: 100%;
-  height: auto;
+  width: 75%;
+  height: 75%;
   object-fit: contain;
   margin-bottom: 1rem;
 }
@@ -306,6 +307,7 @@ html, body, #root {
     padding-bottom: 0.2rem;
     width: 100%;
     text-align: right;
+    margin-right: 3rem;
   }
   
   /* 오른쪽 텍스트 */
@@ -423,6 +425,7 @@ html, body, #root {
   .imageSlider {
     display: flex;
     height: 100%;
+    width: 100%;
     transition: transform 0.8s ease;
   }
 
