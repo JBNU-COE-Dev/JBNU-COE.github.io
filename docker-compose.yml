@@ -10,10 +10,26 @@ services:
       - "80:80"
     restart: unless-stopped
     container_name: jbnu-coe-web
+    environment:
+      # 백엔드 서버 주소 (내부망 서비스 이름 또는 IP:포트)
+      # 예: backend-service:8080 또는 192.168.1.100:8080
+      - BACKEND_SERVICE=${BACKEND_SERVICE:-backend-service:8080}
+      # 관리자 서버 주소 (내부망 서비스 이름 또는 IP:포트)
+      # 예: admin-service:3000 또는 192.168.1.101:3000
+      - ADMIN_SERVICE=${ADMIN_SERVICE:-admin-service:3000}
+    # 내부망 네트워크 설정 (필요한 경우)
+    # networks:
+    #   - internal-network
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
+
+# 내부망 네트워크 설정 (필요한 경우 주석 해제)
+# networks:
+#   internal-network:
+#     driver: bridge
+#     internal: true  # 외부 인터넷 접근 차단 (순수 내부망)
 
