@@ -64,15 +64,35 @@ jobs:
         script: |
           set -e  # 오류 발생 시 즉시 중단
           
+          # 프로젝트 경로 설정
+          PROJECT_DIR="$HOME/frontend/JBNU-COE.github.io"
+          
           echo "========================================="
-          echo "📂 프로젝트 디렉토리 이동"
+          echo "📂 프로젝트 디렉토리 설정"
           echo "========================================="
-          cd ~/frontend/JBNU-COE.github.io || {
+          
+          # frontend 디렉토리 생성 (없으면)
+          mkdir -p "$HOME/frontend"
+          
+          # 프로젝트 디렉토리 존재 여부 확인
+          if [ -d "$PROJECT_DIR" ]; then
+            echo "✅ 기존 프로젝트 디렉토리 발견"
+            cd "$PROJECT_DIR"
+          else
             echo "❌ 프로젝트 디렉토리가 없습니다. 클론합니다..."
-            cd ~
+            cd "$HOME/frontend"
+            
+            # 혹시 디렉토리만 있고 .git이 없는 경우 삭제
+            if [ -d "JBNU-COE.github.io" ]; then
+              echo "⚠️ 불완전한 디렉토리 발견, 삭제 후 재클론..."
+              rm -rf JBNU-COE.github.io
+            fi
+            
             git clone https://github.com/${{ github.repository }}.git JBNU-COE.github.io
             cd JBNU-COE.github.io
-          }
+          fi
+          
+          echo "📍 현재 위치: $(pwd)"
           
           echo "========================================="
           echo "📥 Git 최신 코드 가져오기"
