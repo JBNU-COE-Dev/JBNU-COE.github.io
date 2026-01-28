@@ -1,14 +1,9 @@
 name: Docker Deploy to JCloud
 
 on:
-  # main 브랜치에 직접 push 시 트리거
+  # main 브랜치에 push 시 트리거 (PR 머지 포함)
   push:
     branches: [ main ]
-  
-  # PR이 main 브랜치에 머지(closed + merged)될 때 트리거
-  pull_request:
-    branches: [ main ]
-    types: [ closed ]
   
   # 수동 실행 (GitHub Actions 탭에서 Run workflow 버튼)
   workflow_dispatch:
@@ -26,9 +21,6 @@ concurrency:
 
 jobs:
   deploy:
-    # PR이 머지된 경우에만 실행 (closed이지만 merged가 아니면 스킵)
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
-    
     runs-on: ubuntu-latest
     
     steps:
@@ -184,9 +176,5 @@ jobs:
         echo "트리거: ${{ github.event_name }}"
         echo "브랜치: ${{ github.ref_name }}"
         echo "커밋: ${{ github.sha }}"
-        if [ "${{ github.event_name }}" = "pull_request" ]; then
-          echo "PR 제목: ${{ github.event.pull_request.title }}"
-          echo "PR 작성자: ${{ github.event.pull_request.user.login }}"
-        fi
         echo "완료 시간: $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M:%S KST')"
         echo "========================================="
