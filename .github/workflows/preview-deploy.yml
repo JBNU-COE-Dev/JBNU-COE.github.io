@@ -46,6 +46,7 @@ jobs:
     - name: 🏗️ 빌드
       run: npm run build
       env:
+        CI: false
         # GitHub Pages 서브디렉토리 배포를 위한 설정
         PUBLIC_URL: /${{ github.event.repository.name }}
     
