@@ -19,6 +19,7 @@ jobs:
           script: |
             set -e
             cd /home/ubuntu/JBNU-COE.github.io
-            git pull origin main
+            git fetch origin main
+            git reset --hard origin/main
             docker compose -f /home/ubuntu/docker-compose.yml build user-front
             docker compose -f /home/ubuntu/docker-compose.yml up -d --no-deps --build user-front
