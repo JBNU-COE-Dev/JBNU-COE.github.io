@@ -1,0 +1,79 @@
+name: Preview Deploy (develop → GitHub Pages)
+
+on:
+  # develop 브랜치에 push 시 트리거
+  push:
+    branches: [ develop ]
+  
+  # 수동 실행
+  workflow_dispatch:
+
+# GitHub Pages 배포 권한
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 동시 배포 방지
+concurrency:
+  group: preview-deploy
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 코드 체크아웃
+      uses: actions/checkout@v4
+      with:
+        ref: develop
+    
+    - name: 📦 Node.js 설정
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+    
+    - name: 📥 의존성 설치
+      run: npm ci
+    
+    - name: 🔧 환경 변수 설정
+      run: |
+        echo "REACT_APP_NAVER_CLIENT_ID=${{ secrets.REACT_APP_NAVER_CLIENT_ID }}" >> .env
+        echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" >> .env
+    
+    - name: 🏗️ 빌드
+      run: npm run build
+      env:
+        CI: false
+        # GitHub Pages 서브디렉토리 배포를 위한 설정
+        PUBLIC_URL: /${{ github.event.repository.name }}
+    
+    - name: 📤 아티팩트 업로드
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ./build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+    - name: 🚀 GitHub Pages 배포
+      id: deployment
+      uses: actions/deploy-pages@v4
+    
+    - name: 📊 배포 완료
+      run: |
+        echo "========================================="
+        echo "🎉 Preview 배포 완료!"
+        echo "========================================="
+        echo "📍 URL: ${{ steps.deployment.outputs.page_url }}"
+        echo "📌 브랜치: develop"
+        echo "📌 시간: $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M:%S KST')"
+        echo "========================================="

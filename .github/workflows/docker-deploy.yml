@@ -1,14 +1,10 @@
 name: User Frontend Deploy
 
 on:
+  # main 브랜치에 push 시 트리거 (PR 머지 포함)
   push:
-    branches: [ "main" ]
-
-  # PR이 main 브랜치에 머지(closed + merged)될 때 트리거
-  pull_request:
     branches: [ main ]
-    types: [ closed ]
-
+  
   # 수동 실행 (GitHub Actions 탭에서 Run workflow 버튼)
   workflow_dispatch:
     inputs:
@@ -26,9 +22,6 @@ on:
 jobs:
 
   deploy:
-    # PR이 머지된 경우에만 실행 (closed이지만 merged가 아니면 스킵)
-    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
-    
     runs-on: ubuntu-latest
     steps:
       - name: Deploy via SSH
