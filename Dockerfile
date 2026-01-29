@@ -1,4 +1,5 @@
-# 빌드 스테이지
+# 빌드 스테이지 - 내부망 레지스트리 사용
+# 내부망 레지스트리 주소로 변경 필요 (예: registry.internal:5000/node:18-alpine)
 FROM node:18-alpine AS builder
 
 # 작업 디렉토리 설정
@@ -7,7 +8,7 @@ WORKDIR /app
 # package.json과 package-lock.json 복사
 COPY package*.json ./
 
-# 의존성 설치
+# 의존성 설치 (내부망에서는 npm 레지스트리 설정 필요 시 추가)
 RUN npm ci --only=production=false
 
 # 소스 코드 복사
@@ -27,34 +28,15 @@ ENV REACT_APP_API_URL=$REACT_APP_API_URL
 # 프로덕션 빌드
 RUN CI=false npm run build
 
-# 프로덕션 스테이지
+# 프로덕션 스테이지 - 내부망 레지스트리 사용
+# 내부망 레지스트리 주소로 변경 필요 (예: registry.internal:5000/nginx:alpine)
 FROM nginx:alpine
 
 # 빌드된 파일을 nginx 서빙 디렉토리로 복사
 COPY --from=builder /app/build /usr/share/nginx/html
 
-# nginx 설정 파일 생성 (nginx.conf가 없어도 작동)
-RUN echo 'server { \
-    listen 80; \
-    server_name _; \
-    root /usr/share/nginx/html; \
-    index index.html; \
-    gzip on; \
-    gzip_vary on; \
-    gzip_min_length 1024; \
-    gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml+rss application/javascript application/json; \
-    location ~* \.(jpg|jpeg|png|gif|ico|css|js|svg|woff|woff2|ttf|eot)$ { \
-        expires 1y; \
-        add_header Cache-Control "public, immutable"; \
-    } \
-    location / { \
-        try_files $uri $uri/ /index.html; \
-        add_header Cache-Control "no-cache"; \
-    } \
-    add_header X-Frame-Options "SAMEORIGIN" always; \
-    add_header X-Content-Type-Options "nosniff" always; \
-    add_header X-XSS-Protection "1; mode=block" always; \
-}' > /etc/nginx/conf.d/default.conf
+# Nginx 설정 파일 복사 (프론트엔드 단독 서빙용)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # 포트 노출
 EXPOSE 80

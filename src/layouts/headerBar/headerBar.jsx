@@ -1,13 +1,24 @@
 // HeaderBar.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { HiMenu, HiX } from 'react-icons/hi';
 import './headerBar.css';
-import logoImg_white from '../../img/embulum_white.png';
+import logoImg_white from '../../img/embulum/embulum_white.png';
 
-function HeaderBar({ isMobile }) {
+function HeaderBar({ isMobile, isTablet }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
+
+  // 1199px 이하에서 햄버거 메뉴 표시
+  const showMobileMenu = isMobile || isTablet;
+
+  // 화면 크기 변경 시 모바일 메뉴 자동으로 닫기
+  useEffect(() => {
+    if (!showMobileMenu && menuOpen) {
+      setMenuOpen(false);
+      setActiveMenu(null);
+    }
+  }, [showMobileMenu, menuOpen]);
 
   const toggleMenu = (menuName) => {
     setActiveMenu(activeMenu === menuName ? null : menuName);
@@ -35,7 +46,7 @@ function HeaderBar({ isMobile }) {
           </div>
         </div>
 
-        {!isMobile && (
+        {!showMobileMenu && (
           <nav className="nav-menu">
             <ul className="nav-list">
               <li className="dropdown" onMouseEnter={() => toggleMenu('about')} onMouseLeave={() => toggleMenu(null)}>
@@ -97,7 +108,7 @@ function HeaderBar({ isMobile }) {
           </nav>
         )}
 
-        {isMobile && (
+        {showMobileMenu && (
           <div className='header-right'>
             <button
               className="menu-button"

@@ -1,6 +1,10 @@
-/* 회계 내역 컨테이너 */
+/* ========================================
+   회계 내역 공개 페이지
+   ======================================== */
+
+/* 컨테이너 */
 .finance-container {
-  max-width: 1600px;
+  max-width: 1200px;
   margin: 12vh auto 2rem;
   padding: 2rem;
   min-height: calc(100vh - 20vh);
@@ -8,36 +12,64 @@
 
 /* 헤더 */
 .finance-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 1rem;
+  text-align: center;
 }
 
 .finance-header h1 {
   color: #0b1526;
   font-size: 2.2rem;
   font-weight: 900;
-  margin: 0;
+  margin: 0 0 0.5rem 0;
   background: linear-gradient(135deg, #2955a6 0%, #1e3d7a 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* 검색 */
-.finance-search {
+.finance-subtitle {
+  color: #6b7280;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* ========================================
+   검색 및 필터 섹션
+   ======================================== */
+.finance-filter-section {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+}
+
+.finance-search-form {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.search-input-wrapper {
   flex: 1;
-  max-width: 500px;
+  position: relative;
+}
+
+.search-input-wrapper .search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  font-size: 1.1rem;
 }
 
 .finance-search-input {
   width: 100%;
-  padding: 0.8rem 1.2rem;
+  padding: 0.8rem 1rem 0.8rem 2.8rem;
   border: 2px solid #e5e7eb;
-  border-radius: 12px;
+  border-radius: 10px;
   font-size: 1rem;
   transition: all 0.3s ease;
   box-sizing: border-box;
@@ -49,309 +81,357 @@
   box-shadow: 0 0 0 3px rgba(41, 85, 166, 0.1);
 }
 
-/* 카테고리 필터 */
-.finance-category-filter {
-  display: flex;
-  gap: 0.8rem;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-  border-radius: 16px;
-  border: 2px solid #e5e7eb;
-}
-
-.finance-category-button {
-  padding: 0.6rem 1.5rem;
-  background: white;
-  color: #6b7280;
-  border: 2px solid #e5e7eb;
-  border-radius: 24px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.finance-category-button:hover {
-  border-color: #2955a6;
-  color: #2955a6;
-  box-shadow: 0 4px 8px rgba(41, 85, 166, 0.15);
-  transform: translateY(-2px);
-}
-
-.finance-category-button.active {
-  background: linear-gradient(135deg, #2955a6 0%, #1e3d7a 100%);
+.search-btn {
+  padding: 0.8rem 1.5rem;
+  background: #2955a6;
   color: white;
-  border-color: #2955a6;
-  box-shadow: 0 4px 12px rgba(41, 85, 166, 0.3);
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
 }
 
-/* 요약 정보 */
-.finance-summary {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+.search-btn:hover {
+  background: #1e3d7a;
+}
+
+/* 필터 */
+.finance-filters {
+  display: flex;
   gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.filter-select {
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #374151;
+  background: white;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1.1rem;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #2955a6;
+}
+
+/* 검색 결과 정보 */
+.search-result-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.search-result-info strong {
+  color: #2955a6;
+  font-weight: 700;
+}
+
+.search-reset-btn {
+  padding: 0.4rem 0.8rem;
+  background: #f3f4f6;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.search-reset-btn:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+/* ========================================
+   보고서 목록
+   ======================================== */
+.finance-reports-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   margin-bottom: 2rem;
 }
 
-.summary-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-  padding: 1.5rem;
+.finance-report-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  background: white;
   border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border: 2px solid #e5e7eb;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
 }
 
-.summary-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+.finance-report-card:hover {
+  border-color: #2955a6;
+  box-shadow: 0 8px 24px rgba(41, 85, 166, 0.12);
+  transform: translateY(-2px);
 }
 
-.summary-label {
-  font-size: 0.9rem;
-  color: #6b7280;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.summary-value {
-  font-size: 1.4rem;
-  font-weight: 900;
-  color: #0b1526;
-}
-
-.summary-value.total {
-  color: #2955a6;
-}
-
-.summary-value.event {
-  color: #10b981;
-}
-
-.summary-value.office {
-  color: #8b5cf6;
-}
-
-.summary-value.org {
-  color: #f97316;
-}
-
-.summary-value.other {
-  color: #6b7280;
-}
-
-.summary-value.income-org {
-  color: #10b981;
-}
-
-/* 비율 표시 */
-.summary-percentage {
-  font-size: 0.85rem;
-  color: #6b7280;
-  font-weight: 600;
-  margin-top: 0.5rem;
-  margin-bottom: 0.8rem;
-}
-
-/* 프로그레스 바 */
-.summary-progress {
-  width: 100%;
-  height: 8px;
-  background-color: #e5e7eb;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-top: 0.5rem;
-}
-
-.progress-bar {
-  height: 100%;
-  border-radius: 10px;
-  transition: width 0.6s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.progress-bar.event {
-  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
-}
-
-.progress-bar.office {
-  background: linear-gradient(90deg, #8b5cf6 0%, #7c3aed 100%);
-}
-
-.progress-bar.org {
-  background: linear-gradient(90deg, #f97316 0%, #ea580c 100%);
-}
-
-.progress-bar.other {
-  background: linear-gradient(90deg, #6b7280 0%, #4b5563 100%);
-}
-
-.income-summary-card {
-  border-color: #10b981 !important;
-}
-
-.income-summary-card:hover {
-  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2) !important;
-}
-
-/* 테이블 래퍼 */
-.finance-table-wrapper {
-  overflow-x: auto;
-  margin-bottom: 2rem;
-  border-radius: 16px;
-  border: 2px solid #e5e7eb;
-  background: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.finance-table-container {
-  overflow-x: auto;
-  min-width: 100%;
-}
-
-/* 테이블 */
-.finance-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-}
-
-.finance-table thead {
+.report-icon {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
   background: linear-gradient(135deg, #2955a6 0%, #1e3d7a 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: white;
+  font-size: 1.5rem;
 }
 
-.finance-table th {
-  padding: 1rem 0.8rem;
-  text-align: center;
+.report-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.report-title {
+  font-size: 1.1rem;
   font-weight: 700;
-  white-space: nowrap;
-  font-size: 0.85rem;
-}
-
-.finance-table th:first-child {
-  border-radius: 16px 0 0 0;
-}
-
-.finance-table th:last-child {
-  border-radius: 0 16px 0 0;
-}
-
-.finance-table tbody tr {
-  border-bottom: 1px solid #e5e7eb;
-  transition: all 0.2s ease;
-}
-
-.finance-table tbody tr:hover {
-  background-color: #f9fafb;
-}
-
-.finance-table tbody tr:last-child {
-  border-bottom: none;
-}
-
-.finance-table td {
-  padding: 1rem 0.8rem;
-  text-align: left;
   color: #0b1526;
-  vertical-align: top;
-}
-
-.finance-table .text-center {
-  text-align: center;
-}
-
-.finance-table .text-right {
-  text-align: right;
-}
-
-.finance-table .date {
-  white-space: nowrap;
-  font-size: 0.85rem;
-}
-
-.finance-table .items-cell {
-  max-width: 250px;
-}
-
-.finance-table .item-detail {
-  margin-bottom: 0.3rem;
-  font-size: 0.85rem;
+  margin: 0 0 0.5rem 0;
   line-height: 1.4;
 }
 
-.finance-table .item-detail:last-child {
-  margin-bottom: 0;
+.report-description {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.finance-table .amount {
-  font-weight: 600;
-  white-space: nowrap;
+.report-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.finance-table .total-amount {
-  font-weight: 900;
-  color: #2955a6;
-  white-space: nowrap;
-}
-
-.finance-table .remarks {
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
   font-size: 0.85rem;
   color: #6b7280;
-  max-width: 150px;
 }
 
-.finance-table .no-results {
+.meta-item svg {
+  font-size: 0.95rem;
+}
+
+.meta-item.file-info {
+  color: #9ca3af;
+}
+
+.report-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 110px;
+}
+
+.action-btn svg {
+  font-size: 1rem;
+}
+
+.preview-btn {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.preview-btn:hover {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+.download-btn {
+  background: #2955a6;
+  color: white;
+}
+
+.download-btn:hover {
+  background: #1e3d7a;
+}
+
+/* ========================================
+   빈 상태 & 에러
+   ======================================== */
+.no-reports {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 16px;
+  border: 2px dashed #e5e7eb;
   text-align: center;
-  padding: 3rem;
-  color: #6b7280;
-  font-size: 1.1rem;
 }
 
-/* 페이지네이션 */
+.no-reports-icon {
+  font-size: 3rem;
+  color: #d1d5db;
+  margin-bottom: 1rem;
+}
+
+.no-reports p {
+  color: #6b7280;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.finance-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #dc2626;
+}
+
+.error-retry-btn {
+  padding: 0.5rem 1.25rem;
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.error-retry-btn:hover {
+  background: #b91c1c;
+}
+
+/* ========================================
+   페이지네이션
+   ======================================== */
 .finance-pagination {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
   margin: 2rem 0;
 }
 
-.pagination-button {
-  padding: 0.6rem 1.5rem;
+.pagination-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
   background: white;
-  color: #2955a6;
-  border: 2px solid #2955a6;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 700;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  color: #6b7280;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s;
 }
 
-.pagination-button:hover:not(:disabled) {
-  background: #2955a6;
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(41, 85, 166, 0.3);
+.pagination-nav-btn:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+  color: #374151;
 }
 
-.pagination-button:disabled {
-  opacity: 0.5;
+.pagination-nav-btn:disabled {
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
-.pagination-info {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #6b7280;
-  padding: 0.6rem 1rem;
+.pagination-numbers {
+  display: flex;
+  gap: 0.25rem;
+  margin: 0 0.5rem;
 }
 
-/* 안내 메시지 */
+.pagination-num-btn {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 0.5rem;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  color: #6b7280;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pagination-num-btn:hover:not(.active) {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+  color: #374151;
+}
+
+.pagination-num-btn.active {
+  background: #2955a6;
+  border-color: #2955a6;
+  color: white;
+  font-weight: 600;
+}
+
+/* ========================================
+   안내 메시지
+   ======================================== */
 .finance-notice {
   background: linear-gradient(135deg, #f0f7ff 0%, #e0efff 100%);
   padding: 2rem;
@@ -362,7 +442,7 @@
 
 .finance-notice h3 {
   color: #2955a6;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 700;
   margin: 0 0 1rem 0;
 }
@@ -375,9 +455,9 @@
 
 .finance-notice li {
   color: #0b1526;
-  font-size: 1rem;
+  font-size: 0.95rem;
   line-height: 1.8;
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
   padding-left: 1.5rem;
   position: relative;
 }
@@ -394,58 +474,231 @@
   margin-bottom: 0;
 }
 
-/* 반응형 디자인 */
-@media (max-width: 1200px) {
-  .finance-table {
-    font-size: 0.85rem;
+/* ========================================
+   PDF 미리보기 모달
+   ======================================== */
+.pdf-preview-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 2rem;
+}
+
+.pdf-preview-container {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 1000px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.pdf-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, #2955a6 0%, #1e3d7a 100%);
+  color: white;
+}
+
+.pdf-preview-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.preview-close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.preview-close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.pdf-preview-content {
+  flex: 1;
+  overflow: hidden;
+}
+
+.pdf-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.pdf-preview-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.new-tab-btn {
+  padding: 0.6rem 1.25rem;
+  background: #2955a6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.new-tab-btn:hover {
+  background: #1e3d7a;
+  color: white;
+}
+
+/* ========================================
+   스켈레톤 로딩
+   ======================================== */
+.finance-report-card.skeleton {
+  pointer-events: none;
+}
+
+.skeleton-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #f3f4f6 0%, #e5e7eb 50%, #f3f4f6 100%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+.skeleton-content {
+  flex: 1;
+}
+
+.skeleton-title {
+  width: 60%;
+  height: 22px;
+  background: linear-gradient(90deg, #f3f4f6 0%, #e5e7eb 50%, #f3f4f6 100%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.skeleton-desc {
+  width: 80%;
+  height: 16px;
+  background: linear-gradient(90deg, #f3f4f6 0%, #e5e7eb 50%, #f3f4f6 100%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.skeleton-meta {
+  width: 40%;
+  height: 14px;
+  background: linear-gradient(90deg, #f3f4f6 0%, #e5e7eb 50%, #f3f4f6 100%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
   }
-  
-  .finance-table th,
-  .finance-table td {
-    padding: 0.8rem 0.6rem;
+  100% {
+    background-position: -200% 0;
   }
 }
 
+/* ========================================
+   반응형 디자인
+   ======================================== */
 @media (max-width: 768px) {
   .finance-container {
     padding: 1rem;
     margin-top: 15vh;
   }
 
-  .finance-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
   .finance-header h1 {
-    font-size: 1.8rem;
+    font-size: 1.75rem;
   }
 
-  .finance-search {
-    max-width: 100%;
+  .finance-search-form {
+    flex-direction: column;
   }
 
-  .finance-summary {
-    grid-template-columns: 1fr;
+  .search-btn {
+    width: 100%;
   }
 
-  .finance-table-wrapper {
-    overflow-x: scroll;
-    -webkit-overflow-scrolling: touch;
+  .finance-filters {
+    flex-direction: column;
+    gap: 1rem;
   }
 
-  .finance-table {
-    font-size: 0.8rem;
-    min-width: 1200px;
+  .filter-group {
+    width: 100%;
+    justify-content: space-between;
   }
 
-  .finance-table th,
-  .finance-table td {
-    padding: 0.6rem 0.4rem;
+  .filter-select {
+    flex: 1;
   }
 
-  .summary-value {
-    font-size: 1.2rem;
+  .finance-report-card {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .report-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 1.25rem;
+  }
+
+  .report-actions {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .action-btn {
+    flex: 1;
+  }
+
+  .search-result-info {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
+
+  .pdf-preview-overlay {
+    padding: 1rem;
+  }
+
+  .pdf-preview-container {
+    height: 85vh;
+    border-radius: 12px;
   }
 
   .finance-notice {
@@ -462,325 +715,34 @@
 }
 
 @media (max-width: 480px) {
-  .finance-container {
-    padding: 0.5rem;
-  }
-
   .finance-header h1 {
     font-size: 1.5rem;
   }
 
-  .finance-category-filter {
-    padding: 0.8rem;
-  }
-
-  .finance-category-button {
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
-  }
-
-  .summary-card {
-    padding: 1rem;
-  }
-
-  .summary-value {
-    font-size: 1rem;
-  }
-
-  .summary-percentage {
-    font-size: 0.75rem;
-  }
-
-  .summary-progress {
-    height: 6px;
-  }
-}
-
-/* 수입 내역 관련 스타일 */
-.income-container {
-  max-width: 1600px;
-  margin: 12vh auto 2rem;
-  padding: 2rem;
-  min-height: calc(100vh - 20vh);
-}
-
-.income-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.income-header h1 {
-  color: #0b1526;
-  font-size: 2.2rem;
-  font-weight: 900;
-  margin: 0;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.income-category-filter {
-  display: flex;
-  gap: 0.8rem;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-  border-radius: 16px;
-  border: 2px solid #10b981;
-}
-
-.income-summary {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.income-summary-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
-  padding: 1.5rem;
-  border-radius: 16px;
-  border: 2px solid #10b981;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
-  transition: all 0.3s ease;
-}
-
-.income-summary-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2);
-}
-
-.income-summary-label {
-  font-size: 0.9rem;
-  color: #065f46;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.income-summary-value {
-  font-size: 1.4rem;
-  font-weight: 900;
-  color: #10b981;
-}
-
-.income-table-wrapper {
-  overflow-x: auto;
-  margin-bottom: 2rem;
-  border-radius: 16px;
-  border: 2px solid #10b981;
-  background: white;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
-}
-
-.income-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-}
-
-.income-table thead {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: white;
-}
-
-.income-table th {
-  padding: 1rem 0.8rem;
-  text-align: center;
-  font-weight: 700;
-  white-space: nowrap;
-  font-size: 0.85rem;
-}
-
-.income-table th:first-child {
-  border-radius: 16px 0 0 0;
-}
-
-.income-table th:last-child {
-  border-radius: 0 16px 0 0;
-}
-
-.income-table tbody tr {
-  border-bottom: 1px solid #e5e7eb;
-  transition: all 0.2s ease;
-}
-
-.income-table tbody tr:hover {
-  background-color: #f0fdf4;
-}
-
-.income-table tbody tr:last-child {
-  border-bottom: none;
-}
-
-.income-table td {
-  padding: 1rem 0.8rem;
-  text-align: left;
-  color: #0b1526;
-  vertical-align: top;
-}
-
-.income-table .text-center {
-  text-align: center;
-}
-
-.income-table .text-right {
-  text-align: right;
-}
-
-.income-table .amount {
-  font-weight: 700;
-  color: #10b981;
-  white-space: nowrap;
-}
-
-.income-table .no-results {
-  text-align: center;
-  padding: 3rem;
-  color: #6b7280;
-  font-size: 1.1rem;
-}
-
-/* 수입 카테고리별 색상 */
-.income-category-newbie {
-  color: #10b981;
-}
-
-.income-category-total-student {
-  color: #2955a6;
-}
-
-.income-category-goods {
-  color: #8b5cf6;
-}
-
-.income-category-sports-festival {
-  color: #f97316;
-}
-
-.income-category-walk {
-  color: #059669;
-}
-
-.income-category-other {
-  color: #6b7280;
-}
-
-/* 탭 스타일 */
-.finance-tabs {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-  border-bottom: 2px solid #e5e7eb;
-}
-
-.finance-tab {
-  padding: 1rem 2rem;
-  background: transparent;
-  border: none;
-  border-bottom: 3px solid transparent;
-  color: #6b7280;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  bottom: -2px;
-}
-
-.finance-tab:hover {
-  color: #2955a6;
-  background: #f9fafb;
-}
-
-.finance-tab.active {
-  color: #2955a6;
-  border-bottom-color: #2955a6;
-  background: #f9fafb;
-}
-
-.finance-tab.income-tab.active {
-  color: #10b981;
-  border-bottom-color: #10b981;
-  background: #f0fdf4;
-}
-
-/* 반응형 - 수입 관련 */
-@media (max-width: 768px) {
-  .income-container {
-    padding: 1rem;
-    margin-top: 15vh;
-  }
-
-  .income-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .income-header h1 {
-    font-size: 1.8rem;
-  }
-
-  .income-summary {
-    grid-template-columns: 1fr;
-  }
-
-  .income-table-wrapper {
-    overflow-x: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .income-table {
-    font-size: 0.8rem;
-    min-width: 800px;
-  }
-
-  .income-table th,
-  .income-table td {
-    padding: 0.6rem 0.4rem;
-  }
-
-  .income-summary-value {
-    font-size: 1.2rem;
-  }
-
-  .finance-tabs {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .finance-tab {
-    padding: 0.8rem 1.5rem;
+  .finance-subtitle {
     font-size: 0.9rem;
-    white-space: nowrap;
-  }
-}
-
-@media (max-width: 480px) {
-  .income-container {
-    padding: 0.5rem;
   }
 
-  .income-header h1 {
-    font-size: 1.5rem;
-  }
-
-  .income-summary-card {
-    padding: 1rem;
-  }
-
-  .income-summary-value {
+  .report-title {
     font-size: 1rem;
   }
 
-  .finance-tab {
-    padding: 0.6rem 1rem;
-    font-size: 0.85rem;
+  .report-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .action-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    min-width: auto;
+  }
+
+  .pagination-nav-btn,
+  .pagination-num-btn {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    font-size: 0.9rem;
   }
 }
-

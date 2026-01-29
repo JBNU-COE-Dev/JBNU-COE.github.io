@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import ImageSlider from '../../home/imageSlider/imageSlider.jsx';
-import image1 from '../../../img/imageSlider4.jpg';
-import image2 from '../../../img/imageSlider5.jpg';
-import image3 from '../../../img/imageSlider6.jpg';
-import organizationImg from '../../../img/organization.jpg';
+import organizationImg from '../../../img/student-council/2026/2026_organization.jpg';
+import mainSlider1 from '../../../img/main-slider/main-slider1.JPG';
+import mainSlider2 from '../../../img/main-slider/main-slider2.JPG';
+import mainSlider3 from '../../../img/main-slider/main-slider3.JPG';
+import mainSlider4 from '../../../img/main-slider/main-slider4.JPG';
+import mainSlider5 from '../../../img/main-slider/main-slider5.JPG';
 import { FaHome, FaChevronDown, FaUser } from 'react-icons/fa';
 
 import './intro.css';
 
 const Intro = () => {
-    const slides = [{image: image1}, {image: image2}, {image: image3}];
+    const slides = [{image: mainSlider1}, {image: mainSlider2}, {image: mainSlider3}, {image: mainSlider4}, {image: mainSlider5}];
     const [currentContent, setCurrentContent] = useState('intro'); // 'intro', 'president', 'vice-president'
 
     const handleMenuClick = (content) => {
@@ -55,30 +57,52 @@ const Intro = () => {
                         <div className="main-container">
                             <div className="left-container">
                                 <div className="image-container">
-                                    <img src={require('../../../img/ryu.png')} alt="공과대학 학생회장" />
+                                    <img src={require('../../../img/student-council/2026/2026_tak.jpg')} alt="공과대학 학생회장" />
                                     <div className="title-box">공과대학 학생회장</div>
-                                    <div className="name">류이노</div>
+                                    <div className="name">탁형진</div>
                                 </div>
                             </div>
                             <div className="right-container">
-                                <h2 className='h2-text1'>안녕하십니까, 공대인의 FEEL, 그대와 함께 필:花 <br />제57대 필 공과대학 학생회입니다.</h2>
-                                <p>학교에 큰 변화가 찾아왔을 때 학생회의 역할은 더욱 막중해집니다. 코로나 이후 <br/> 
-                                정상적인 대학생활로 돌아온 지 얼마 되지 않은 지금, '글로컬30'이라는 새로운 <br/>
-                                변화의 바람이 불고 있습니다.</p>
-                                <p>필:花 공과대학 학생회는, 새로운 전북대, 그 속에서 '새로운 공과대학'을 만들겠<br/> 
-                                습니다. 필 공과대학 학생회는 예측과 대비를 통해 실질적이고 현실적인 해결방<br/>
-                                안을 제시하겠습니다. 급변하는 상황에 맞게, 모든 학우분들이 즐길 수 있는 행사<br/> 
-                                를 만들기 위하여 최선을 다하며, 기존의 각 학부(학과) 학생회의 자치기구로서<br/> 
-                                역할을 재정립하겠습니다. </p>
-                                <p>'학생회의 본질'에 집중하겠습니다. 학생회는 학우들이 있기에 존재하며, 그들의<br/> 
-                                의 목소리가 학생회의 방향을 결정짓습니다. 학우들의 의견과 필요에 귀 기울이며,<br/> 
-                                그 권역을 대변하는 데 최선을 다하겠습니다.</p>
-                                <p>'실질적인 도움'을 드리겠습니다. 학우분들의 피부에 와 닿는 정책은 무엇일까 끊<br/> 
-                                임 없이 고민하고 소통하여 학우분들이 원하는 공과대학을 만들겠습니다. 공과대<br/>
-                                학 학우분들의 대학생활에 실질적으로 도움을 드리는 필:花 공과대학 학생회가<br/>
-                                되겠습니다.</p>
-                                <div className="quote">공대인의 FEEL, 그대와 함께 필:花</div>
-                                <h2 className="sign">제 57대 필 공과대학 학생회장 류이노</h2>
+                                <h2 className='h2-text1'>안녕하십니까 공대의 진심이 그대의 결심으로, <br />제58대 심 공과대학 학생회입니다.</h2>
+                                <section>
+                                    <p>
+                                        학교는 새롭고 빠르게 변화하고 있습니다. 이러한 변화 속에서 공과대학 역시 발맞춰 나아가야 하며, 그 과정에서 학생회의 역할은 점점 더 중요해지고 있습니다.<br/>
+                                        현재 우리 대학은 ‘글로컬 30’이라는 큰 변화를 맞이하고 있습니다.
+                                        다사다난한 상황 속에서도 공과대학이 더욱 발전할 수 있는 환경을 조성하는 것이 필요합니다.
+                                    </p>
+                                </section>
+                                <section>
+                                    <p>
+                                        <p>’심(心)‘ 공과대학 학생회는</p>
+                                        성장하는 전북대학교, ’함께 발맞춰 걸어가는 공과대학‘을 만들겠습니다.<br/>
+                                        학생회는 단순한 대리인이 아니라, 학우들과 함께 길을 만드는 공동체, 함께 ‘발 맞춰 함께 걷는 학생회‘ 만들도록 하겠습니다<br/>
+                                        학우의 곁에서 문제를 바라보고, 함께 고민하고, 함께 해결해 나아가는 학생회가 되어야 한다고 생각합니다 그래서 모든 학우들이 언제든 목소리를 낼 수 있는 체계를 구축하겠습니다.<br/>
+                                        수집된 문제들을 정리하고, 학교와의 협의 구조 속에서 적극적으로 나아가겠습니다.<br/>
+                                    </p>
+                                </section>
+                                <section>
+                                    <p>
+                                        <p>변화하는 공과대학, 기회를 만드는 공과대학을 만들겠습니다.</p>
+                                        2025년부터 시행된 ‘글로컬 30’은 전북대학교와 공과대학에 큰 변화를 가져왔고, 학사 제도와 대학 운영 전반에 영향을 미치고 있습니다.<br/>
+                                        2026년은 이 변화를 안정화하고, 적응을 넘어 도약해야 하는 시기입니다.<br/>
+                                        그렇기에 24개 학부(학과) 자치기구와의 협력이 더욱 중요합니다.<br/>
+                                        ‘글로컬 30’의 흐름 속에서 학우들의 불안을 줄이고, 변화가 곧 기회가 되도록 만들겠습니다.<br/>
+                                        공과대학의 정체성을 지키며 시대의 변화를 기회로 바꾸는 학생회로 거듭 될 수 있도록최선을 다하는 공과대학이 되겠습니다.<br/>
+                                    </p>
+                                </section>
+                                <section>
+                                    <p>
+                                        <p>선한 영향력, 함께하는 공과대학을 만들겠습니다.</p>
+                                        학생회는 변화에 대해 이끄는 주체여야 합니다.<br/>
+                                        진정한 변화는 위로부터의 지침이 아니라, 학우들의 자발적인 참여와 협력 속에서 완성됩니다.<br/>  
+                                        학생회는 학우들의 목소리에 귀 기울이며, 선한 영향력으로 함께하는 공동체를 만들어가겠습니다.<br/>
+                                        공과대학 모든 학부와 학과의 의견을 책임 있게 수렴하고 실행하며, 진심으로 신뢰받는 학생자치기구를 확립하겠습니다.
+                                        ‘심(心)’ 공과대학 학생회는 자발적 동참을 이끄는 학생회로서,<br/>
+                                        학우 여러분과 함께 더 나은 공과대학의 미래를 열어가겠습니다.<br/>
+                                    </p>
+                                </section>
+                                <div className="quote">공대의 결심이 그대의 결심으로.</div>
+                                <h2 className="sign">제 58대 심 공과대학 학생회장 탁형진</h2>
                             </div>
                         </div>
                     </div>
@@ -90,38 +114,49 @@ const Intro = () => {
                         <div className="main-container">
                             <div className="left-container">
                                 <div className="image-container">
-                                    <img src={require('../../../img/kim.png')} alt="공과대학 학생회 부회장" />
+                                    <img src={require('../../../img/student-council/2026/2026_choi.jpg')} alt="공과대학 학생회 부회장" />
                                     <div className="title-box">공과대학 학생회 부회장</div>
-                                    <div className="name">김범준</div>
+                                    <div className="name">최용준</div>
                                 </div>
                             </div>
                             <div className="right-container">
-                                <h2 className='h2-text1'>안녕하십니까, 공대인의 FEEL, 그대와 함께 필:花 <br />제57대 필 공과대학 학생회 부회장 김범준입니다.</h2>
-                                <p>
-                                    존경하는 공과대학 학우 여러분, 단순한 지지자나 조력자를 넘어, 여러분의 생각과 꿈에<br/>
-                                    강력한 추진력을 더하는 '엔진'이 되겠습니다. 회장단이 나아갈 방향을 굳건히 지지하면서도,<br/>
-                                    가장 가까운 곳에서 여러분의 목소리에 귀 기울이며 세심한 부분까지 놓치지 않겠습니다.
-                                </p>
-                                <p>
-                                    '실행력'이야말로 학생회의 핵심 가치라 믿습니다. 여러분의 기발한 아이디어나 당연한 권리에 대한<br/>
-                                    목소리가 공허한 외침으로 끝나지 않도록, 제가 직접 발로 뛰며 가시적인 변화를<br/>
-                                    만들어내겠습니다. 복잡한 행정 절차의 벽을 허물고, 여러분의 필요가 가장 빠른 길로<br/>
-                                    해결될 수 있도록 만드는 '해결사'가 되겠습니다.
-                                </p>
-                                <p>
-                                    낡은 관행은 과감히 개선하고, 새로운 시도를 두려워하지 않겠습니다. 스터디 공간 개선과 같은<br/>
-                                    기본적인 복지를 넘어, 기업 현직자 및 졸업생 선배들과의 네트워킹 기회를 확대하고,<br/>
-                                    창업이나 프로젝트 동아리에 대한 실질적인 지원을 이끌어내는 등 여러분의 미래 경쟁력을<br/>
-                                    높이는 데 집중하겠습니다. 여러분의 대학 생활이 단지 학점 취득의 과정이 아닌,<br/>
-                                    무한한 가능성을 탐색하는 '기회의 장'이 되도록 만들겠습니다.
-                                </p>
-                                <p>
-                                    8,000 공대 학우 여러분의 열정과 기대를 동력 삼아, 회장님과 함께 '필:花'의 약속들을<br/>
-                                    하나하나 채워나가겠습니다. 우리의 함성이 하나 될 때, 우리가 꿈꾸는 변화는 현실이 됩니다.<br/>
-                                    언제든 편하게 다가와 여러분의 생각과 비전을 나눠주시길 바랍니다.
-                                </p>
+                                <h2 className='h2-text1'>안녕하십니까.
+                                    공대의 진심이 그대의 결심으로<br/>
+                                    제 58대 심 공과대학 학생회 부회장 최용준입니다.
+                                </h2>
+                                    <p>
+                                        <p>
+                                            2026년은 변화의 ‘도입’이 아닌, 안정과 정착의 해가 되어야 합니다.
+                                        </p>
+                                        변화된 제도가 학우 여러분의 학업과 대학 생활 속에서 실제로 잘 작동할 수 있도록 세심하게 살피고, 부족한 부분은 학교와의 소통을 통해 꾸준히 개선해 나가고자 합니다.<br/>
+                                        특히, 현장의 목소리가 행정에 전달되는 과정에서 누락되거나 왜곡되지 않도록, 학생자치기구의 대표자로서 책임감 있게 역할을 수행하겠습니다.
+                                    </p>
+                                    <p>
+                                        <p>
+                                            학생회는 앞에서 끌고 가는 조직이 아니라, 학우들과 같은 속도로 함께 걸어가는 조직이어야 한다고 생각합니다.
+                                        </p>
+
+                                        저는 부학생회장으로서 항상 한 발 앞서기보다, 한 발 옆에서 학우 여러분의 이야기를 듣고 함께 고민하는 사람이 되고자 합니다.
+                                        작은 불편함도 지나치지 않고, 당연하다고 여겨졌던 문제에도 질문을 던질 수 있는 학생회, 그리고 학우들이 언제든지 목소리를 낼 수 있는 학생회를 만들어가겠습니다.    
+                                    </p>
+                                    <p>
+                                        <p>
+                                            공과대학은 끊임없는 도전과 시행착오 속에서 성장하는 공간입니다. 
+                                        </p>
+
+                                        그 과정이 때로는 어렵고 버겁게 느껴질지라도, 혼자가 아니라는 사실만으로도 한 걸음 더 나아갈 수 있다고 믿습니다. 
+                                        학우 여러분이 각자의 자리에서 학업과 진로, 그리고 대학 생활을 충실히 이어갈 수 있도록, 공과대학 학생회가 든든한 뒷받침이 되겠습니다.
+                                    </p>
+                                    <p>
+                                        <p>
+                                            부족함이 많지만, 그만큼 더 배우고 더 움직이겠습니다.
+                                        </p>
+                                        말보다 행동으로, 형식보다 진정성으로 신뢰받는 부학생회장이 되겠습니다.<br/>
+                                        공과대학 학우 여러분과 함께 호흡하며, 함께 만들어가는 2026년이 될 수 있도록 최선을 다하겠습니다.<br/>
+                                        감사합니다.<br/>
+                                    </p>
                                 <div className="quote">말로만 그치지 않겠습니다. 행동으로 증명하고, 결과로 보답하겠습니다.</div>
-                                <h2 className="sign">제 57대 필 공과대학 학생회 부회장 김범준</h2>
+                                <h2 className="sign">제 58대 심 공과대학 학생회 부회장 최용준</h2>
                             </div>
                         </div>
                     </div>
@@ -135,7 +170,7 @@ const Intro = () => {
 
     return (
         <div className="intro-container">
-            <div id="slider-container" className="imageSlider-container">
+            <div className="imageSlider-container">
                 <ImageSlider slides={slides} />
                 {/* 분류바 추가 */}
                 <div className="category-bar">

@@ -2,14 +2,15 @@
 .monthly-calendar-page {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 40px 20px;
-  padding-top: 120px;
+  padding: clamp(20px, 4vw, 40px) clamp(10px, 2vw, 20px);
+  padding-top: calc(40px + clamp(60px, 10vh, 80px) + 20px); /* topBar + headerBar + 여백 */
   min-height: calc(100vh - 200px);
 }
 
 /* 페이지 타이틀 */
 .page-title {
   text-align: center;
+  margin-top: 50px;
   margin-bottom: 50px;
 }
 
@@ -25,14 +26,94 @@
   color: #666;
 }
 
+/* 주말 날짜 스타일 */
+.weekend-day {
+  color: #dc2626 !important;
+  font-weight: 600 !important;
+}
+
+/* react-big-calendar 주말 스타일 오버라이드 */
+.rbc-day-bg.weekend-day {
+  color: #dc2626 !important;
+}
+
+.rbc-date-cell.weekend-day button,
+.rbc-date-cell.weekend-day a,
+.rbc-date-cell.weekend-day {
+  color: #dc2626 !important;
+  font-weight: 600 !important;
+}
+
+.rbc-off-range-bg.weekend-day {
+  color: #fca5a5 !important;
+}
+
+.rbc-off-range-bg.weekend-day button,
+.rbc-off-range-bg.weekend-day a {
+  color: #fca5a5 !important;
+}
+
+.rbc-today.weekend-day {
+  background-color: rgba(220, 38, 38, 0.1) !important;
+}
+
+/* react-big-calendar 날짜 버튼 및 링크 스타일 */
+.rbc-date-cell button.weekend-day,
+.rbc-date-cell a.weekend-day {
+  color: #dc2626 !important;
+  font-weight: 600 !important;
+}
+
+/* 주말 날짜 숫자 직접 스타일링 */
+.rbc-date-cell.weekend-day > button,
+.rbc-date-cell.weekend-day > a,
+.rbc-date-cell.weekend-day > span {
+  color: #dc2626 !important;
+  font-weight: 600 !important;
+}
+
+/* 로딩 상태 */
+.calendar-loading {
+  text-align: center;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border-radius: 12px;
+  border: 2px solid #bae6fd;
+}
+
+.calendar-loading p {
+  font-size: 1.1rem;
+  color: #0c4a6e;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* 에러 상태 */
+.calendar-error {
+  text-align: center;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border-radius: 12px;
+  border: 2px solid #fecaca;
+}
+
+.calendar-error p {
+  font-size: 1rem;
+  color: #991b1b;
+  font-weight: 600;
+  margin: 0;
+}
+
 /* 캘린더 컨테이너 */
 .calendar-container {
   display: grid;
-  grid-template-columns: 700px 400px; /* 달력 700px, 행사 400px 고정 */
-  gap: 30px;
+  grid-template-columns: clamp(320px, 55vw, 700px) clamp(280px, 35vw, 400px); /* 반응형 너비 */
+  gap: clamp(1rem, 3vw, 30px);
   background: white;
   border-radius: 20px;
-  padding: 40px;
+  padding: clamp(20px, 4vw, 40px);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   justify-content: center; /* 중앙 정렬 */
   margin: 0 auto; /* 중앙 정렬 */
@@ -41,7 +122,8 @@
 /* 캘린더 섹션 */
 .calendar-section {
   min-height: 600px;
-  width: 700px; /* 고정 너비 */
+  width: 100%; /* 그리드에 맞춤 */
+  max-width: 700px; /* 최대 너비 */
 }
 
 /* react-big-calendar 커스텀 스타일 */
@@ -109,6 +191,13 @@
   border-bottom: 2px solid #e0e0e0;
   width: calc(100% / 7); /* 각 헤더 너비 고정 */
   max-width: calc(100% / 7); /* 최대 너비도 고정 */
+}
+
+/* 주말 헤더 (일요일, 토요일) 빨간색 표시 */
+.rbc-header:first-child,
+.rbc-header:last-child {
+  color: #dc2626 !important;
+  font-weight: 700 !important;
 }
 
 .rbc-date-cell {
@@ -220,7 +309,8 @@
 .events-section {
   display: flex;
   flex-direction: column;
-  width: 400px; /* 고정 너비 */
+  width: 100%; /* 그리드에 맞춤 */
+  max-width: 400px; /* 최대 너비 */
 }
 
 .events-box {
@@ -309,7 +399,7 @@
 @media (max-width: 1023px) {
   .monthly-calendar-page {
     padding: 30px 15px;
-    padding-top: 110px;
+    padding-top: calc(40px + clamp(55px, 8vh, 70px) + 15px); /* topBar + headerBar + 여백 */
   }
 
   .calendar-container {
@@ -339,7 +429,7 @@
 @media (max-width: 767px) {
   .monthly-calendar-page {
     padding: 20px 10px;
-    padding-top: 100px;
+    padding-top: calc(30px + clamp(50px, 7vh, 60px) + 10px); /* topBar + headerBar + 여백 */
   }
 
   .page-title {
@@ -431,5 +521,25 @@
 
   .event-date-range {
     font-size: 0.85rem;
+  }
+}
+
+/* 가로모드 대응 */
+@media (max-height: 500px) and (orientation: landscape) {
+  .monthly-calendar-page {
+    padding-top: calc(25px + 50px + 10px); /* 가로모드 topBar(25px) + headerBar(50px) + 여백 */
+  }
+
+  .calendar-container {
+    padding: 15px;
+  }
+
+  .calendar-section {
+    min-height: 350px;
+  }
+
+  .rbc-month-row {
+    min-height: 60px;
+    max-height: 80px;
   }
 }

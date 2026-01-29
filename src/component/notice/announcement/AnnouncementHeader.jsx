@@ -4,7 +4,6 @@ import { FiSearch } from 'react-icons/fi';
 
 const CATEGORIES = [
   { id: 'all', label: '전체' },
-  { id: '학과소식', label: '학과소식' },
   { id: '일반공지', label: '일반공지' },
   { id: '학사공지', label: '학사공지' },
   { id: '사업단공지', label: '사업단공지' },

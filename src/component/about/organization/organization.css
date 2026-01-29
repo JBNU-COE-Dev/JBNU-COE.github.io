@@ -77,15 +77,29 @@
     margin-bottom: 1.25rem;
 }
 
-.org-grid { 
+.org-grid {
     margin: 2rem auto 0; /* 화면 중앙 정렬 */
-    display:grid; 
-    gap:1rem; 
-    grid-template-columns: repeat(2, minmax(0,1fr)); 
+    display:grid;
+    gap:1rem;
+    grid-template-columns: repeat(1, minmax(0,1fr));
     width: 100%;
     max-width: 1200px;
 }
-@media (min-width:1024px){ .org-grid{ grid-template-columns: repeat(8, minmax(0,1fr)); } }
+
+/* 480px 이상: 2열 */
+@media (min-width: 480px) {
+    .org-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+/* 768px 이상: 4열 */
+@media (min-width: 768px) {
+    .org-grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
+}
+
+/* 1024px 이상: 8열 */
+@media (min-width: 1024px) {
+    .org-grid { grid-template-columns: repeat(8, minmax(0,1fr)); }
+}
 
 .org-dept { position:relative; background:#fff; border:2px solid #e5e7eb; border-radius:12px; padding:1rem; display:flex; flex-direction:column; gap:0.5rem; }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import { FaComments, FaQrcode, FaMobileAlt } from 'react-icons/fa';
-import kakaoQR from '../../../img/kakaoQR.png';
+import kakaoQR from '../../../img/qr-code/kakaoChQR.png';
 import './KakaoChannel.css';
 
 const KakaoChannel = () => {

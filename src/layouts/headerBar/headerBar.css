@@ -1,7 +1,7 @@
 .header-bar {
     position: fixed;
     top: 40px;
-    height: 10vh;
+    height: clamp(60px, 10vh, 80px); /* 최소 60px 보장 (가로모드 대응) */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -93,12 +93,12 @@
 
 /* 필요 시 쉽게 키울 수 있는 클래스 */
 .logo-size-lg {
-  --logo-size: 300px;
+  --logo-size: clamp(180px, 15vw, 250px); /* 화면 크기에 따라 180px~250px */
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1199px) {
   .logo-size-lg {
-    --logo-size: 120px;
+    --logo-size: 140px;
   }
 }
 
@@ -125,12 +125,12 @@
 .nav-list {
     list-style: none;
     display: flex;
-    gap: 3.5rem;
+    gap: clamp(1.5rem, 2.5vw, 3.5rem); /* 화면 크기에 따라 간격 자동 조정 */
     margin: 0;
     padding: 0;
-    padding-right: 6rem;
+    padding-right: clamp(1rem, 4vw, 4rem); /* 오른쪽 패딩도 유동적으로 */
     font-weight: bold;
-    font-size: 1.5rem;
+    font-size: clamp(1.1rem, 1.3vw, 1.5rem); /* 폰트 크기 유동적으로 */
 }
   
 .nav-list li a {
@@ -192,7 +192,7 @@
   padding: 0.8rem 1.2rem;
   display: block;
   text-decoration: none;
-  font-size: 1.1rem;
+  font-size: clamp(0.95rem, 1.1vw, 1.1rem); /* 드롭다운 폰트도 유동적으로 */
   transition: background-color 0.2s ease;
   white-space: nowrap;
 }
@@ -241,11 +241,173 @@
   margin-left: 4px;
 }
 
+/* 모바일 메뉴 스타일 (모든 크기에서 사용 가능) */
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.4);
+  z-index: 9999;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mobile-menu {
+  background-color: #003f87;
+  color: white;
+  width: 70%;
+  max-width: 300px;
+  height: 100%;
+  padding: 3.5rem 1rem 1.5rem 1rem; /* 상단 패딩 증가 (top bar 고려) */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.8rem;
+  align-self: flex-end;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.mobile-nav-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.mobile-nav-list li {
+  width: 100%;
+}
+
+.mobile-nav-list li a {
+  display: block;
+  color: white;
+  background-color: transparent;
+  font-size: 1.1rem;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.mobile-nav-list li a:hover {
+  background-color: white;
+  color: #003f87;
+  text-decoration: none;
+}
+
+.mobile-nav-link {
+  display: block;
+  color: white;
+  background-color: transparent;
+  font-size: 1.1rem;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.mobile-nav-link:hover {
+  background-color: white;
+  color: #003f87;
+  text-decoration: none;
+}
+
+.mobile-nav-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.15rem;
+  font-weight: bold;
+  text-align: left;
+  padding: 0.7rem 1rem;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.mobile-nav-button:hover {
+  background-color: white;
+  color: #003f87;
+  border-radius: 8px;
+}
+
+.mobile-nav-button.active {
+  background-color: white;
+  color: #003f87;
+  border-radius: 8px;
+}
+
+.mobile-submenu {
+  list-style: none;
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.mobile-submenu li a {
+  font-size: 1rem;
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  transition: color 0.2s ease;
+}
+
+.mobile-submenu li a:hover {
+  color: #aaccff;
+}
+
+/* 태블릿/작은 노트북 (~ 1199px) - 햄버거 메뉴로 전환 */
+@media (max-width: 1199px) {
+  .nav-menu {
+    display: none; /* PC 네비게이션 숨김 */
+  }
+
+  .menu-button {
+    display: block; /* 햄버거 메뉴 버튼 표시 */
+  }
+
+  .header-bar {
+    top: 40px; /* top bar 높이에 맞춤 */
+    height: clamp(55px, 8vh, 70px); /* 최소 55px 보장 */
+  }
+
+  .logo-size-lg {
+    --logo-size: 140px;
+  }
+}
+
+/* 태블릿 작은 화면 (768px 이하) */
+@media (max-width: 768px) {
+  .header-bar {
+    top: 35px; /* top bar 높이 35px에 맞춤 */
+  }
+}
+
+/* 모바일 (~ 767px) */
 @media (max-width: 767px) {
     .header-bar {
       position: fixed;       /* 고정 */
       top: 30px;             /* 모바일 topBar 높이(30px)에 맞춤 - 여백 없음 */
-      height: 7vh;          /* 고정 높이 */
+      height: clamp(50px, 7vh, 60px); /* 최소 50px 보장 (가로모드 대응) */
       width: 100%;
       flex-direction: row;
       align-items: center;
@@ -295,142 +457,43 @@
       align-self: flex-end;
       cursor: pointer;
     }
-  
-    .mobile-nav-open {
-      display: flex !important; /* 햄버거 열렸을 때 메뉴 보여줌 */
-    }
-    .mobile-menu-overlay {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.4); /* 어두운 반투명 배경 */
-      z-index: 9999;
-      display: flex;
-      justify-content: flex-end; /* 오른쪽에서 슬라이드되도록 */
-    }
-    
-    .mobile-menu {
-      background-color: #003f87; /* 파란 배경 */
-      color: white;              /* 흰 글씨 */
-      width: 70%;
-      max-width: 300px;
-      height: 100%;
-      padding: 1.5rem 1rem;
-      display: flex;
-      flex-direction: column;    /* 세로 배치 */
-      gap: 1.5rem;
-      box-shadow: -2px 0 5px rgba(0,0,0,0.3);
-      overflow-y: auto;          /* 스크롤 기능 추가 */
-      overflow-x: hidden;
-    }
-    
-    .close-button {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.8rem;
-      align-self: flex-end;
-      cursor: pointer;
-      flex-shrink: 0; /* 닫기 버튼은 고정 */
-    }
-    
-    .mobile-nav-list {
-      list-style: none;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      flex: 1; /* 남은 공간 차지 */
-      overflow-y: auto; /* 스크롤 가능 */
-    }
-    
-    .mobile-nav-list li {
-      width: 100%; /* 부모 li가 꽉 차게 */
-    }
-
-    .mobile-nav-list li a {
-      display: block;
-      color: white;
-      background-color: transparent;
-      font-size: 1.1rem;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 0.7rem 1rem;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-    }
-    
-    .mobile-nav-list li a:hover {
-      background-color: white;
-      color: #003f87; /* 파란색 텍스트 */
-      text-decoration: none;
-    }
-
-    .mobile-nav-link {
-      display: block;
-      color: white;
-      background-color: transparent;
-      font-size: 1.1rem;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 0.7rem 1rem;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-    }
-
-    .mobile-nav-link:hover {
-      background-color: white;
-      color: #003f87;
-      text-decoration: none;
-    }
-
-    
-}
-  
-.mobile-nav-button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.15rem;
-  font-weight: bold;
-  text-align: left;
-  padding: 0.7rem 1rem;
-  width: 100%;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
-.mobile-nav-button:hover {
-  background-color: white;
-  color: #003f87;
-  border-radius: 8px;
-}
+/* 가로모드 (화면 높이가 낮을 때) - 핸드폰 가로모드 대응 */
+@media (max-height: 500px) and (orientation: landscape) {
+  .header-bar {
+    height: 50px; /* 가로모드에서 고정 높이 */
+    top: 25px;
+  }
 
-.mobile-submenu {
-  list-style: none;
-  margin-top: 0.5rem;
-  padding-left: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
+  .logo-img {
+    width: 100px;
+    height: auto;
+  }
 
-.mobile-submenu li a {
-  font-size: 1rem;
-  color: white;
-  text-decoration: none;
-  padding: 0.5rem 0.5rem 0.5rem 1rem;
-  transition: color 0.2s ease;
-}
+  .menu-button {
+    font-size: 1.5rem;
+    padding: 8px;
+    min-width: 44px; /* 터치 타겟 최소 크기 */
+    min-height: 44px;
+  }
 
-.mobile-submenu li a:hover {
-  color: #aaccff;
-}
-/* 선택된 모바일 메뉴 버튼 */
-.mobile-nav-button.active {
-  background-color: white;
-  color: #003f87;
-  border-radius: 8px;
+  .mobile-menu {
+    padding-top: 2rem;
+  }
+
+  .mobile-nav-list {
+    gap: 0.5rem;
+  }
+
+  .mobile-nav-button,
+  .mobile-nav-list li a {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
+
+  .mobile-submenu li a {
+    padding: 0.4rem 0.5rem 0.4rem 1rem;
+    font-size: 0.9rem;
+  }
 }

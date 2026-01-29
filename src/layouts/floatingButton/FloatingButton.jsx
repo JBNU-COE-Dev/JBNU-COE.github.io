@@ -19,7 +19,7 @@ function FloatingButton() {
 
   const links = {
     instagram: 'https://www.instagram.com/jbnu_coe?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==',
-    kakao: 'https://open.kakao.com/o/suMsRU8h'
+    kakao: 'https://pf.kakao.com/_BHngn'
   };
 
   const subButtonVariants = {
@@ -56,7 +56,7 @@ function FloatingButton() {
               initial="hidden"
               animate="visible"
               exit="exit"
-              title="카카오톡 오픈채팅"
+              title="카카오톡 채널"
             >
               <FaComment />
             </motion.a>

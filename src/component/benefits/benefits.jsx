@@ -178,6 +178,7 @@ const BenefitsPartner = ({ name, address, phone, benefits = [], lat, lng }) => {
   const mapObjRef = useRef(null);
   const markerRef = useRef(null);
   const [mapError, setMapError] = useState(null);
+  const [isMapCollapsed, setIsMapCollapsed] = useState(true); // 기본값: 접힌 상태 (모바일 친화적)
   const initializedRef = useRef(false);
 
   useEffect(() => {
@@ -276,9 +277,24 @@ const BenefitsPartner = ({ name, address, phone, benefits = [], lat, lng }) => {
   return (
     <div className="benefits-frame">
       <div className="benefits-frame-inner">
-        <div className="benefits-grid">
+        {/* 지도 토글 버튼 (모바일/태블릿에서만 표시) */}
+        <button
+          className={`map-toggle-btn ${isMapCollapsed ? 'collapsed' : ''}`}
+          onClick={() => setIsMapCollapsed(!isMapCollapsed)}
+          aria-expanded={!isMapCollapsed}
+          aria-controls={`map-${name}`}
+        >
+          <span className="toggle-icon">{isMapCollapsed ? '▼' : '▲'}</span>
+          {isMapCollapsed ? '지도 보기' : '지도 접기'}
+        </button>
+        <div className={`benefits-grid ${isMapCollapsed ? 'map-collapsed' : ''}`}>
           {/* 좌측 지도 영역: 동적 로딩 + 주소/좌표 기반 마커 표시 */}
-          <div className="benefits-map" ref={mapRef} aria-label="제휴업체 위치 지도">
+          <div
+            id={`map-${name}`}
+            className={`benefits-map ${isMapCollapsed ? 'collapsed' : ''}`}
+            ref={mapRef}
+            aria-label="제휴업체 위치 지도"
+          >
             {mapError && (
               <div style={{
                 width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -443,7 +459,7 @@ const BenefitsMapView = ({ filteredPartners = partners }) => {
 
   return (
     <div className="benefits-map-view">
-      <div className="benefits-map-container" ref={mapRef} style={{ width: '100%', height: '600px', minHeight: '500px' }}>
+      <div className="benefits-map-container" ref={mapRef}>
         {isLoading && (
           <div style={{
             width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center',

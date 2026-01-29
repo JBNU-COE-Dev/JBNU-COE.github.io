@@ -1,6 +1,7 @@
 /* 전체 배경 스타일 */
 .calendar-wrapper {
   display: flex;
+  flex-wrap: wrap; /* 공간 부족 시 줄바꿈 허용 */
   background-color: #5489b5;
   padding: 3rem 5%;
   color: white;
@@ -8,7 +9,7 @@
   min-height: 100vh;
   width: 100%;
   box-sizing: border-box;
-  gap: 4rem;
+  gap: clamp(1.5rem, 4vw, 4rem); /* 반응형 간격 */
   justify-content: center; /* 중앙 정렬 */
 }
 
@@ -16,8 +17,8 @@
   display: flex;
   flex-direction: column;
   min-height: 600px;
-  width: 700px; /* 고정 너비 */
-  flex-shrink: 0; /* 축소 방지 */
+  width: clamp(320px, 55vw, 700px); /* 반응형 너비: 최소 320px, 최대 700px */
+  flex-shrink: 1; /* 필요 시 축소 허용 */
 }
 
 /* react-big-calendar 커스텀 스타일 */
@@ -211,8 +212,8 @@
 .calendar-right {
   display: flex;
   flex-direction: column;
-  width: 400px; /* 고정 너비 */
-  flex-shrink: 0; /* 축소 방지 */
+  width: clamp(280px, 35vw, 400px); /* 반응형 너비: 최소 280px, 최대 400px */
+  flex-shrink: 1; /* 필요 시 축소 허용 */
 }
 
 .schedule-box {
@@ -296,11 +297,13 @@
     min-height: 500px;
     width: 100%; /* 태블릿에서는 너비 100% */
     max-width: 700px; /* 최대 너비 유지 */
+    flex-shrink: 0;
   }
 
   .calendar-right {
     width: 100%; /* 태블릿에서는 너비 100% */
     max-width: 700px; /* 최대 너비 유지 */
+    flex-shrink: 0;
   }
 }
 

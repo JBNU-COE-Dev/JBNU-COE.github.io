@@ -15,11 +15,12 @@ html, body, #root {
   
 .imageSlider-container{
     width: 100% !important;
-    height: 35vh !important;
+    height: 70vh !important;
     overflow: hidden !important;
     position: relative !important;
-    min-height: 300px !important;
-    max-height: 500px !important;
+    min-height: clamp(200px, 40vh, 300px) !important;
+    max-height: clamp(300px, 60vh, 500px) !important;
+    margin-top: clamp(60px, 10vh, 12vh);
 }
 
 /* 분류바 스타일 */
@@ -56,7 +57,7 @@ html, body, #root {
   padding: 0.8rem 1.2rem !important;
   border-radius: 6px !important;
   border: none !important;
-  min-width: 150px !important;
+  min-width: clamp(100px, 20vw, 150px) !important;
   justify-content: center !important;
   visibility: visible !important;
   opacity: 1 !important;
@@ -263,6 +264,7 @@ html, body, #root {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 3rem;
 }
 .image-container {
   width: 50%;
@@ -275,9 +277,8 @@ html, body, #root {
 
 .image-container img {
   border-radius: 1rem;
-
-  width: 100%;
-  height: auto;
+  width: 75%;
+  height: 75%;
   object-fit: contain;
   margin-bottom: 1rem;
 }
@@ -306,6 +307,7 @@ html, body, #root {
     padding-bottom: 0.2rem;
     width: 100%;
     text-align: right;
+    margin-right: 3rem;
   }
   
   /* 오른쪽 텍스트 */
@@ -373,6 +375,7 @@ html, body, #root {
     height: 35vh !important; /* ✅ 덮어쓰기 강제 */
     overflow: hidden;
     position: relative;
+    margin-top: 0; /* 모바일에서는 intro-container에 margin이 있으므로 제거 */
   }
 
   /* 모바일 분류바 스타일 */
@@ -423,6 +426,7 @@ html, body, #root {
   .imageSlider {
     display: flex;
     height: 100%;
+    width: 100%;
     transition: transform 0.8s ease;
   }
 
