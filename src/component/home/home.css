@@ -181,10 +181,10 @@ html, body, #root {
   }
 
   .benefit-category-tab.active {
-    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-    border-color: #3b82f6;
+    background: linear-gradient(135deg, #004ca5 0%, #0066cc 100%);
+    border-color: #004ca5;
     color: #fff;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 76, 165, 0.3);
   }
 
   .benefit-category-tab.active:hover {
@@ -206,19 +206,19 @@ html, body, #root {
     gap: 0.5rem;
     padding: 0.75rem 1.5rem;
     border-radius: 9999px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #004ca5 0%, #0066cc 100%);
     border: none;
     font-size: 1.5rem;
     font-weight: 700;
     color: white;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 76, 165, 0.4);
   }
 
   .benefit-list-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    box-shadow: 0 6px 20px rgba(0, 76, 165, 0.6);
   }
 
   .benefit-list-btn:active {
@@ -430,7 +430,7 @@ html, body, #root {
   .calender-container {
     width: 100%;
     display: flex;
-    overflow: visible;
+    overflow-x: hidden; /* 가로 스크롤 방지 */
   }
 
   /* 홈화면에서 MonthlyCalendar 스타일 조정 */
@@ -443,6 +443,7 @@ html, body, #root {
     min-height: auto;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden; /* 가로 스크롤 방지 */
   }
 
   .calender-container .page-title {
@@ -451,8 +452,25 @@ html, body, #root {
   }
 
   .calender-container .calendar-container {
-    flex-shrink: 0;
+    flex-shrink: 1; /* 축소 허용 */
     margin-bottom: 2rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* 홈 캘린더 반응형 - 1023px 이하에서 세로 레이아웃 */
+  @media (max-width: 1023px) {
+    .calender-container .calendar-container {
+      grid-template-columns: 1fr !important;
+      justify-items: center;
+    }
+
+    .calender-container .calendar-section,
+    .calender-container .events-section {
+      width: 100%;
+      max-width: 700px;
+    }
   }
   
   /* 배너 */
