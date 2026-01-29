@@ -1,15 +1,14 @@
-name: Docker Deploy to JCloud
+name: User Frontend Deploy
 
 on:
-  # main 브랜치에 직접 push 시 트리거
   push:
-    branches: [ main ]
-  
+    branches: [ "main" ]
+
   # PR이 main 브랜치에 머지(closed + merged)될 때 트리거
   pull_request:
     branches: [ main ]
     types: [ closed ]
-  
+
   # 수동 실행 (GitHub Actions 탭에서 Run workflow 버튼)
   workflow_dispatch:
     inputs:
@@ -19,154 +18,32 @@ on:
         default: false
         type: boolean
 
-# 동시 배포 방지 (같은 그룹 내에서는 순차 실행)
-concurrency:
-  group: deploy-production
-  cancel-in-progress: false
+  # 동시 배포 방지 (같은 그룹 내에서는 순차 실행)
+  concurrency:
+    group: deploy-production
+    cancel-in-progress: false      
 
 jobs:
+
   deploy:
     # PR이 머지된 경우에만 실행 (closed이지만 merged가 아니면 스킵)
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
     
     runs-on: ubuntu-latest
-    
     steps:
-    # 1. 코드 체크아웃
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    # 2. 배포 시작 알림
-    - name: 🚀 배포 시작
-      run: |
-        echo "========================================="
-        echo "🚀 JCloud 배포 시작"
-        echo "========================================="
-        echo "📌 트리거: ${{ github.event_name }}"
-        echo "📌 브랜치: ${{ github.ref_name }}"
-        echo "📌 커밋: ${{ github.sha }}"
-        echo "📌 시간: $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M:%S KST')"
-        echo "========================================="
-    
-    # 3. SSH를 통한 JCloud 배포
-    - name: 🔧 JCloud 서버에 SSH 접속 및 배포
-      uses: appleboy/ssh-action@v1.0.3
-      env:
-        FORCE_REBUILD: ${{ github.event.inputs.force_rebuild || 'false' }}
-      with:
-        host: ${{ secrets.VM_HOST }}
-        username: ${{ secrets.VM_USER }}
-        key: ${{ secrets.VM_SSH_KEY }}
-        port: ${{ secrets.VM_PORT }}
-        timeout: 300s
-        command_timeout: 20m
-        envs: FORCE_REBUILD
-        script: |
-          set -e  # 오류 발생 시 즉시 중단
-          
-          echo "========================================="
-          echo "📂 프로젝트 디렉토리 이동"
-          echo "========================================="
-          cd ~/frontend/JBNU-COE.github.io || {
-            echo "❌ 프로젝트 디렉토리가 없습니다. 클론합니다..."
-            cd ~
-            git clone https://github.com/${{ github.repository }}.git JBNU-COE.github.io
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            cd ~/workspace
             cd JBNU-COE.github.io
-          }
-          
-          echo "========================================="
-          echo "📥 Git 최신 코드 가져오기"
-          echo "========================================="
-          git fetch origin main
-          git reset --hard origin/main
-          git clean -fd
-          
-          echo "현재 커밋: $(git log -1 --oneline)"
-          
-          echo "========================================="
-          echo "🔧 환경 변수 설정"
-          echo "========================================="
-          # .env 파일 생성/업데이트
-          cat > .env << 'EOF'
-          REACT_APP_NAVER_CLIENT_ID=${{ secrets.REACT_APP_NAVER_CLIENT_ID }}
-          REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}
-          EOF
-          
-          echo "✅ .env 파일 생성 완료"
-          
-          echo "========================================="
-          echo "🐳 Docker 컨테이너 배포"
-          echo "========================================="
-          
-          # 기존 컨테이너 중지
-          echo "🛑 기존 컨테이너 중지..."
-          docker compose down --remove-orphans 2>/dev/null || true
-          
-          # 강제 재빌드 옵션 확인
-          if [ "$FORCE_REBUILD" = "true" ]; then
-            echo "🔄 강제 재빌드 모드: 캐시 무시"
-            docker compose build --no-cache
-          fi
-          
-          # 컨테이너 빌드 및 시작
-          echo "🚀 컨테이너 빌드 및 시작..."
-          docker compose up -d --build --force-recreate
-          
-          # 컨테이너 시작 대기 (최대 60초)
-          echo "⏳ 컨테이너 시작 대기 중..."
-          sleep 10
-          
-          echo "========================================="
-          echo "✅ 배포 상태 확인"
-          echo "========================================="
-          docker compose ps
-          
-          # 헬스체크
-          echo ""
-          echo "🏥 헬스체크 수행 중..."
-          for i in {1..6}; do
-            if curl -sf http://localhost:80 > /dev/null 2>&1; then
-              echo "✅ 서버 응답 정상 (시도 $i/6)"
-              break
-            else
-              echo "⏳ 서버 응답 대기 중... (시도 $i/6)"
-              sleep 5
-            fi
+            git pull origin main
+            cd ..
+            docker-compose up -d --build user-front
+            docker compose logs --tail=50
+            docker image prune -f
             
-            if [ $i -eq 6 ]; then
-              echo "⚠️ 서버 응답 지연 - 로그 확인 필요"
-            fi
-          done
-          
-          echo ""
-          echo "========================================="
-          echo "📋 최근 로그 (50줄)"
-          echo "========================================="
-          docker compose logs --tail=50
-          
-          echo ""
-          echo "========================================="
-          echo "🎉 배포 완료!"
-          echo "========================================="
-          
-          # 오래된 Docker 이미지 정리 (선택적)
-          echo "🧹 사용하지 않는 Docker 이미지 정리..."
-          docker image prune -f 2>/dev/null || true
-    
-    # 4. 배포 결과 요약
-    - name: 📊 배포 결과 요약
-      if: always()
-      run: |
-        echo "========================================="
-        echo "📊 배포 결과 요약"
-        echo "========================================="
-        echo "상태: ${{ job.status }}"
-        echo "트리거: ${{ github.event_name }}"
-        echo "브랜치: ${{ github.ref_name }}"
-        echo "커밋: ${{ github.sha }}"
-        if [ "${{ github.event_name }}" = "pull_request" ]; then
-          echo "PR 제목: ${{ github.event.pull_request.title }}"
-          echo "PR 작성자: ${{ github.event.pull_request.user.login }}"
-        fi
-        echo "완료 시간: $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M:%S KST')"
-        echo "========================================="
