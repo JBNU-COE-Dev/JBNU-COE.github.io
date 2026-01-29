@@ -75,7 +75,7 @@ html, body, #root {
     flex-direction: column;
     gap: 1.5rem;
     padding: 2rem;
-    margin-top: 15vh; /* headerBar 높이만큼 상단 여백 */
+    margin-top: calc(40px + clamp(60px, 10vh, 80px)); /* topBar + headerBar 높이만큼 상단 여백 */
     scroll-snap-align: start;
     box-sizing: border-box;
   }
@@ -83,7 +83,7 @@ html, body, #root {
   /* 상단 툴바 */
   .benefit-toolbar {
     display: grid;
-    grid-template-columns: 1fr 400px 40px;
+    grid-template-columns: 1fr clamp(200px, 30vw, 400px) 40px; /* 반응형 검색창 너비 */
     align-items: center;
     gap: 1rem;
     border-bottom: 2px solid #e5e7eb;
@@ -252,7 +252,7 @@ html, body, #root {
 
     .second-screen {
       padding: 1rem;
-      margin-top: 10vh;
+      margin-top: calc(30px + clamp(50px, 7vh, 60px)); /* 모바일 topBar + headerBar */
       gap: 1rem;
       min-height: 100vh;
     }
@@ -346,7 +346,7 @@ html, body, #root {
   @media (max-height: 800px) {
     .second-screen {
       margin-top: 0;
-      padding-top: calc(10vh + 1rem);
+      padding-top: calc(40px + clamp(60px, 10vh, 80px) + 1rem); /* topBar + headerBar + 여백 */
       min-height: auto;
       height: auto;
       margin-bottom: 2rem; /* third-screen과의 간격 확보 */
@@ -375,7 +375,7 @@ html, body, #root {
   @media (max-height: 800px) and (max-width: 767px) {
     .second-screen {
       margin-top: 0;
-      padding-top: calc(10vh + 1rem);
+      padding-top: calc(30px + clamp(50px, 7vh, 60px) + 1rem); /* 모바일 topBar + headerBar + 여백 */
       margin-bottom: 1.5rem;
     }
 

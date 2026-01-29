@@ -1,8 +1,8 @@
 .constitution-container {
-  width: 100%;
-  min-height: 100vh;
-  margin-top: 9rem;
-  padding: 2rem;
+  max-width: 900px;
+  min-height: calc(100vh - 200px);
+  margin: clamp(5rem, 10vw, 8rem) auto 0 auto;
+  padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 3vw, 2rem);
   background: #f5f5f5;
 }
 
@@ -24,10 +24,8 @@
 }
 
 .constitution-content {
-  max-width: 900px;
-  margin: 0 auto;
   background: white;
-  padding: 60px;
+  padding: clamp(1.5rem, 4vw, 3rem);
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   line-height: 1.8;
@@ -192,10 +190,6 @@
 }
 
 @media (max-width: 768px) {
-  .constitution-container {
-    padding: 40px 15px 60px;
-  }
-
   .constitution-header {
     padding: 30px 20px;
     margin-bottom: 30px;
@@ -203,10 +197,6 @@
 
   .constitution-header h1 {
     font-size: 1.8rem;
-  }
-
-  .constitution-content {
-    padding: 40px 30px;
   }
 
   .section-title-main {
@@ -240,10 +230,6 @@
 }
 
 @media (max-width: 480px) {
-  .constitution-container {
-    padding: 30px 10px 50px;
-  }
-
   .constitution-header {
     padding: 25px 15px;
     margin-bottom: 20px;
@@ -251,10 +237,6 @@
 
   .constitution-header h1 {
     font-size: 1.5rem;
-  }
-
-  .constitution-content {
-    padding: 30px 20px;
   }
 
   .section-title-main {
@@ -301,6 +283,7 @@
     margin-bottom: 25px;
   }
 }
+
 
 /* 인쇄 스타일 */
 @media print {

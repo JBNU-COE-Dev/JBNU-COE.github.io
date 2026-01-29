@@ -1,7 +1,7 @@
 import React from 'react';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import './banner.css';
-import feelLogo from '../../img/embulum/feel_logo.png';
+import simLogo from '../../img/embulum/sim logo.png';
 
 function Banner() {
   return (
@@ -10,7 +10,7 @@ function Banner() {
         {/* 왼쪽 섹션 - 로고와 슬로건 */}
         <div className="banner-left">
           <div className="banner-logo">
-            <img src={feelLogo} alt="Feel Logo" />
+            <img src={simLogo} alt="SIM Logo" />
           </div>
         </div>
 

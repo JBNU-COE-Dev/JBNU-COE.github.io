@@ -45,8 +45,9 @@ const BoardInquiry = () => {
           <ul className="board-inquiry-info-list">
             <li>학생회 게시판을 통한 홍보 및 공지사항 게시가 가능합니다.</li>
             <li>게시판 이용을 원하시는 경우 사전에 문의해주시기 바랍니다.</li>
-            <li>카카오톡 오픈채팅방 또는 이메일을 통해 편리하게 문의하실 수 있습니다.</li>
+            <li>카카오톡 오픈채팅방을 통해 편리하게 문의하실 수 있습니다.</li>
             <li>문의하신 내용은 확인 후 빠른 시일 내에 답변드리겠습니다.</li>
+            <li>게시판 이용 문의시 공과대학 학생회실로 방문해주시면 빠른처리가 가능합니다.</li>
           </ul>
         </div>
 
@@ -59,7 +60,8 @@ const BoardInquiry = () => {
             <div className="kakao-info">
               <RiKakaoTalkFill className="kakao-icon" />
               <div className="kakao-text">
-                <h3>카카오톡 오픈채팅</h3>
+                <h3>전북대학교 공과대학 민원접수 채팅방</h3>
+                <p>아래 버튼을 클릭하여 카카오톡 오픈채팅방으로 이동하세요</p>
               </div>
             </div>
             
