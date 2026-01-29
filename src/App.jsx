@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './component/home/home.jsx';
 
-import Benefits from './component/benefits/benefits.jsx';
+import Benefits from './component/benefits/Benefits.jsx';
 import Contact from './component/contact/contact.jsx';
 import Notice from './component/notice/notice.jsx';
 import Resources from './component/resources/resources.jsx';
