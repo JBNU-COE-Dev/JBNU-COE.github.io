@@ -73,21 +73,21 @@
 
 .report-kakao-section {
   background: #fee500;
-  padding: 2.5rem;
+  padding: 1rem 2.5rem 2rem;
   border-radius: 15px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .kakao-info {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
   width: 100%;
-  max-width: 600px;
 }
 
 .kakao-icon {
@@ -97,7 +97,7 @@
 }
 
 .kakao-text {
-  flex: 1;
+  text-align: center;
 }
 
 .kakao-text h3 {
