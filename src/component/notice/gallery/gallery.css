@@ -8,11 +8,29 @@
 }
 
 .gallery-title {
-  margin-top: 14vh;
+  margin-top: calc(40px + clamp(60px, 10vh, 80px) + 20px); /* topBar + headerBar + 여백 */
   position: relative;
   z-index: 1;
   text-align: center;
   color: rgb(0, 76, 165);
+}
+
+@media (max-width: 768px) {
+  .gallery-title {
+    margin-top: calc(35px + clamp(55px, 8vh, 70px) + 15px); /* 태블릿/모바일 topBar + headerBar + 여백 */
+  }
+}
+
+@media (max-width: 767px) {
+  .gallery-title {
+    margin-top: calc(30px + clamp(50px, 7vh, 60px) + 10px); /* 작은 모바일 topBar + headerBar + 여백 */
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .gallery-title {
+    margin-top: calc(25px + 50px + 10px); /* 가로모드 topBar + headerBar + 여백 */
+  }
 }
 
 .gallery-title-content h1 {

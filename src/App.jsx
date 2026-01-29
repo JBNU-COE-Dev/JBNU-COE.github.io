@@ -23,6 +23,7 @@ import Report from './component/contact/report/Report.jsx';
 import BoardInquiry from './component/contact/boardInquiry/BoardInquiry.jsx';
 import KakaoChannel from './component/contact/kakaoChannel/KakaoChannel.jsx';
 import Matching from './component/matching/Matching.jsx';
+import MatchingDetail from './component/matching/MatchingDetail.jsx';
 import HeaderBar from './layouts/headerBar/headerBar.jsx';
 import Banner from './layouts/banner/banner.jsx';
 import TopBar from './layouts/topBar/topBar.jsx';
@@ -68,6 +69,7 @@ function App() {
               <Route path="/about/organization" element={<Organization />} />
               <Route path="/notice/pledge" element={<Pledge />} />
               <Route path="/matching" element={<Matching />} />
+              <Route path="/matching/:id" element={<MatchingDetail />} />
             </Routes>
           </main>
 

@@ -18,9 +18,9 @@ html, body, #root {
     height: 70vh !important;
     overflow: hidden !important;
     position: relative !important;
-    min-height: 300px !important;
-    max-height: 500px !important;
-    margin-top: 12vh;
+    min-height: clamp(200px, 40vh, 300px) !important;
+    max-height: clamp(300px, 60vh, 500px) !important;
+    margin-top: clamp(60px, 10vh, 12vh);
 }
 
 /* 분류바 스타일 */
@@ -57,7 +57,7 @@ html, body, #root {
   padding: 0.8rem 1.2rem !important;
   border-radius: 6px !important;
   border: none !important;
-  min-width: 150px !important;
+  min-width: clamp(100px, 20vw, 150px) !important;
   justify-content: center !important;
   visibility: visible !important;
   opacity: 1 !important;
@@ -375,6 +375,7 @@ html, body, #root {
     height: 35vh !important; /* ✅ 덮어쓰기 강제 */
     overflow: hidden;
     position: relative;
+    margin-top: 0; /* 모바일에서는 intro-container에 margin이 있으므로 제거 */
   }
 
   /* 모바일 분류바 스타일 */
