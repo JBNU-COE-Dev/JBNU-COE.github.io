@@ -1,24 +1,26 @@
 /* 전체 배경 스타일 */
 .calendar-wrapper {
-  display: flex;
-  flex-wrap: wrap; /* 공간 부족 시 줄바꿈 허용 */
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); /* 그리드 레이아웃 */
+  gap: clamp(1rem, 3vw, 2rem);
   background-color: #5489b5;
-  padding: 3rem 5%;
+  padding: 3rem clamp(1rem, 3vw, 3rem);
   color: white;
   font-family: 'Noto Sans KR', sans-serif;
   min-height: 100vh;
   width: 100%;
   box-sizing: border-box;
-  gap: clamp(1.5rem, 4vw, 4rem); /* 반응형 간격 */
-  justify-content: center; /* 중앙 정렬 */
+  justify-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .calendar-left {
   display: flex;
   flex-direction: column;
   min-height: 600px;
-  width: clamp(320px, 55vw, 700px); /* 반응형 너비: 최소 320px, 최대 700px */
-  flex-shrink: 1; /* 필요 시 축소 허용 */
+  width: 100%;
+  max-width: 700px;
 }
 
 /* react-big-calendar 커스텀 스타일 */
@@ -212,8 +214,8 @@
 .calendar-right {
   display: flex;
   flex-direction: column;
-  width: clamp(280px, 35vw, 400px); /* 반응형 너비: 최소 280px, 최대 400px */
-  flex-shrink: 1; /* 필요 시 축소 허용 */
+  width: 100%;
+  max-width: 400px;
 }
 
 .schedule-box {
@@ -284,26 +286,24 @@
   margin-top: 2rem;
 }
 
-/* 반응형 */
-@media (max-width: 1024px) {
+/* 반응형 - 태블릿 (1023px 이하에서 세로 레이아웃) */
+@media (max-width: 1023px) {
   .calendar-wrapper {
-    flex-direction: column;
+    grid-template-columns: 1fr; /* 세로 레이아웃 */
     gap: 2rem;
-    padding: 2rem 3%;
-    align-items: center; /* 세로 정렬 시 중앙 정렬 */
+    padding: 2rem clamp(1rem, 3vw, 2rem);
+    justify-items: center;
   }
 
   .calendar-left {
     min-height: 500px;
-    width: 100%; /* 태블릿에서는 너비 100% */
-    max-width: 700px; /* 최대 너비 유지 */
-    flex-shrink: 0;
+    width: 100%;
+    max-width: 700px;
   }
 
   .calendar-right {
-    width: 100%; /* 태블릿에서는 너비 100% */
-    max-width: 700px; /* 최대 너비 유지 */
-    flex-shrink: 0;
+    width: 100%;
+    max-width: 700px;
   }
 }
 
@@ -311,14 +311,12 @@
   .calendar-wrapper {
     padding: 1rem 3%;
     gap: 1rem;
-    flex-direction: column;
     min-height: 100vh;
-    align-items: center; /* 세로 정렬 시 중앙 정렬 */
   }
 
   .calendar-left {
     min-height: 400px;
-    width: 100%; /* 모바일에서는 너비 100% */
+    width: 100%;
   }
 
   .custom-big-calendar .rbc-toolbar {

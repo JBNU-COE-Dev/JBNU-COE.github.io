@@ -289,7 +289,7 @@ const BenefitMapView = ({ partner, onBack }) => {
     <div className="benefit-map-page">
       <div className="benefit-map-header">
         <button className="benefit-map-back" onClick={onBack}>
-          ← 목록으로
+          ← 뒤로가기
         </button>
         <h2>{partner.name}</h2>
       </div>
@@ -332,6 +332,25 @@ const Benefits = () => {
   const [modalPartner, setModalPartner] = useState(null);
   const [mapPartner, setMapPartner] = useState(null);
 
+  // 브라우저 뒤로가기 처리
+  useEffect(() => {
+    const handlePopState = (e) => {
+      if (e.state?.view === 'map' || mapPartner) {
+        // 지도에서 뒤로가기 → 모달로
+        setMapPartner(null);
+        if (e.state?.partner) {
+          setModalPartner(e.state.partner);
+        }
+      } else if (e.state?.view === 'modal' || modalPartner) {
+        // 모달에서 뒤로가기 → 리스트로
+        setModalPartner(null);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [mapPartner, modalPartner]);
+
   // 카테고리 필터링
   const filteredPartners = useMemo(() => {
     if (selectedCategory === '전체') {
@@ -342,23 +361,25 @@ const Benefits = () => {
 
   // 모달 열기
   const handleViewDetail = (partner) => {
+    window.history.pushState({ view: 'modal', partner }, '');
     setModalPartner(partner);
   };
 
   // 모달 닫기
   const handleCloseModal = () => {
-    setModalPartner(null);
+    window.history.back();
   };
 
   // 지도 보기
   const handleViewMap = (partner) => {
+    window.history.pushState({ view: 'map', partner }, '');
     setModalPartner(null);
     setMapPartner(partner);
   };
 
   // 지도에서 목록으로 돌아가기
   const handleBackToList = () => {
-    setMapPartner(null);
+    window.history.back();
   };
 
   // 지도 뷰 모드

@@ -350,12 +350,12 @@
    ======================================== */
 .benefit-map-page {
   position: fixed;
-  top: 0;
+  top: 120px; /* TopBar(40px) + HeaderBar(~80px) */
   left: 0;
   right: 0;
   bottom: 0;
   background: #fff;
-  z-index: 1000;
+  z-index: 999;
   display: flex;
   flex-direction: column;
 }
@@ -530,6 +530,27 @@
 /* ========================================
    반응형
    ======================================== */
+/* 태블릿 (~ 1199px) */
+@media (max-width: 1199px) {
+  .benefit-map-page {
+    top: 110px; /* TopBar(40px) + HeaderBar(~70px) */
+  }
+}
+
+/* 태블릿 작은 화면 (~ 768px) */
+@media (max-width: 768px) {
+  .benefit-map-page {
+    top: 100px; /* TopBar(35px) + HeaderBar(~65px) */
+  }
+}
+
+/* 모바일 (~ 767px) */
+@media (max-width: 767px) {
+  .benefit-map-page {
+    top: 85px; /* TopBar(30px) + HeaderBar(~55px) */
+  }
+}
+
 @media (max-width: 640px) {
   .benefits-categories {
     overflow-x: auto;
