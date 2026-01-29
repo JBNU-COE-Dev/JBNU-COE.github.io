@@ -1,0 +1,25 @@
+name: Deploy User Web
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.JCLOUD_SSH_HOST }}
+          username: ${{ secrets.JCLOUD_SSH_USER }}
+          key: ${{ secrets.JCLOUD_SSH_KEY }}
+          port: ${{ secrets.JCLOUD_SSH_PORT }}
+          script: |
+            set -e
+            cd /home/ubuntu/JBNU-COE.github.io
+            git fetch origin main
+            git reset --hard origin/main
+            docker compose -f /home/ubuntu/docker-compose.yml build user-front
+            docker compose -f /home/ubuntu/docker-compose.yml up -d --no-deps --build user-front
