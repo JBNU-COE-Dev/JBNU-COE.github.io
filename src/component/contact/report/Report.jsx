@@ -5,7 +5,7 @@ import { FaComments } from 'react-icons/fa';
 import './Report.css';
 
 const Report = () => {
-  const kakaoUrl = 'https://open.kakao.com/o/s1TJTDYh';
+  const kakaoUrl = 'https://open.kakao.com/o/suMsRU8h';
 
   const handleKakaoClick = () => {
     window.open(kakaoUrl, '_blank', 'noopener,noreferrer');
@@ -41,7 +41,7 @@ const Report = () => {
           <ul className="report-info-list">
             <li>학생회에 건의사항이나 문의사항이 있으시면 언제든지 연락해주세요.</li>
             <li>카카오톡 오픈채팅방을 통해 편리하게 소통하실 수 있습니다.</li>
-            <li>익명으로도 민원 접수가 가능합니다.</li>
+            <li>문의하실때 소속, 성명, 학번을 밝혀주세요.</li>
             <li>접수하신 민원은 확인 후 빠른 시일 내에 답변드리겠습니다.</li>
           </ul>
         </div>
