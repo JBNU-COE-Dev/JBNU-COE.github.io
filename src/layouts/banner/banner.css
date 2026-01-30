@@ -34,13 +34,14 @@
 }
 
 .banner-logo img {
-  height: 100%;
-  width: 100%;
+  width: auto;
+  height: auto;
   max-width: 300px;
+  max-height: 200px;
   margin: 0;
   padding: 0;
   display: block;
-  vertical-align: top;
+  object-fit: contain;
 }
 
 .banner-slogan {
@@ -154,8 +155,7 @@
 /* 반응형 디자인 */
 @media (max-width: 1200px) {
   .banner-logo img {
-    height: 200px;
-    max-width: 300px;
+    max-height: 180px;
   }
   
   .banner-links {
@@ -169,8 +169,7 @@
 
 @media (max-width: 992px) {
   .banner-logo img {
-    height: 180px;
-    max-width: 300px;
+    max-height: 150px;
   }
   
   .banner-links {
@@ -224,8 +223,8 @@
   }
 
   .banner-logo img {
-    height: 120px;
-    max-width: 300px;
+    max-height: 100px;
+    max-width: 250px;
   }
 
   .banner-slogan {
@@ -252,8 +251,8 @@
   }
   
   .banner-logo img {
-    height: 80px;
-    max-width: 200px;
+    max-height: 70px;
+    max-width: 180px;
   }
   
   .banner-slogan {
