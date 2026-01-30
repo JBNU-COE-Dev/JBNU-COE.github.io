@@ -113,6 +113,37 @@ export async function updateRentalItem(id, itemData) {
   return put(`/api/resources/rental/${id}`, itemData);
 }
 
+/**
+ * 연도/월별 리소스 파일 조회
+ * @param {string} category - 카테고리 (inspection, study-support 등)
+ * @param {number} year - 연도
+ * @param {number} month - 월 (선택)
+ */
+export async function getResourcesByPeriod(category, year, month) {
+  const params = { category, year };
+  if (month !== undefined && month !== null) {
+    params.month = month;
+  }
+  return get('/api/resources/by-period', params);
+}
+
+/**
+ * 카테고리별 사용 가능한 연도 목록 조회
+ * @param {string} category - 카테고리
+ */
+export async function getAvailableYears(category) {
+  return get('/api/resources/available-years', { category });
+}
+
+/**
+ * 카테고리/연도별 사용 가능한 월 목록 조회
+ * @param {string} category - 카테고리
+ * @param {number} year - 연도
+ */
+export async function getAvailableMonths(category, year) {
+  return get('/api/resources/available-months', { category, year });
+}
+
 export default {
   getResources,
   getResourceDetail,
@@ -122,4 +153,7 @@ export default {
   getFinanceRecords,
   getRentalItems,
   updateRentalItem,
+  getResourcesByPeriod,
+  getAvailableYears,
+  getAvailableMonths,
 };

@@ -25,6 +25,41 @@
   color: #666;
 }
 
+/* 연도 선택 바 */
+.year-selector-bar {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.year-btn {
+  padding: 10px 24px;
+  border: 2px solid #e0e0e0;
+  background: white;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.year-btn:hover {
+  border-color: #2196F3;
+  color: #2196F3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+}
+
+.year-btn.active {
+  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+  border-color: #2196F3;
+  color: white;
+  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.35);
+}
+
 /* 월 선택 바 */
 .month-selector-bar {
   display: flex;
@@ -291,6 +326,75 @@
 .image-section:hover .image-container {
   transform: scale(1.02);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+}
+
+/* 로딩 상태 */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  color: #666;
+}
+
+.loading-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #4CAF50;
+}
+
+.loading-icon.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 에러 상태 */
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  color: #dc2626;
+  text-align: center;
+}
+
+.retry-btn {
+  margin-top: 1rem;
+  padding: 0.7rem 1.5rem;
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+  border: none;
+  border-radius: 24px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.retry-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+/* 빈 상태 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  color: #666;
+  text-align: center;
+  font-size: 1.1rem;
 }
 
 /* 반응형 - 태블릿 */
