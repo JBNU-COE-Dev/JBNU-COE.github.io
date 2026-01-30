@@ -1,33 +1,6 @@
 .pledge-list {
-  margin-top: 1.5rem;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-radius: 12px;
-  border: 2px solid #dee2e6;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-}
-
-.pledge-list h4 {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: #1e40af;
-  margin: 0 0 1.5rem 0;
-  padding-bottom: 1rem;
-  text-align: center;
-  border-bottom: 2px solid #007bff;
-  position: relative;
-}
-
-.pledge-list h4::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 3px;
-  background-color: #007bff;
-  border-radius: 2px;
+  margin: 0;
+  padding: 0;
 }
 
 .pledge-list ul {
@@ -37,103 +10,160 @@
 }
 
 .pledge-item {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 1rem;
-  padding: 1rem;
-  background: white;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-bottom: none;
+  border-radius: 0;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.pledge-item:first-child {
+  border-radius: 4px 4px 0 0;
+}
+
+.pledge-item:last-child {
+  border-bottom: 1px solid #e5e7eb;
+  border-radius: 0 0 4px 4px;
+}
+
+.pledge-item:only-child {
+  border-radius: 4px;
 }
 
 .pledge-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-  border-color: #007bff;
-  background: #f8f9ff;
+  border-color: #004ca5;
+  background: #f0f7ff;
 }
 
-.pledge-bullet {
-  color: #007bff;
-  font-weight: bold;
-  font-size: 1.4rem;
-  margin-right: 1rem;
-  margin-top: 0.1rem;
+.pledge-item.completed {
+  border-left: 3px solid #10b981;
+}
+
+.pledge-item.pending {
+  border-left: 3px solid #ef4444;
+}
+
+/* 공약 헤더 (클릭 영역) */
+.pledge-item-header {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  gap: 0.5rem;
+}
+
+/* O/X 상태 표시 */
+.pledge-status {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.7rem;
   flex-shrink: 0;
 }
 
-.pledge-text {
-  font-size: 1.3rem;
-  color: #334155;
-  line-height: 1.6;
-  flex: 1;
-  font-weight: 600;
+.status-complete {
+  background: #10b981;
+  color: white;
 }
 
+.status-pending {
+  background: #ef4444;
+  color: white;
+}
+
+/* 공약 제목 */
+.pledge-title {
+  flex: 1;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #374151;
+  line-height: 1.3;
+}
+
+/* 펼침 화살표 */
+.pledge-expand {
+  font-size: 0.6rem;
+  color: #9ca3af;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.pledge-expand.expanded {
+  transform: rotate(180deg);
+}
+
+/* 공약 상세 설명 */
+.pledge-description {
+  padding: 0.5rem 0.6rem 0.5rem 2rem;
+  font-size: 0.8rem;
+  color: #6b7280;
+  line-height: 1.5;
+  border-top: 1px solid #e5e7eb;
+  background: #f5f5f5;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 500px;
+  }
+}
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
-  .pledge-list {
-    padding: 1rem;
+  .pledge-item-header {
+    padding: 0.5rem 0.6rem;
+    gap: 0.4rem;
   }
-  
-  .pledge-list h4 {
-    font-size: 1.4rem;
-    border-bottom: none; /* 모바일에서 border-bottom 제거하여 선 겹침 방지 */
-    padding-bottom: 0.5rem; /* 패딩 조정 */
+
+  .pledge-status {
+    width: 16px;
+    height: 16px;
+    font-size: 0.65rem;
   }
-  
-  .pledge-list h4::after {
-    bottom: 0; /* 위치 조정 */
-    height: 2px; /* 높이 조정 */
+
+  .pledge-title {
+    font-size: 0.8rem;
   }
-  
-  .pledge-item {
-    padding: 0.8rem;
-    margin-bottom: 0.8rem; /* 항목 간 간격 조정 */
-  }
-  
-  .pledge-text {
-    font-size: 1.1rem;
-  }
-  
-  .pledge-bullet {
-    font-size: 1.3rem;
-    margin-right: 0.8rem;
+
+  .pledge-description {
+    padding: 0.4rem 0.5rem 0.4rem 1.8rem;
+    font-size: 0.75rem;
   }
 }
 
 @media (max-width: 480px) {
-  .pledge-list {
-    padding: 0.8rem;
+  .pledge-item-header {
+    padding: 0.45rem 0.5rem;
+    gap: 0.35rem;
   }
-  
-  .pledge-list h4 {
-    font-size: 1.2rem;
-    border-bottom: none; /* 모바일에서 border-bottom 제거하여 선 겹침 방지 */
-    padding-bottom: 0.4rem; /* 패딩 조정 */
-    margin-bottom: 1rem; /* 하단 마진 조정 */
+
+  .pledge-status {
+    width: 14px;
+    height: 14px;
+    font-size: 0.6rem;
   }
-  
-  .pledge-list h4::after {
-    bottom: 0; /* 위치 조정 */
-    height: 2px; /* 높이 조정 */
-    width: 50px; /* 너비 조정 */
+
+  .pledge-title {
+    font-size: 0.75rem;
   }
-  
-  .pledge-item {
-    padding: 0.6rem;
-    margin-bottom: 0.6rem; /* 항목 간 간격 조정 */
+
+  .pledge-description {
+    padding: 0.35rem 0.4rem 0.35rem 1.5rem;
+    font-size: 0.7rem;
   }
-  
-  .pledge-text {
-    font-size: 1rem;
-  }
-  
-  .pledge-bullet {
-    font-size: 1.2rem;
-    margin-right: 0.6rem;
+
+  .pledge-expand {
+    font-size: 0.5rem;
   }
 }
