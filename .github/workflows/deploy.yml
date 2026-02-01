@@ -23,7 +23,7 @@ jobs:
               git reset --hard origin/main
               
               if docker compose build --no-cache user-front; then
-                docker compose up -d --force-recreate admin-front
+                docker compose up -d --force-recreate user-front
                 docker image prune -f
             else
                 exit 1
