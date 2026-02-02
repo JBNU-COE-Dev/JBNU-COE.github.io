@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiSearch, FiEye, FiPaperclip, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
+import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
 import ImageSlider from './ImageSlider';
-import { galleryApi } from '../../../services';
+import { getResources } from '../../../services/resourcesApi';
 import './gallery.css';
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
 export default function Gallery() {
   const [galleries, setGalleries] = useState([]);
@@ -15,35 +13,43 @@ export default function Gallery() {
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [searchKeyword, setSearchKeyword] = useState('');
-  const [appliedKeyword, setAppliedKeyword] = useState(''); // 실제 적용된 검색어
-  const [searchType, setSearchType] = useState('all');
+  const [appliedKeyword, setAppliedKeyword] = useState('');
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
-  const searchTypes = [
-    { id: 'all', label: '제목 + 내용' },
-    { id: 'title', label: '제목' },
-    { id: 'content', label: '내용' }
-  ];
-
-  // 갤러리 목록 조회
+  // 갤러리 목록 조회 (resource_files 테이블 사용)
   const fetchGalleries = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await galleryApi.getGalleries({
+      const response = await getResources({
         page: currentPage,
         size: 15,
+        category: 'gallery',
         keyword: appliedKeyword,
-        searchType: searchType,
       });
 
-      // API 응답 처리 (Spring Data Page 형식 또는 직접 배열)
+      // API 응답 처리 (Spring Data Page 형식)
       if (response && response.content) {
-        setGalleries(response.content);
+        // resource_files 데이터를 기존 갤러리 형식으로 매핑
+        const mappedGalleries = response.content.map(item => ({
+          id: item.id,
+          title: item.title || item.originalFileName,
+          imageUrl: item.fileUrl,
+          createdAt: item.createdAt,
+          description: item.description,
+        }));
+        setGalleries(mappedGalleries);
         setTotalPages(response.totalPages || 1);
         setTotalElements(response.totalElements || response.content.length);
       } else if (Array.isArray(response)) {
-        setGalleries(response);
+        const mappedGalleries = response.map(item => ({
+          id: item.id,
+          title: item.title || item.originalFileName,
+          imageUrl: item.fileUrl,
+          createdAt: item.createdAt,
+          description: item.description,
+        }));
+        setGalleries(mappedGalleries);
         setTotalPages(1);
         setTotalElements(response.length);
       } else {
@@ -58,7 +64,7 @@ export default function Gallery() {
     } finally {
       setLoading(false);
     }
-  }, [currentPage, appliedKeyword, searchType]);
+  }, [currentPage, appliedKeyword]);
 
   useEffect(() => {
     fetchGalleries();
@@ -67,7 +73,7 @@ export default function Gallery() {
   // 검색 실행
   const handleSearch = (e) => {
     e.preventDefault();
-    setCurrentPage(0); // 검색 시 첫 페이지로 이동
+    setCurrentPage(0);
     setAppliedKeyword(searchKeyword.trim());
   };
 
@@ -75,24 +81,11 @@ export default function Gallery() {
   const handleResetSearch = () => {
     setSearchKeyword('');
     setAppliedKeyword('');
-    setSearchType('all');
     setCurrentPage(0);
   };
 
-  // 이미지 클릭 시 슬라이더 열기 및 조회수 증가
-  const handleImageClick = async (index) => {
-    const gallery = galleries[index];
-    if (gallery && gallery.id) {
-      try {
-        await galleryApi.incrementViewCount(gallery.id);
-        // 로컬 상태 업데이트
-        setGalleries(prev => prev.map((g, i) => 
-          i === index ? { ...g, viewCount: (g.viewCount || 0) + 1 } : g
-        ));
-      } catch (err) {
-        console.error('조회수 증가 실패:', err);
-      }
-    }
+  // 이미지 클릭 시 슬라이더 열기
+  const handleImageClick = (index) => {
     setSelectedImageIndex(index);
   };
 
@@ -157,18 +150,7 @@ export default function Gallery() {
           transition={{ delay: 0.1 }}
         >
           <form className="gallery-search-form" onSubmit={handleSearch}>
-            <div className="search-select-wrapper">
-              <select 
-                value={searchType} 
-                onChange={(e) => setSearchType(e.target.value)}
-                className="search-select"
-              >
-                {searchTypes.map(type => (
-                  <option key={type.id} value={type.id}>{type.label}</option>
-                ))}
-              </select>
-            </div>
-            <div className="search-input-wrapper">
+            <div className="search-input-wrapper" style={{ flex: 1 }}>
               <input
                 type="text"
                 className="search-input"
@@ -247,15 +229,12 @@ export default function Gallery() {
               >
                 <div className="gallery-card-image">
                   <img
-                    src={gallery.imageUrl?.startsWith('http') 
-                      ? gallery.imageUrl 
-                      : `${API_URL}${gallery.imageUrl}`
-                    }
+                    src={gallery.imageUrl}
                     alt={gallery.title}
                     loading="lazy"
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = '/logo192.png'; // 기본 이미지
+                      e.target.src = '/logo192.png';
                     }}
                   />
                   <div className="gallery-card-hover">
@@ -267,14 +246,6 @@ export default function Gallery() {
                   <div className="gallery-card-meta">
                     <span className="meta-date">
                       작성일 {formatDate(gallery.createdAt)}
-                    </span>
-                    <span className="meta-views">
-                      <FiEye />
-                      조회수 {gallery.viewCount || 0}
-                    </span>
-                    <span className="meta-files">
-                      <FiPaperclip />
-                      첨부파일 ({gallery.attachmentCount || 0})
                     </span>
                   </div>
                 </div>
