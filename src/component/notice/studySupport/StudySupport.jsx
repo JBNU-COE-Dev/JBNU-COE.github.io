@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiChevronLeft, FiChevronRight, FiX, FiLoader } from 'react-icons/fi';
 import { getResourcesByPeriod, getAvailableYears, getAvailableMonths } from '../../../services/resourcesApi';
+import { getResourceFileUrl } from '../../../services/api';
 import './studySupport.css';
 
 export default function StudySupport() {
@@ -272,7 +273,7 @@ export default function StudySupport() {
                 transition={{ duration: 0.3 }}
               >
                 <img
-                    src={currentImage?.fileUrl}
+                    src={getResourceFileUrl(currentImage?.fileUrl)}
                     alt={currentImage?.title || `${selectedMonth}월 행사 일정 ${currentImageIndex + 1}`}
                   className="calendar-image"
                 />
@@ -357,7 +358,7 @@ export default function StudySupport() {
               {/* 확대된 이미지 */}
               <AnimatePresence mode="wait" custom={slideDirection}>
                 <motion.img
-                  src={currentImage.fileUrl}
+                  src={getResourceFileUrl(currentImage.fileUrl)}
                   alt={currentImage.title || `${selectedMonth}월 행사 일정 ${currentImageIndex + 1}`}
                   className="zoomed-image"
                   key={`zoom-${selectedYear}-${selectedMonth}-${currentImageIndex}`}

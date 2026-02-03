@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
 import ImageSlider from './ImageSlider';
 import { getResources } from '../../../services/resourcesApi';
+import { getResourceFileUrl } from '../../../services/api';
 import './gallery.css';
 
 export default function Gallery() {
@@ -229,7 +230,7 @@ export default function Gallery() {
               >
                 <div className="gallery-card-image">
                   <img
-                    src={gallery.imageUrl}
+                    src={getResourceFileUrl(gallery.imageUrl)}
                     alt={gallery.title}
                     loading="lazy"
                     onError={(e) => {

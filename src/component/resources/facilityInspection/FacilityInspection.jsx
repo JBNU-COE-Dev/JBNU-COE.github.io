@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiX, FiChevronLeft, FiChevronRight, FiCalendar, FiLoader } from 'react-icons/fi';
 import { getResourcesByPeriod, getAvailableYears, getAvailableMonths } from '../../../services/resourcesApi';
+import { getResourceFileUrl } from '../../../services/api';
 import './facilityInspection.css';
 
 // 이미지 모달 컴포넌트
@@ -37,7 +38,7 @@ const ImageModal = ({ image, allImages, currentIndex, onClose, onNext, onPrev })
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <img src={image.fileUrl} alt={image.originalFileName} className="modal-image" />
+          <img src={getResourceFileUrl(image.fileUrl)} alt={image.originalFileName} className="modal-image" />
           <div className="modal-info">
             <p>{image.title || image.originalFileName}</p>
           </div>
@@ -260,7 +261,7 @@ export default function FacilityInspection() {
                     >
                       <div className="inspection-image-container">
                         <img
-                    src={image.fileUrl}
+                    src={getResourceFileUrl(image.fileUrl)}
                     alt={image.title || image.originalFileName}
                           className="inspection-image"
                           loading="lazy"
