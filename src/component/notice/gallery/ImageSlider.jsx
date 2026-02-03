@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiChevronLeft, FiChevronRight, FiX } from 'react-icons/fi';
+import { getResourceFileUrl } from '../../../services/api';
 import './gallery.css';
 
 export default function ImageSlider({ images, initialIndex = 0, onClose }) {
@@ -28,13 +29,12 @@ export default function ImageSlider({ images, initialIndex = 0, onClose }) {
   if (!images || images.length === 0) return null;
 
   const currentImage = images[currentIndex];
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
-  // 이미지 URL 처리 (절대 URL이면 그대로, 상대 URL이면 API_URL 추가)
+  // 이미지 URL 처리 (상대 경로·localhost URL을 현재 API 기준으로 정규화)
   const getImageUrl = (url) => {
     if (!url) return '/logo192.png';
-    if (url.startsWith('http')) return url;
-    return `${API_URL}${url}`;
+    const resolved = getResourceFileUrl(url);
+    return resolved || '/logo192.png';
   };
 
   return (

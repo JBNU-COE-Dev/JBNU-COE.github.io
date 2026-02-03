@@ -7,6 +7,28 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 const API_TIMEOUT = 30000; // 30초
 
 /**
+ * 리소스/파일 이미지 URL 정규화
+ * - 로컬에서 업로드된 데이터는 fileUrl이 http://localhost:8080/... 로 저장되어
+ *   배포 환경에서는 이미지를 불러오지 못함. 현재 API 기준 URL로 변환.
+ */
+export function getResourceFileUrl(fileUrl) {
+  if (!fileUrl) return '';
+  const base = API_URL.replace(/\/$/, '');
+  try {
+    if (fileUrl.startsWith('/')) {
+      return base + fileUrl;
+    }
+    const u = new URL(fileUrl);
+    if (u.hostname === 'localhost' || u.hostname === '127.0.0.1') {
+      return base + u.pathname;
+    }
+    return fileUrl;
+  } catch {
+    return fileUrl;
+  }
+}
+
+/**
  * 기본 fetch 래퍼 함수
  * 에러 처리, 타임아웃, 인증 헤더 등을 통합 관리
  */
@@ -202,4 +224,5 @@ export default {
   patch,
   delete: del,
   uploadFile,
+  getResourceFileUrl,
 };
