@@ -94,10 +94,11 @@ export default function Gallery() {
     setSelectedImageIndex(null);
   };
 
-  // 날짜 포맷팅
+  // 날짜 포맷팅 (행사일/업로드일 표시용)
   const formatDate = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) return '';
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
   };
 
@@ -246,7 +247,7 @@ export default function Gallery() {
                   <h3 className="gallery-card-title">{gallery.title}</h3>
                   <div className="gallery-card-meta">
                     <span className="meta-date">
-                      작성일 {formatDate(gallery.createdAt)}
+                      행사일 {formatDate(gallery.createdAt)}
                     </span>
                   </div>
                 </div>
