@@ -11,6 +11,7 @@ import Organization from './component/about/organization/organization.jsx';
 import AnnouncementList from './component/notice/announcement/AnnouncementList.jsx';
 import AnnouncementDetail from './component/notice/announcement/AnnouncementDetail.jsx';
 import Gallery from './component/notice/gallery/Gallery.jsx';
+import ErrorBoundary from './component/ErrorBoundary.jsx';
 import StudySupport from './component/notice/studySupport/StudySupport.jsx';
 import MonthlyCalendar from './component/notice/calendar/MonthlyCalendar.jsx';
 import BuildingMap from './component/resources/buildingMap/BuildingMap.jsx';
@@ -51,7 +52,7 @@ function App() {
               <Route path="/notice" element={<Notice />} />
               <Route path="/notice/announcement" element={<AnnouncementList />} />
               <Route path="/notice/announcement/:id" element={<AnnouncementDetail />} />
-              <Route path="/notice/gallery" element={<Gallery />} />
+              <Route path="/notice/gallery" element={<ErrorBoundary><Gallery /></ErrorBoundary>} />
               <Route path="/notice/study-support" element={<StudySupport />} />
               <Route path="/notice/calendar" element={<MonthlyCalendar />} />
               <Route path="/benefits" element={<Benefits />} />
