@@ -197,7 +197,7 @@ export default function FacilityInspection() {
                 {year}년
               </motion.button>
             ))}
-          </div>
+                </div>
 
           {/* 월 선택 */}
           {availableMonths.length > 0 && (
@@ -249,27 +249,27 @@ export default function FacilityInspection() {
             transition={{ delay: 0.3 }}
           >
             {images.map((image, index) => (
-              <motion.div
-                key={image.id}
-                className="inspection-card"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
+                    <motion.div
+                      key={image.id}
+                      className="inspection-card"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: index * 0.1, duration: 0.3 }}
-                whileHover={{ y: -8, scale: 1.02 }}
+                      whileHover={{ y: -8, scale: 1.02 }}
                 onClick={() => handleImageClick(image, index)}
-              >
-                <div className="inspection-image-container">
-                  <img
+                    >
+                      <div className="inspection-image-container">
+                        <img
                     src={image.fileUrl}
                     alt={image.title || image.originalFileName}
-                    className="inspection-image"
-                    loading="lazy"
-                  />
-                  <div className="inspection-overlay">
-                    <span className="view-text">자세히 보기</span>
-                  </div>
-                </div>
-                <div className="inspection-info">
+                          className="inspection-image"
+                          loading="lazy"
+                        />
+                        <div className="inspection-overlay">
+                          <span className="view-text">자세히 보기</span>
+                        </div>
+                      </div>
+                      <div className="inspection-info">
                   <p>{image.title || `${selectedYear}년 ${selectedMonth}월 시설 점검`}</p>
                 </div>
               </motion.div>
