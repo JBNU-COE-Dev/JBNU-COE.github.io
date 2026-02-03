@@ -26,7 +26,13 @@ async function fetchAPI(endpoint, options = {}) {
   };
 
   // 인증 토큰이 있으면 추가 (나중에 백엔드 구현 시 사용)
-  const token = localStorage.getItem('authToken');
+  // localStorage 접근 시 SecurityError 방지 (일부 환경: 시크릿 모드, iframe 등)
+  let token = null;
+  try {
+    token = localStorage.getItem('authToken');
+  } catch {
+    // localStorage 사용 불가 시 무시
+  }
   if (token) {
     defaultHeaders['Authorization'] = `Bearer ${token}`;
   }
@@ -169,7 +175,12 @@ export async function uploadFile(endpoint, formData, onProgress) {
     });
     
     // 인증 토큰 추가
-    const token = localStorage.getItem('authToken');
+    let token = null;
+    try {
+      token = localStorage.getItem('authToken');
+    } catch {
+      // localStorage 사용 불가 시 무시
+    }
     if (token) {
       xhr.setRequestHeader('Authorization', `Bearer ${token}`);
     }
