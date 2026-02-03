@@ -121,7 +121,7 @@ export default function StudySupport() {
   // 이미지 확대/축소 핸들러
   const handleImageClick = () => {
     if (images.length > 0) {
-      setIsImageZoomed(true);
+    setIsImageZoomed(true);
     }
   };
 
@@ -192,24 +192,24 @@ export default function StudySupport() {
 
       {/* 월 선택 */}
       {availableMonths.length > 0 && (
-        <motion.div
-          className="month-selector-bar"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
+      <motion.div
+        className="month-selector-bar"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
           {availableMonths.map((month) => (
-            <motion.button
-              key={month}
-              className={`month-btn ${selectedMonth === month ? 'active' : ''}`}
-              onClick={() => handleMonthChange(month)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
+          <motion.button
+            key={month}
+            className={`month-btn ${selectedMonth === month ? 'active' : ''}`}
+            onClick={() => handleMonthChange(month)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
               {month}월
-            </motion.button>
-          ))}
-        </motion.div>
+          </motion.button>
+        ))}
+      </motion.div>
       )}
 
       {/* 콘텐츠 영역 */}
@@ -235,85 +235,85 @@ export default function StudySupport() {
         </div>
       ) : (
         /* 이미지 슬라이더 */
-        <motion.div
-          className="slider-section"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          <div className="slider-main">
-            {/* 이전 버튼 */}
-            <motion.button
-              className="nav-button prev-btn"
-              onClick={handlePrevImage}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+      <motion.div
+        className="slider-section"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+      >
+        <div className="slider-main">
+          {/* 이전 버튼 */}
+          <motion.button
+            className="nav-button prev-btn"
+            onClick={handlePrevImage}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
               disabled={images.length <= 1}
-            >
-              <FiChevronLeft />
-            </motion.button>
+          >
+            <FiChevronLeft />
+          </motion.button>
 
-            {/* 이미지와 인디케이터 */}
-            <div className="image-section" onClick={handleImageClick} style={{ cursor: 'pointer' }}>
-              <AnimatePresence mode="wait" custom={slideDirection}>
-                <motion.div
-                  className="image-container"
+          {/* 이미지와 인디케이터 */}
+          <div className="image-section" onClick={handleImageClick} style={{ cursor: 'pointer' }}>
+            <AnimatePresence mode="wait" custom={slideDirection}>
+              <motion.div
+                className="image-container"
                   key={`${selectedYear}-${selectedMonth}-${currentImageIndex}`}
-                  custom={slideDirection}
-                  initial={{ 
-                    opacity: 0, 
-                    x: slideDirection === 0 ? 0 : (slideDirection > 0 ? 100 : -100)
-                  }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ 
-                    opacity: 0, 
-                    x: slideDirection === 0 ? 0 : (slideDirection > 0 ? -100 : 100)
-                  }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <img
+                custom={slideDirection}
+                initial={{ 
+                  opacity: 0, 
+                  x: slideDirection === 0 ? 0 : (slideDirection > 0 ? 100 : -100)
+                }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ 
+                  opacity: 0, 
+                  x: slideDirection === 0 ? 0 : (slideDirection > 0 ? -100 : 100)
+                }}
+                transition={{ duration: 0.3 }}
+              >
+                <img
                     src={currentImage?.fileUrl}
                     alt={currentImage?.title || `${selectedMonth}월 행사 일정 ${currentImageIndex + 1}`}
-                    className="calendar-image"
-                  />
-                </motion.div>
-              </AnimatePresence>
+                  className="calendar-image"
+                />
+              </motion.div>
+            </AnimatePresence>
 
-              {/* 인디케이터 */}
+            {/* 인디케이터 */}
               {images.length > 1 && (
-                <div className="image-indicators" onClick={(e) => e.stopPropagation()}>
+            <div className="image-indicators" onClick={(e) => e.stopPropagation()}>
                   {images.map((_, index) => (
-                    <button
-                      key={index}
-                      className={`indicator-dot ${index === currentImageIndex ? 'active' : ''}`}
-                      onClick={() => {
-                        setSlideDirection(index > currentImageIndex ? 1 : -1);
-                        setCurrentImageIndex(index);
-                      }}
-                      aria-label={`${index + 1}번째 이미지로 이동`}
-                    />
-                  ))}
-                </div>
+                <button
+                  key={index}
+                  className={`indicator-dot ${index === currentImageIndex ? 'active' : ''}`}
+                  onClick={() => {
+                    setSlideDirection(index > currentImageIndex ? 1 : -1);
+                    setCurrentImageIndex(index);
+                  }}
+                  aria-label={`${index + 1}번째 이미지로 이동`}
+                />
+              ))}
+            </div>
               )}
 
-              {/* 카운터 */}
-              <div className="image-counter" onClick={(e) => e.stopPropagation()}>
+            {/* 카운터 */}
+            <div className="image-counter" onClick={(e) => e.stopPropagation()}>
                 {currentImageIndex + 1} / {images.length}
-              </div>
             </div>
-
-            {/* 다음 버튼 */}
-            <motion.button
-              className="nav-button next-btn"
-              onClick={handleNextImage}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              disabled={images.length <= 1}
-            >
-              <FiChevronRight />
-            </motion.button>
           </div>
-        </motion.div>
+
+          {/* 다음 버튼 */}
+          <motion.button
+            className="nav-button next-btn"
+            onClick={handleNextImage}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+              disabled={images.length <= 1}
+          >
+            <FiChevronRight />
+          </motion.button>
+        </div>
+      </motion.div>
       )}
 
       {/* 이미지 확대 모달 */}
@@ -345,13 +345,13 @@ export default function StudySupport() {
 
               {/* 이전 버튼 */}
               {images.length > 1 && (
-                <button
-                  className="zoom-nav-btn zoom-prev-btn"
-                  onClick={handleZoomPrevImage}
-                  aria-label="이전 이미지"
-                >
-                  <FiChevronLeft />
-                </button>
+              <button
+                className="zoom-nav-btn zoom-prev-btn"
+                onClick={handleZoomPrevImage}
+                aria-label="이전 이미지"
+              >
+                <FiChevronLeft />
+              </button>
               )}
 
               {/* 확대된 이미지 */}
@@ -377,13 +377,13 @@ export default function StudySupport() {
 
               {/* 다음 버튼 */}
               {images.length > 1 && (
-                <button
-                  className="zoom-nav-btn zoom-next-btn"
-                  onClick={handleZoomNextImage}
-                  aria-label="다음 이미지"
-                >
-                  <FiChevronRight />
-                </button>
+              <button
+                className="zoom-nav-btn zoom-next-btn"
+                onClick={handleZoomNextImage}
+                aria-label="다음 이미지"
+              >
+                <FiChevronRight />
+              </button>
               )}
 
               {/* 이미지 정보 */}
