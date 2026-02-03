@@ -36,7 +36,6 @@ export default function Gallery() {
           id: item.id,
           title: item.title || item.originalFileName,
           imageUrl: item.fileUrl,
-          eventDate: item.eventDate,
           createdAt: item.createdAt,
           description: item.description,
         }));
@@ -48,7 +47,6 @@ export default function Gallery() {
           id: item.id,
           title: item.title || item.originalFileName,
           imageUrl: item.fileUrl,
-          eventDate: item.eventDate,
           createdAt: item.createdAt,
           description: item.description,
         }));
@@ -100,11 +98,9 @@ export default function Gallery() {
   const formatDate = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) return '';
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
   };
-
-  // user-front에는 행사일만 표시 (없으면 업로드일로 대체)
-  const displayDate = (gallery) => gallery.eventDate || gallery.createdAt;
 
   // 페이지네이션 번호 생성
   const getPageNumbers = () => {
@@ -251,7 +247,7 @@ export default function Gallery() {
                   <h3 className="gallery-card-title">{gallery.title}</h3>
                   <div className="gallery-card-meta">
                     <span className="meta-date">
-                      행사일 {formatDate(displayDate(gallery))}
+                      행사일 {formatDate(gallery.createdAt)}
                     </span>
                   </div>
                 </div>
