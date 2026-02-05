@@ -1,12 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './pledge.css';
 import CircularProgress from './CircularProgress';
 import PledgeList from './PledgeList';
 import { pledgeData, calculateOverallRate, calculateCategoryRate } from './pledgeData';
+import { getPledgeProgress } from '../../services/pledgeApi';
 
 function Pledge() {
-  // 전체 이행률 계산
-  const overallPercentage = calculateOverallRate(pledgeData.categories);
+  // API에서 ID별 completed를 받아 정적 데이터와 매칭한 카테고리
+  const [categories, setCategories] = useState(pledgeData.categories);
+
+  useEffect(() => {
+    let cancelled = false;
+    getPledgeProgress()
+      .then((res) => {
+        if (cancelled || !res?.progress) return;
+        const progress = res.progress;
+        setCategories(
+          pledgeData.categories.map((cat) => ({
+            ...cat,
+            pledges: cat.pledges.map((p) => ({
+              ...p,
+              completed: progress[p.id] === true,
+            })),
+          }))
+        );
+      })
+      .catch(() => {
+        if (!cancelled) setCategories(pledgeData.categories);
+      });
+    return () => { cancelled = true; };
+  }, []);
+
+  const overallPercentage = calculateOverallRate(categories);
 
   return (
     <div className="pledge-container">
@@ -35,13 +60,13 @@ function Pledge() {
             <div className="stat-item">
               <span className="stat-label">전체 공약</span>
               <span className="stat-value">
-                {pledgeData.categories.reduce((sum, cat) => sum + cat.pledges.length, 0)}개
+                {categories.reduce((sum, cat) => sum + cat.pledges.length, 0)}개
               </span>
             </div>
             <div className="stat-item">
               <span className="stat-label">이행 완료</span>
               <span className="stat-value completed">
-                {pledgeData.categories.reduce((sum, cat) =>
+                {categories.reduce((sum, cat) =>
                   sum + cat.pledges.filter(p => p.completed).length, 0
                 )}개
               </span>
@@ -49,7 +74,7 @@ function Pledge() {
             <div className="stat-item">
               <span className="stat-label">진행 중</span>
               <span className="stat-value pending">
-                {pledgeData.categories.reduce((sum, cat) =>
+                {categories.reduce((sum, cat) =>
                   sum + cat.pledges.filter(p => !p.completed).length, 0
                 )}개
               </span>
@@ -61,7 +86,7 @@ function Pledge() {
         <div className="category-progress-section">
           <h2>분야별 공약 이행률</h2>
           <div className="category-grid">
-            {pledgeData.categories.map((category) => {
+            {categories.map((category) => {
               const categoryPercentage = calculateCategoryRate(category.pledges);
               const completedCount = category.pledges.filter(p => p.completed).length;
               const totalCount = category.pledges.length;
