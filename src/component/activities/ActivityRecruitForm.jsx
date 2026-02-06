@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createActivity } from '../../services/activityApi';
+import { useAuth } from '../../contexts/AuthContext';
 import './activities.css';
 
 function ActivityRecruitForm() {
   const navigate = useNavigate();
+  const { isAuthenticated, isLoading, userNickname, userEmail } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      navigate('/login?redirect=/activities/recruit', { replace: true });
+    }
+  }, [isAuthenticated, isLoading, navigate]);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [form, setForm] = useState({
@@ -19,6 +28,16 @@ function ActivityRecruitForm() {
     status: 'RECRUITING',
   });
   const [thumbnailFile, setThumbnailFile] = useState(null);
+
+  // 로그인 사용자 닉네임/이메일로 작성자 기본값 설정
+  useEffect(() => {
+    if (isAuthenticated && (userNickname || userEmail)) {
+      setForm((prev) => ({
+        ...prev,
+        author: userNickname || userEmail || prev.author,
+      }));
+    }
+  }, [isAuthenticated, userNickname, userEmail]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,6 +68,14 @@ function ActivityRecruitForm() {
       setLoading(false);
     }
   };
+
+  if (isLoading || !isAuthenticated) {
+    return (
+      <div className="activities-page" style={{ padding: '3rem', textAlign: 'center' }}>
+        로그인 확인 중...
+      </div>
+    );
+  }
 
   return (
     <div className="activities-page">
@@ -94,11 +121,12 @@ function ActivityRecruitForm() {
             type="text"
             name="author"
             value={form.author}
-            onChange={handleChange}
+            readOnly
             required
+            aria-readonly="true"
             maxLength={100}
             className="activities-filter-select"
-            style={{ width: '100%' }}
+            style={{ width: '100%', backgroundColor: '#f5f5f5', cursor: 'not-allowed' }}
           />
         </div>
         <div className="activities-filter-group" style={{ marginBottom: '1rem' }}>

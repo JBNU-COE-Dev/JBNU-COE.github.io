@@ -44,6 +44,31 @@
   text-decoration: underline;
 }
 
+.top-bar-user {
+  color: #aaccff;
+  font-size: 0.85rem;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.top-bar-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: inherit;
+  cursor: pointer;
+  padding: 0;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.top-bar-btn:hover {
+  color: #aaccff;
+  text-decoration: underline;
+}
+
 /* 반응형 */
 @media (max-width: 768px) {
   .top-bar {

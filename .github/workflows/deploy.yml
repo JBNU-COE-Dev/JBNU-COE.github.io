@@ -11,21 +11,35 @@ jobs:
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}
         with:
           host: ${{ secrets.JCLOUD_SSH_HOST }}
           username: ${{ secrets.JCLOUD_SSH_USER }}
           key: ${{ secrets.JCLOUD_SSH_KEY }}
           port: ${{ secrets.JCLOUD_SSH_PORT }}
+          envs: REACT_APP_GOOGLE_CLIENT_ID
           script: |
             set -e
-              cd /home/ubuntu/admin
-              git fetch origin main
-              git reset --hard origin/main
-              git pull origin main
-              
-              if docker compose build --no-cache user-front; then
-                docker compose up -d --force-recreate user-front
-                docker image prune -f
+            cd /home/ubuntu/admin || { echo "ERR: cd failed"; exit 1; }
+            
+            echo "=== 현재 브랜치 및 origin ==="
+            git branch -a
+            git remote -v
+            
+            echo "=== main 최신화 ==="
+            git fetch origin main
+            git reset --hard origin/main
+            git pull origin main || { echo "ERR: git pull failed"; exit 1; }
+            
+            echo "=== 빌드할 커밋 ==="
+            git log -1 --oneline
+            
+            if docker compose build --no-cache user-front; then
+              docker compose up -d --force-recreate user-front
+              docker image prune -f
+              echo "=== 배포 완료 ==="
             else
-                exit 1
+              echo "ERR: docker compose build failed"
+              exit 1
             fi
