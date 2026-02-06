@@ -44,6 +44,7 @@ function PledgeCard({ item }) {
         <h3 className="pledge-card-title">{item.title}</h3>
         <div className="pledge-card-meta">
           <span>{item.organization || item.author}</span>
+          {item.headcount != null && <span>모집 {item.headcount}명</span>}
           {item.viewCount != null && <span>조회 {item.viewCount}</span>}
         </div>
       </div>

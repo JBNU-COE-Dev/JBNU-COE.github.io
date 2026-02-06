@@ -12,6 +12,8 @@ function ActivityRecruitForm() {
     title: '',
     content: '',
     author: '',
+    headcount: '',
+    endDate: '',
     recruitmentRoles: '',
     contactUrl: '',
     status: 'RECRUITING',
@@ -32,6 +34,8 @@ function ActivityRecruitForm() {
     fd.append('title', form.title);
     fd.append('content', form.content);
     fd.append('author', form.author);
+    if (form.headcount !== '') fd.append('headcount', form.headcount);
+    if (form.endDate) fd.append('endDate', form.endDate);
     fd.append('recruitmentRoles', form.recruitmentRoles);
     fd.append('contactUrl', form.contactUrl);
     fd.append('status', form.status);
@@ -93,6 +97,31 @@ function ActivityRecruitForm() {
             onChange={handleChange}
             required
             maxLength={100}
+            className="activities-filter-select"
+            style={{ width: '100%' }}
+          />
+        </div>
+        <div className="activities-filter-group" style={{ marginBottom: '1rem' }}>
+          <label className="activities-filter-label">모집 인원 (명)</label>
+          <input
+            type="number"
+            name="headcount"
+            value={form.headcount}
+            onChange={handleChange}
+            min={1}
+            max={999}
+            placeholder="예: 3"
+            className="activities-filter-select"
+            style={{ width: '100%' }}
+          />
+        </div>
+        <div className="activities-filter-group" style={{ marginBottom: '1rem' }}>
+          <label className="activities-filter-label">모집 기한</label>
+          <input
+            type="date"
+            name="endDate"
+            value={form.endDate}
+            onChange={handleChange}
             className="activities-filter-select"
             style={{ width: '100%' }}
           />

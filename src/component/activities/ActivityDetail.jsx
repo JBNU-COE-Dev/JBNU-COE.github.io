@@ -53,7 +53,8 @@ function ActivityDetail() {
         <div className="activities-detail-meta">
           <span>작성자: {item.author}</span>
           {item.organization && <span>주최: {item.organization}</span>}
-          {item.endDate && <span>마감: {item.endDate} ({ddayLabel})</span>}
+          {item.headcount != null && <span>모집 인원: {item.headcount}명</span>}
+          {item.endDate && <span>모집 기한: {item.endDate} ({ddayLabel})</span>}
           <span>조회 {item.viewCount ?? 0}</span>
         </div>
       </div>
