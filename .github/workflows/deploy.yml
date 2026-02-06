@@ -21,6 +21,7 @@ jobs:
               cd /home/ubuntu/admin
               git fetch origin main
               git reset --hard origin/main
+              git pull origin main
               
               if docker compose build --no-cache user-front; then
                 docker compose up -d --force-recreate user-front
