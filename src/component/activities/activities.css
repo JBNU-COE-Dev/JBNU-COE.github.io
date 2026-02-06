@@ -1,0 +1,310 @@
+/* 활동(대외활동/공모전/팀원모집) - 링커리어 스타일 카드 그리드 */
+
+.activities-page {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  padding-top: calc(40px + 10vh + 2rem);
+  box-sizing: border-box;
+}
+
+.activities-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.activities-header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1a1a2e;
+  margin: 0 0 0.5rem 0;
+}
+
+.activities-header p {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* FilterBar */
+.activities-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.activities-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.activities-filter-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.activities-filter-select {
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: #fff;
+  min-width: 140px;
+  cursor: pointer;
+}
+
+.activities-filter-select:focus {
+  outline: none;
+  border-color: #004ca5;
+  box-shadow: 0 0 0 2px rgba(0, 76, 165, 0.2);
+}
+
+/* 카드 그리드 - 링커리어 스타일 */
+.activities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* PledgeCard */
+.pledge-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.pledge-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.pledge-card-image-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  background: #f3f4f6;
+  overflow: hidden;
+}
+
+.pledge-card-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pledge-card-image-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+}
+
+.pledge-card-dday {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.25rem 0.6rem;
+  background: #004ca5;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 6px;
+}
+
+.pledge-card-status {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.pledge-card-status.recruiting {
+  background: #059669;
+  color: #fff;
+}
+
+.pledge-card-status.closed {
+  background: #6b7280;
+  color: #fff;
+}
+
+.pledge-card-body {
+  padding: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pledge-card-category {
+  font-size: 0.75rem;
+  color: #004ca5;
+  font-weight: 600;
+}
+
+.pledge-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pledge-card-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-top: auto;
+}
+
+/* 목록 로딩/빈 목록 */
+.activities-loading,
+.activities-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6b7280;
+}
+
+.activities-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.activities-pagination button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.activities-pagination button:hover:not(:disabled) {
+  background: #f3f4f6;
+  border-color: #004ca5;
+  color: #004ca5;
+}
+
+.activities-pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.activities-pagination button.active {
+  background: #004ca5;
+  color: #fff;
+  border-color: #004ca5;
+}
+
+/* 상세 페이지 */
+.activities-detail {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  padding-top: calc(40px + 10vh + 2rem);
+  box-sizing: border-box;
+}
+
+.activities-detail-header {
+  margin-bottom: 1.5rem;
+}
+
+.activities-detail-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.3;
+}
+
+.activities-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.activities-detail-content {
+  padding: 1.5rem 0;
+  border-top: 1px solid #e5e7eb;
+  line-height: 1.7;
+  color: #374151;
+  white-space: pre-wrap;
+}
+
+.activities-detail-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.activities-detail-actions a,
+.activities-detail-actions button {
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+}
+
+.activities-detail-actions .btn-primary {
+  background: #004ca5;
+  color: #fff;
+}
+
+.activities-detail-actions .btn-primary:hover {
+  background: #003d8a;
+}
+
+.activities-detail-actions .btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.activities-detail-actions .btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+@media (max-width: 768px) {
+  .activities-page,
+  .activities-detail {
+    padding: 1.5rem 1rem;
+    padding-top: calc(40px + 8vh + 1rem);
+  }
+
+  .activities-grid {
+    grid-template-columns: 1fr;
+  }
+}

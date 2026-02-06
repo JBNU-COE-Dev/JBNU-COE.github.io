@@ -66,6 +66,7 @@ function HeaderBar({ isMobile, isTablet }) {
                     <li><Link to="/notice/calendar">월별 행사</Link></li>
                     <li><Link to="/notice/study-support">심과함께</Link></li>
                     <li><Link to="/notice/pledge">공약 이행률</Link></li>
+                    <li><Link to="/activities">대외활동·공모전·팀원모집</Link></li>
                   </div>
                 )}
               </li>
@@ -152,6 +153,7 @@ function HeaderBar({ isMobile, isTablet }) {
                           <li><Link to="/notice/calendar" onClick={() => setMenuOpen(false)}>월별 행사</Link></li>
                           <li><Link to="/notice/study-support" onClick={() => setMenuOpen(false)}>심과함께</Link></li>
                           <li><Link to="/notice/pledge" onClick={() => setMenuOpen(false)}>공약 이행률</Link></li>
+                          <li><Link to="/activities" onClick={() => setMenuOpen(false)}>대외활동·공모전·팀원모집</Link></li>
                         </ul>
                       )}
                     </li>

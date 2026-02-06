@@ -10,9 +10,10 @@ import rentalApi from './rentalApi';
 import financeApi from './financeApi';
 import matchingApi from './matchingApi';
 import pledgeApi from './pledgeApi';
+import activityApi from './activityApi';
 
 // Named exports
-export { api, noticesApi, galleryApi, resourcesApi, calendarApi, rentalApi, financeApi, matchingApi, pledgeApi };
+export { api, noticesApi, galleryApi, resourcesApi, calendarApi, rentalApi, financeApi, matchingApi, pledgeApi, activityApi };
 
 // Default export
 export default {
@@ -25,4 +26,5 @@ export default {
   financeApi,
   matchingApi,
   pledgeApi,
+  activityApi,
 };

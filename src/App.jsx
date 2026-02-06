@@ -25,6 +25,9 @@ import BoardInquiry from './component/contact/boardInquiry/BoardInquiry.jsx';
 import KakaoChannel from './component/contact/kakaoChannel/KakaoChannel.jsx';
 import Matching from './component/matching/Matching.jsx';
 import MatchingDetail from './component/matching/MatchingDetail.jsx';
+import ActivityList from './component/activities/ActivityList.jsx';
+import ActivityDetail from './component/activities/ActivityDetail.jsx';
+import ActivityRecruitForm from './component/activities/ActivityRecruitForm.jsx';
 import HeaderBar from './layouts/headerBar/headerBar.jsx';
 import Banner from './layouts/banner/banner.jsx';
 import TopBar from './layouts/topBar/topBar.jsx';
@@ -71,6 +74,9 @@ function App() {
               <Route path="/notice/pledge" element={<Pledge />} />
               <Route path="/matching" element={<Matching />} />
               <Route path="/matching/:id" element={<MatchingDetail />} />
+              <Route path="/activities" element={<ActivityList />} />
+              <Route path="/activities/recruit" element={<ActivityRecruitForm />} />
+              <Route path="/activities/:id" element={<ActivityDetail />} />
             </Routes>
           </main>
 
