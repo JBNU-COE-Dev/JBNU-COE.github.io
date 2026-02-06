@@ -1,20 +1,39 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getActivityList } from '../../services/activityApi';
 import PledgeCard from './PledgeCard';
 import FilterBar from './FilterBar';
 import './activities.css';
 
+const VALID_CATEGORIES = ['EXTERNAL_ACTIVITY', 'CONTEST', 'TEAM_RECRUITMENT'];
+
 function ActivityList() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoryFromUrl = searchParams.get('category');
+  const initialCategory = VALID_CATEGORIES.includes(categoryFromUrl) ? categoryFromUrl : undefined;
+
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [category, setCategory] = useState(undefined);
+  const [category, setCategoryState] = useState(initialCategory);
   const [sort, setSort] = useState('latest');
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const size = 12;
+
+  // URL 쿼리와 동기화: 헤더에서 /activities?category=CONTEST 등으로 진입 시 반영
+  useEffect(() => {
+    const urlCategory = searchParams.get('category');
+    const next = VALID_CATEGORIES.includes(urlCategory) ? urlCategory : undefined;
+    setCategoryState(next);
+  }, [searchParams]);
+
+  const setCategory = useCallback((v) => {
+    setCategoryState(v);
+    setPage(0);
+    setSearchParams(v ? { category: v } : {}, { replace: true });
+  }, [setSearchParams]);
 
   const fetchList = useCallback(async () => {
     setLoading(true);
@@ -49,10 +68,7 @@ function ActivityList() {
       <FilterBar
         category={category}
         sort={sort}
-        onCategoryChange={(v) => {
-          setCategory(v);
-          setPage(0);
-        }}
+        onCategoryChange={setCategory}
         onSortChange={(v) => {
           setSort(v);
           setPage(0);
