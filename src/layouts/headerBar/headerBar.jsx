@@ -83,9 +83,9 @@ function HeaderBar({ isMobile, isTablet }) {
                 <ul>매칭플랫폼</ul>
                 {activeMenu === 'matching' && (
                   <div className="dropdown-container">
-                    <li><Link to="/matching">대외활동</Link></li>
-                    <li><Link to="/matching">공모전</Link></li>
-                    <li><Link to="/matching">팀원모집</Link></li>
+                    <li><Link to="/activities?category=EXTERNAL_ACTIVITY">대외활동</Link></li>
+                    <li><Link to="/activities?category=CONTEST">공모전</Link></li>
+                    <li><Link to="/activities?category=TEAM_RECRUITMENT">팀원 모집</Link></li>
                   </div>
                 )}
               </li>
@@ -152,6 +152,9 @@ function HeaderBar({ isMobile, isTablet }) {
                           <li><Link to="/notice/calendar" onClick={() => setMenuOpen(false)}>월별 행사</Link></li>
                           <li><Link to="/notice/study-support" onClick={() => setMenuOpen(false)}>심과함께</Link></li>
                           <li><Link to="/notice/pledge" onClick={() => setMenuOpen(false)}>공약 이행률</Link></li>
+                          <li><Link to="/activities?category=EXTERNAL_ACTIVITY" onClick={() => setMenuOpen(false)}>대외활동</Link></li>
+                          <li><Link to="/activities?category=CONTEST" onClick={() => setMenuOpen(false)}>공모전</Link></li>
+                          <li><Link to="/activities?category=TEAM_RECRUITMENT" onClick={() => setMenuOpen(false)}>팀원 모집</Link></li>
                         </ul>
                       )}
                     </li>
@@ -167,9 +170,10 @@ function HeaderBar({ isMobile, isTablet }) {
                       <button className={`mobile-nav-button ${activeMenu === 'matching' ? 'active' : ''}`} onClick={() => toggleMenu('matching')}>매칭플랫폼</button>
                       {activeMenu === 'matching' && (
                         <ul className="mobile-submenu">
-                          <li><Link to="/matching" onClick={() => setMenuOpen(false)}>대외활동</Link></li>
-                          <li><Link to="/matching" onClick={() => setMenuOpen(false)}>공모전</Link></li>
-                          <li><Link to="/matching" onClick={() => setMenuOpen(false)}>팀원모집</Link></li>
+                          <li><Link to="/activities?category=EXTERNAL_ACTIVITY" onClick={() => setMenuOpen(false)}>대외활동</Link></li>
+                          <li><Link to="/activities?category=CONTEST" onClick={() => setMenuOpen(false)}>공모전</Link></li>
+                          <li><Link to="/activities?category=TEAM_RECRUITMENT" onClick={() => setMenuOpen(false)}>팀원 모집</Link></li>
+                          
                         </ul>
                       )}
                     </li>

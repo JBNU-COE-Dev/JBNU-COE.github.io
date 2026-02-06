@@ -1,10 +1,19 @@
 /**
  * API 유틸리티 함수
  * 백엔드 API와 통신하기 위한 중앙화된 함수들
+ * - 배포 시: Docker 빌드 시 REACT_APP_API_URL 빌드 인자로 전달 (또는 아래 런타임 오버라이드 사용)
+ * - 런타임 오버라이드: index.html 등에서 window.__FEEL_API_URL__ 설정 시 해당 URL 사용 (재빌드 없이 변경 가능)
  */
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 const API_TIMEOUT = 30000; // 30초
+
+/** 현재 사용할 API 베이스 URL (런타임 오버라이드 지원) */
+export function getApiUrl() {
+  if (typeof window !== 'undefined' && window.__FEEL_API_URL__) {
+    return String(window.__FEEL_API_URL__).replace(/\/$/, '');
+  }
+  return (process.env.REACT_APP_API_URL || 'http://localhost:8080').replace(/\/$/, '');
+}
 
 /**
  * 리소스/파일 이미지 URL 정규화
@@ -13,7 +22,7 @@ const API_TIMEOUT = 30000; // 30초
  */
 export function getResourceFileUrl(fileUrl) {
   if (!fileUrl) return '';
-  const base = API_URL.replace(/\/$/, '');
+  const base = getApiUrl();
   try {
     if (fileUrl.startsWith('/')) {
       return base + fileUrl;
@@ -64,7 +73,7 @@ async function fetchAPI(endpoint, options = {}) {
   const timeoutId = setTimeout(() => controller.abort(), timeout);
 
   try {
-    const response = await fetch(`${API_URL}${endpoint}`, {
+    const response = await fetch(`${getApiUrl()}${endpoint}`, {
       method,
       headers: defaultHeaders,
       body: body ? JSON.stringify(body) : null,
@@ -207,7 +216,7 @@ export async function uploadFile(endpoint, formData, onProgress) {
       xhr.setRequestHeader('Authorization', `Bearer ${token}`);
     }
     
-    xhr.open('POST', `${API_URL}${endpoint}`);
+    xhr.open('POST', `${getApiUrl()}${endpoint}`);
     xhr.send(formData);
     
     // AbortController와 연결
@@ -225,4 +234,5 @@ export default {
   delete: del,
   uploadFile,
   getResourceFileUrl,
+  getApiUrl,
 };
