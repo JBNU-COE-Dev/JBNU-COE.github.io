@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import { FaBullhorn, FaEnvelope } from 'react-icons/fa';
 import './BoardInquiry.css';
+import kakaoQR from '../../../img/qr-code/kakaoQR.png';
 
 const BoardInquiry = () => {
   const kakaoUrl = 'https://open.kakao.com/o/suMsRU8h';
@@ -52,29 +53,33 @@ const BoardInquiry = () => {
         </div>
 
         <div className="contact-methods">
-          <motion.div
-            className="contact-kakao-section"
-            whileHover={{ scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <div className="kakao-info">
-              <RiKakaoTalkFill className="kakao-icon" />
-              <div className="kakao-text">
-                <h3>전북대학교 공과대학 민원접수 채팅방</h3>
+          <div className="kakao-main-card">
+            <div className="kakao-card-info">
+              <RiKakaoTalkFill className="kakao-card-icon" />
+              <div className="kakao-card-text">
+                <h2>전북대학교 공과대학 민원접수 채팅방</h2>
                 <p>아래 버튼을 클릭하여 카카오톡 오픈채팅방으로 이동하세요</p>
               </div>
             </div>
-            
-            <motion.button
-              className="kakao-button"
-              onClick={handleKakaoClick}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <RiKakaoTalkFill className="button-icon" />
-              카카오톡 채팅방 입장하기
-            </motion.button>
-          </motion.div>
+
+            <div className="kakao-card-actions">
+              <motion.button
+                className="kakao-card-button"
+                onClick={handleKakaoClick}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <RiKakaoTalkFill className="button-icon" />
+                카카오톡 채팅방 입장하기
+              </motion.button>
+
+              <div className="kakao-qr-section">
+                <div className="kakao-qr-container">
+                  <img src={kakaoQR} alt="카카오톡 오픈채팅 QR코드" className="kakao-qr-image" />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="board-inquiry-notice">

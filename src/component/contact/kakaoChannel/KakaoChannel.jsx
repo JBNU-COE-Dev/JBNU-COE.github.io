@@ -29,8 +29,8 @@ const KakaoChannel = () => {
           <div className="kakao-channel-info">
             <RiKakaoTalkFill className="kakao-channel-icon" />
             <div className="kakao-channel-text">
-              <h2>전북대학교 공과대학 학생회 오픈채팅방</h2>
-              <p>학생회와 실시간으로 소통하고, 민원 접수 및 문의사항을 편리하게 전달하세요</p>
+              <h2>전북대학교 공과대학 학생회 카카오톡 채널</h2>
+              <p>학생회와 실시간으로 소통하고, 문의사항을 편리하게 전달하세요</p>
             </div>
           </div>
           
@@ -42,12 +42,12 @@ const KakaoChannel = () => {
               whileTap={{ scale: 0.95 }}
             >
               <RiKakaoTalkFill className="button-icon" />
-              카카오톡 채팅방 입장하기
+              카카오톡 채널 입장하기
             </motion.button>
             
             <div className="kakao-qr-section">
               <div className="kakao-qr-container">
-                <img src={kakaoQR} alt="카카오톡 오픈채팅방 QR 코드" className="kakao-qr-image" />
+                <img src={kakaoQR} alt="카카오톡 채널 QR 코드" className="kakao-qr-image" />
               </div>
             </div>
           </div>
@@ -55,9 +55,8 @@ const KakaoChannel = () => {
         <div className="kakao-channel-notice">
           <h3>이용 안내</h3>
           <ul>
-            <li className="kakao-channel-notice-item">문의하실 때, 소성 성명, 학번을 밝혀주세요</li>
             <li>카카오톡 앱이 설치되어 있어야 합니다.</li>
-            <li>오픈채팅방은 누구나 자유롭게 참여할 수 있습니다.</li>
+            <li>카카오톡 채널은 누구나 자유롭게 친구 추가할 수 있습니다.</li>
             <li>욕설, 비방 등 부적절한 내용은 제재될 수 있습니다.</li>
             <li>개인정보 보호를 위해 민감한 정보는 공개하지 말아주세요.</li>
           </ul>

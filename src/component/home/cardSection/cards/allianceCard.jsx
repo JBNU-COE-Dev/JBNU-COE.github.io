@@ -12,7 +12,7 @@ function AllianceCard() {
 
   return (
     <div className="card notice-card" onClick={handleClick} style={{ cursor: 'pointer' }}>
-      <FaCompass size={50} />
+      <FaCompass size={40} />
       <h2>제휴지도</h2>
       <p className='AllianceCard-text'>공과대학 학생만을 위한 <br/> 제휴 정보를 확인해보세요!</p>
     </div>
