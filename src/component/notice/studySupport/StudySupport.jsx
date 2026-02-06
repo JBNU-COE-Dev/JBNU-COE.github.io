@@ -39,9 +39,10 @@ export default function StudySupport() {
 
     try {
       const months = await getAvailableMonths('study-support', selectedYear);
-      setAvailableMonths(months);
-      if (months.length > 0) {
-        setSelectedMonth(months[0]);
+      const sortedMonths = [...months].sort((a, b) => a - b);
+      setAvailableMonths(sortedMonths);
+      if (sortedMonths.length > 0) {
+        setSelectedMonth(sortedMonths[0]);
       } else {
         setSelectedMonth(null);
         setImages([]);
