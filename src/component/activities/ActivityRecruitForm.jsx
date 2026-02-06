@@ -6,13 +6,14 @@ import './activities.css';
 
 function ActivityRecruitForm() {
   const navigate = useNavigate();
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, userNickname, userEmail } = useAuth();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       navigate('/login?redirect=/activities/recruit', { replace: true });
     }
   }, [isAuthenticated, isLoading, navigate]);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [form, setForm] = useState({
@@ -27,6 +28,16 @@ function ActivityRecruitForm() {
     status: 'RECRUITING',
   });
   const [thumbnailFile, setThumbnailFile] = useState(null);
+
+  // 로그인 사용자 닉네임/이메일로 작성자 기본값 설정
+  useEffect(() => {
+    if (isAuthenticated && (userNickname || userEmail)) {
+      setForm((prev) => ({
+        ...prev,
+        author: userNickname || userEmail || prev.author,
+      }));
+    }
+  }, [isAuthenticated, userNickname, userEmail]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

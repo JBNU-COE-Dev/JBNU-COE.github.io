@@ -23,6 +23,15 @@ export async function verifyToken() {
 }
 
 /**
+ * 회원가입 완료 (닉네임 저장)
+ * @param {string} idToken - Google ID 토큰
+ * @param {string} nickname - 닉네임 (2~50자)
+ */
+export async function signup(idToken, nickname) {
+  return post(`${AUTH_BASE}/signup`, { idToken, nickname });
+}
+
+/**
  * 로그아웃
  */
 export async function logout() {
@@ -31,6 +40,7 @@ export async function logout() {
 
 export const authApi = {
   googleLogin,
+  signup,
   verifyToken,
   logout,
 };

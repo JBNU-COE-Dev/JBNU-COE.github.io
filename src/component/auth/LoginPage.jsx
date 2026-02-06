@@ -5,20 +5,45 @@ import { useAuth } from '../../contexts/AuthContext';
 import './LoginPage.css';
 
 function LoginPage() {
-  const { login } = useAuth();
+  const { login, completeSignup } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get('redirect') || '/activities';
   const [error, setError] = useState(null);
+  const [pendingSignup, setPendingSignup] = useState(null); // { idToken, email }
+  const [nickname, setNickname] = useState('');
 
   const handleGoogleSuccess = async (credentialResponse) => {
     setError(null);
     try {
       const idToken = credentialResponse.credential;
-      await login(idToken);
+      const data = await login(idToken);
+      if (data.needSignup) {
+        setPendingSignup({ idToken, email: data.email });
+        return;
+      }
       navigate(redirect);
     } catch (err) {
       setError(err.message || '로그인에 실패했습니다.');
+    }
+  };
+
+  const handleSignupSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+    if (!pendingSignup || !nickname.trim()) {
+      setError('닉네임을 입력해주세요.');
+      return;
+    }
+    if (nickname.trim().length < 2) {
+      setError('닉네임은 2자 이상 입력해주세요.');
+      return;
+    }
+    try {
+      await completeSignup(pendingSignup.idToken, nickname.trim());
+      navigate(redirect);
+    } catch (err) {
+      setError(err.message || '회원가입에 실패했습니다.');
     }
   };
 
@@ -26,7 +51,52 @@ function LoginPage() {
     setError('Google 로그인에 실패했습니다. 다시 시도해주세요.');
   };
 
-  const clientId = '817276821213-usk2qqqca7ijmlvjvdt99hsbagnl6b20.apps.googleusercontent.com';
+  const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID || '817276821213-usk2qqqca7ijmlvjvdt99hsbagnl6b20.apps.googleusercontent.com';
+
+  // 닉네임 입력 단계 (신규 회원)
+  if (pendingSignup) {
+    return (
+      <div className="login-page">
+        <div className="login-card">
+          <h1>닉네임 설정</h1>
+          <p className="login-description">
+            사용할 닉네임을 입력해주세요. (2~50자)
+          </p>
+          {error && <div className="login-error">{error}</div>}
+          <form onSubmit={handleSignupSubmit}>
+            <div className="login-nickname-group">
+              <input
+                type="text"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                placeholder="닉네임"
+                minLength={2}
+                maxLength={50}
+                className="login-nickname-input"
+                autoFocus
+              />
+            </div>
+            <div className="login-actions">
+              <button type="submit" className="login-submit">
+                가입 완료
+              </button>
+              <button
+                type="button"
+                className="login-back"
+                onClick={() => {
+                  setPendingSignup(null);
+                  setNickname('');
+                  setError(null);
+                }}
+              >
+                이전으로
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="login-page">

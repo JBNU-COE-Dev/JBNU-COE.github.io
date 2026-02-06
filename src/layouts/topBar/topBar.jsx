@@ -4,14 +4,14 @@ import { useAuth } from '../../contexts/AuthContext';
 import './topBar.css';
 
 function TopBar() {
-  const { isAuthenticated, userEmail, logout } = useAuth();
+  const { isAuthenticated, userNickname, userEmail, logout } = useAuth();
 
   return (
     <div className="top-bar">
       <div className="top-bar-right">
         {isAuthenticated ? (
           <>
-            <span className="top-bar-user">{userEmail}</span>
+            <span className="top-bar-user">{userNickname || userEmail}</span>
             <span className="top-bar-divider">|</span>
             <button type="button" className="top-bar-btn" onClick={logout}>
               로그아웃
