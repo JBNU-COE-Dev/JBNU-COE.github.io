@@ -84,67 +84,98 @@
   gap: 1.5rem;
 }
 
-.contact-kakao-section {
-  background: #fee500;
-  padding: 1rem 2.5rem 2rem;
-  border-radius: 15px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-.kakao-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-}
-
-.kakao-icon {
-  font-size: 4rem;
-  color: #3c1e1e;
-  flex-shrink: 0;
-}
-
-.kakao-text {
+/* 카카오 카드 - KakaoChannel 스타일 통일 */
+.kakao-main-card {
+  background: linear-gradient(135deg, #FEE500 0%, #FFD700 100%);
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(254, 229, 0, 0.3);
   text-align: center;
 }
 
-.kakao-text h3 {
-  font-size: 1.3rem;
-  color: #3c1e1e;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
+.kakao-card-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
-.kakao-text p {
-  font-size: 0.95rem;
-  color: #3c1e1e;
-  opacity: 0.8;
+.kakao-card-icon {
+  font-size: 4rem;
+  color: #3C1E1E;
+}
+
+.kakao-card-text h2 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #3C1E1E;
+  margin: 0 0 0.5rem 0;
+}
+
+.kakao-card-text p {
+  font-size: 1.1rem;
+  color: #3C1E1E;
+  opacity: 0.9;
   margin: 0;
 }
 
-.kakao-button {
-  background: #3c1e1e;
-  color: #fee500;
-  border: none;
-  padding: 1rem 2.5rem;
-  font-size: 1.1rem;
-  font-weight: bold;
-  border-radius: 30px;
-  cursor: pointer;
+.kakao-card-actions {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.8rem;
-  box-shadow: 0 4px 15px rgba(60, 30, 30, 0.3);
+  gap: 2rem;
+}
+
+.kakao-card-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: #3C1E1E;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(60, 30, 30, 0.3);
   transition: all 0.3s ease;
 }
 
-.kakao-button:hover {
+.kakao-card-button:hover {
+  background: #2a1515;
   box-shadow: 0 6px 20px rgba(60, 30, 30, 0.4);
+}
+
+.kakao-card-button .button-icon {
+  font-size: 1.5rem;
+}
+
+.kakao-qr-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.kakao-qr-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(60, 30, 30, 0.2);
+}
+
+.kakao-qr-image {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: white;
+  padding: 0.5rem;
 }
 
 .contact-email-section {
@@ -317,14 +348,18 @@
     font-size: 3rem;
   }
 
-  .kakao-icon,
+  .kakao-card-icon,
   .email-icon {
     font-size: 3rem;
   }
 
-  .kakao-text h3,
+  .kakao-card-text h2,
   .email-text h3 {
-    font-size: 1.1rem;
+    font-size: 1.5rem;
+  }
+
+  .kakao-main-card {
+    padding: 2rem 1.5rem;
   }
 }
 
@@ -348,7 +383,7 @@
   }
 
   .board-inquiry-info-box,
-  .contact-kakao-section,
+  .kakao-main-card,
   .contact-email-section,
   .board-inquiry-notice {
     padding: 1.5rem;
@@ -362,34 +397,34 @@
     font-size: 0.9rem;
   }
 
-  .kakao-info,
-  .email-info {
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
-  }
-
-  .kakao-icon,
+  .kakao-card-icon,
   .email-icon {
-    font-size: 3.5rem;
+    font-size: 3rem;
   }
 
-  .kakao-text h3,
+  .kakao-card-text h2,
   .email-text h3 {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
   }
 
-  .kakao-text p,
+  .kakao-card-text p,
   .email-text p {
-    font-size: 0.85rem;
+    font-size: 0.95rem;
   }
 
-  .kakao-button,
+  .kakao-card-button,
   .email-button {
-    padding: 0.9rem 2rem;
-    font-size: 1rem;
     width: 100%;
     justify-content: center;
+  }
+
+  .kakao-card-actions {
+    gap: 1.5rem;
+  }
+
+  .kakao-qr-image {
+    width: 150px;
+    height: 150px;
   }
 
   .board-inquiry-notice h2 {

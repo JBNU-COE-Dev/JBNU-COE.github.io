@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import { FaComments } from 'react-icons/fa';
 import './Report.css';
+import kakaoQR from '../../../img/qr-code/kakaoQR.png';
 
 const Report = () => {
   const kakaoUrl = 'https://open.kakao.com/o/suMsRU8h';
@@ -46,37 +47,32 @@ const Report = () => {
           </ul>
         </div>
 
-        <motion.div
-          className="report-kakao-section"
-          whileHover={{ scale: 1.02 }}
-          transition={{ type: "spring", stiffness: 300 }}
-        >
-          <div className="kakao-info">
-            <RiKakaoTalkFill className="kakao-icon" />
-            <div className="kakao-text">
-              <h3>전북대학교 공과대학 민원접수 채팅방</h3>
+        <div className="kakao-main-card">
+          <div className="kakao-card-info">
+            <RiKakaoTalkFill className="kakao-card-icon" />
+            <div className="kakao-card-text">
+              <h2>전북대학교 공과대학 민원접수 채팅방</h2>
               <p>아래 버튼을 클릭하여 카카오톡 오픈채팅방으로 이동하세요</p>
             </div>
           </div>
-          
-          <motion.button
-            className="kakao-button"
-            onClick={handleKakaoClick}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <RiKakaoTalkFill className="button-icon" />
-            카카오톡 채팅방 입장하기
-          </motion.button>
-        </motion.div>
 
-        <div className="report-notice">
-          <h3>⚠️ 유의사항</h3>
-          <ul>
-            <li>욕설, 비방 등 부적절한 내용은 답변이 제한될 수 있습니다.</li>
-            <li>개인정보 보호를 위해 민감한 정보는 공개하지 말아주세요.</li>
-            <li>긴급한 사항은 학생회 사무실(063-270-XXXX)로 직접 연락해주세요.</li>
-          </ul>
+          <div className="kakao-card-actions">
+            <motion.button
+              className="kakao-card-button"
+              onClick={handleKakaoClick}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <RiKakaoTalkFill className="button-icon" />
+              카카오톡 채팅방 입장하기
+            </motion.button>
+
+            <div className="kakao-qr-section">
+              <div className="kakao-qr-container">
+                <img src={kakaoQR} alt="카카오톡 오픈채팅 QR코드" className="kakao-qr-image" />
+              </div>
+            </div>
+          </div>
         </div>
       </motion.div>
     </motion.div>
