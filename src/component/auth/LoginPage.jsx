@@ -51,7 +51,7 @@ function LoginPage() {
     setError('Google 로그인에 실패했습니다. 다시 시도해주세요.');
   };
 
-  const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID || '817276821213-usk2qqqca7ijmlvjvdt99hsbagnl6b20.apps.googleusercontent.com';
+  const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID || '';
 
   // 닉네임 입력 단계 (신규 회원)
   if (pendingSignup) {

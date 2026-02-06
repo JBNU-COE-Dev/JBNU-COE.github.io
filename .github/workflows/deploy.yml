@@ -11,11 +11,14 @@ jobs:
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}
         with:
           host: ${{ secrets.JCLOUD_SSH_HOST }}
           username: ${{ secrets.JCLOUD_SSH_USER }}
           key: ${{ secrets.JCLOUD_SSH_KEY }}
           port: ${{ secrets.JCLOUD_SSH_PORT }}
+          envs: REACT_APP_GOOGLE_CLIENT_ID
           script: |
             set -e
               cd /home/ubuntu/admin
