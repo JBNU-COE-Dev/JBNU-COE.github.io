@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createActivity } from '../../services/activityApi';
+import { useAuth } from '../../contexts/AuthContext';
 import './activities.css';
 
 function ActivityRecruitForm() {
   const navigate = useNavigate();
+  const { isAuthenticated, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      navigate('/login?redirect=/activities/recruit', { replace: true });
+    }
+  }, [isAuthenticated, isLoading, navigate]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [form, setForm] = useState({
@@ -49,6 +57,14 @@ function ActivityRecruitForm() {
       setLoading(false);
     }
   };
+
+  if (isLoading || !isAuthenticated) {
+    return (
+      <div className="activities-page" style={{ padding: '3rem', textAlign: 'center' }}>
+        로그인 확인 중...
+      </div>
+    );
+  }
 
   return (
     <div className="activities-page">

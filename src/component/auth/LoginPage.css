@@ -1,0 +1,77 @@
+.login-page {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.login-card h1 {
+  font-size: 1.5rem;
+  color: #004ca5;
+  margin-bottom: 1rem;
+}
+
+.login-description {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.login-error {
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background: #fef2f2;
+  color: #b91c1c;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.login-google-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.login-google-wrap > div {
+  width: 100% !important;
+}
+
+.login-google-wrap iframe {
+  width: 100% !important;
+  min-width: 240px !important;
+}
+
+.login-no-client {
+  padding: 1rem;
+  background: #fef9c3;
+  color: #854d0e;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.login-back {
+  background: none;
+  border: 1px solid #ddd;
+  color: #666;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.login-back:hover {
+  background: #f5f5f5;
+}
