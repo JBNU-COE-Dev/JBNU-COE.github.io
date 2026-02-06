@@ -121,11 +121,12 @@ function ActivityRecruitForm() {
             type="text"
             name="author"
             value={form.author}
-            onChange={handleChange}
+            readOnly
             required
+            aria-readonly="true"
             maxLength={100}
             className="activities-filter-select"
-            style={{ width: '100%' }}
+            style={{ width: '100%', backgroundColor: '#f5f5f5', cursor: 'not-allowed' }}
           />
         </div>
         <div className="activities-filter-group" style={{ marginBottom: '1rem' }}>
