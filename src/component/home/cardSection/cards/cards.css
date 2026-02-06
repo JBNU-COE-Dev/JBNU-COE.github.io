@@ -1,11 +1,28 @@
+/* 카드 설명 텍스트 - 기본 숨김 */
 .AllianceCard-text, .NoticeCard-text, .ReportCard-text {
     font-size: 1rem;
     font-weight: bold;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+    margin-top: 0;
 }
+
+/* PC 호버 시 설명 텍스트 표시 */
+.card1:hover .NoticeCard-text,
+.card2:hover .AllianceCard-text,
+.card4:hover .ReportCard-text {
+    opacity: 1;
+    max-height: 100px;
+    margin-top: 0.5rem;
+}
+
+/* 모바일에서는 설명 텍스트 숨김 */
 @media (max-width: 767px) {
     .AllianceCard-text,
     .NoticeCard-text,
     .ReportCard-text {
       display: none;
     }
-  }
+}

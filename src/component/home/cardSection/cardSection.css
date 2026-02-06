@@ -2,7 +2,7 @@
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
-  align-items: stretch;
+  align-items: flex-end;
   color: white;
   gap: 0;
   padding: 0;
@@ -18,8 +18,8 @@
   justify-content: flex-start;
   align-items: center;
   width: 33.33%; /* 기본: 3개 가로 나열 (PC 환경) */
-  height: 100%;
-  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  height: 75%;
+  padding: 3rem 1.5rem 3rem 1.5rem;
   text-align: center;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   color: white;
@@ -28,8 +28,7 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  opacity: 0.75;
-  transform-origin: center bottom;
+  opacity: 1;
 }
 
 /* 카드 색상 지정 */
@@ -37,12 +36,12 @@
 .card2 { background-color: #9bbbd4; } /* 제휴지도 */
 .card4 { background-color: #5093df; } /* 민원접수 */
 
-/* 카드 호버 효과 (PC) */
+/* 카드 호버 효과 (PC) - 위로 늘어남 */
 .card1:hover,
 .card2:hover,
 .card4:hover {
   opacity: 1;
-  transform: scaleY(1.15);
+  height: 100%;
   box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.25);
 }
 
@@ -63,6 +62,7 @@
   .card-section {
     display: flex;
     flex-wrap: nowrap;
+    align-items: stretch;
     width: 100%;
     height: 100%;
     gap: 0;
@@ -71,32 +71,44 @@
   .card1, .card2, .card4 {
     width: 33.33%;
     height: 100%;
-    padding: 1.5rem 0.5rem 1rem 0.5rem;
+    padding: 2rem 0.5rem 2rem 0.5rem;
     min-height: auto;
     transition: all 0.3s ease;
+    opacity: 1;
+    justify-content: center;
   }
 
   /* 모바일에서 호버 효과 제거하고 터치 피드백 강화 */
   .card1:hover,
   .card2:hover,
   .card4:hover {
-    transform: none;
-    opacity: 0.75;
+    height: 100%;
+    opacity: 1;
   }
 
   .card1:active,
   .card2:active,
   .card4:active {
-    transform: scaleY(0.95);
-    opacity: 1;
+    opacity: 0.9;
   }
 }
 
 /* 🧾 태블릿: 3개 카드를 가로로 나열 */
 @media (min-width: 768px) and (max-width: 1023px) {
+  .card-section {
+    align-items: flex-end;
+  }
+
   .card1, .card2, .card4 {
     width: 33.33%;
+    height: 75%;
+    padding: 2.5rem 1rem 2.5rem 1rem;
+    opacity: 1;
+  }
+
+  .card1:hover,
+  .card2:hover,
+  .card4:hover {
     height: 100%;
-    padding: 1.5rem;
   }
 }
