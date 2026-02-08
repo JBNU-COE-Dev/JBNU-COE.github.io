@@ -27,18 +27,34 @@ export function getApiUrl() {
 }
 
 /**
+ * 업로드/리소스 파일용 베이스 URL (uploads는 /api 밖에 있음)
+ */
+function getUploadsBaseUrl() {
+  const apiBase = getApiUrl();
+  if (!apiBase) return '';
+  if (apiBase.endsWith('/api')) return apiBase.slice(0, -4);
+  return apiBase;
+}
+
+/**
  * 리소스/파일 이미지 URL 정규화
- * - 로컬에서 업로드된 데이터는 fileUrl이 http://localhost:8080/... 로 저장되어
- *   배포 환경에서는 이미지를 불러오지 못함. 현재 API 기준 URL로 변환.
+ * - DB에 저장된 fileUrl은 업로드 시점 baseUrl 포함 (localhost, api.engsc 등)
+ * - 현재 배포 환경 기준 URL로 변환하여 이미지 렌더링 보장
  */
 export function getResourceFileUrl(fileUrl) {
   if (!fileUrl) return '';
-  const base = getApiUrl();
+  const base = getUploadsBaseUrl();
   try {
     if (fileUrl.startsWith('/')) {
       return base + fileUrl;
     }
     const u = new URL(fileUrl);
+    // /uploads/ 경로는 항상 현재 배포 origin 기준으로 변환
+    // (localhost, api.engsc.jbnu.ac.kr 등 이전/잘못된 호스트 대응)
+    if (u.pathname.startsWith('/uploads/')) {
+      return base + u.pathname;
+    }
+    // 다른 경로는 localhost/127.0.0.1만 변환 (기존 호환)
     if (u.hostname === 'localhost' || u.hostname === '127.0.0.1') {
       return base + u.pathname;
     }
