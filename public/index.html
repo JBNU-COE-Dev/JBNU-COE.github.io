@@ -28,12 +28,12 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <!-- 배포 환경: 같은 호스트의 api 서브도메인으로 API 요청 (예: feel-test.113.198.66.98.nip.io → api.feel-test.113.198.66.98.nip.io). 로컬(localhost)에서는 빌드 시 설정한 REACT_APP_API_URL 사용 -->
+    <!-- 배포 환경: engsc.jbnu.ac.kr은 단일 도메인(/api 경로) 사용 → 상대 경로. 과거 api.서브도메인 방식은 제거됨 -->
     <script>
       (function() {
         var h = window.location.hostname;
-        if (h && h !== 'localhost' && h !== '127.0.0.1') {
-          window.__FEEL_API_URL__ = window.location.protocol + '//api.' + h;
+        if (h === 'engsc.jbnu.ac.kr' || h === 'local-engsc.jbnu.ac.kr') {
+          window.__FEEL_API_URL__ = ''; // 동일 오리진, /api/... 상대 경로 사용
         }
       })();
     </script>

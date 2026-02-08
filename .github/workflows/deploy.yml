@@ -21,7 +21,7 @@ jobs:
           envs: REACT_APP_GOOGLE_CLIENT_ID
           script: |
             set -e
-            cd /home/ubuntu/admin || { echo "ERR: cd failed"; exit 1; }
+            cd /home/ubuntu/JBNU-COE.github.io || { echo "ERR: cd failed"; exit 1; }
             
             echo "=== 현재 브랜치 및 origin ==="
             git branch -a

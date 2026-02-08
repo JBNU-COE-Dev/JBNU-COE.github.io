@@ -7,12 +7,23 @@
 
 const API_TIMEOUT = 30000; // 30초
 
-/** 현재 사용할 API 베이스 URL (런타임 오버라이드 지원) */
+/** 현재 사용할 API 베이스 URL (런타임 오버라이드 + 동일 오리진 시 상대 경로) */
 export function getApiUrl() {
-  if (typeof window !== 'undefined' && window.__FEEL_API_URL__) {
+  if (typeof window !== 'undefined' && window.__FEEL_API_URL__ !== undefined) {
     return String(window.__FEEL_API_URL__).replace(/\/$/, '');
   }
-  return (process.env.REACT_APP_API_URL || 'http://localhost:8080').replace(/\/$/, '');
+  const env = (process.env.REACT_APP_API_URL || 'http://localhost:8080').replace(/\/$/, '');
+  if (typeof window !== 'undefined') {
+    try {
+      const envOrigin = new URL(env).origin;
+      if (envOrigin === window.location.origin) {
+        return ''; // 동일 오리진 → 상대 경로 (engsc.jbnu.ac.kr, localhost Docker)
+      }
+    } catch {
+      /* ignore */
+    }
+  }
+  return env;
 }
 
 /**
