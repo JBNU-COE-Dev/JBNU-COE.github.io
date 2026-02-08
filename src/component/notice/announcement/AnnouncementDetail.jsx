@@ -4,9 +4,8 @@ import { motion } from 'framer-motion';
 import { FiClock, FiUser, FiEye, FiArrowLeft } from 'react-icons/fi';
 import { BsPinAngleFill } from 'react-icons/bs';
 import { formatDate } from './utils';
+import { getApiUrl } from '../../../services';
 import './announcement.css';
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
 export default function AnnouncementDetail() {
   const { id } = useParams();
@@ -19,7 +18,7 @@ export default function AnnouncementDetail() {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/api/notices/${id}`);
+      const response = await fetch(`${getApiUrl() || ''}/api/notices/${id}`);
       if (!response.ok) throw new Error('공지사항을 불러오는데 실패했습니다.');
       const data = await response.json();
       setNotice(data);
@@ -178,7 +177,7 @@ export default function AnnouncementDetail() {
             transition={{ delay: 0.9 }}
           >
             <img
-              src={`${API_URL}${notice.imageUrl}`}
+              src={`${getApiUrl() || ''}${notice.imageUrl}`}
               alt={notice.title}
               className="detail-image"
               onError={(e) => {

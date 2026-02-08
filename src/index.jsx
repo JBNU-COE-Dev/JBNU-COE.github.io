@@ -6,13 +6,13 @@ import App from './App.jsx';
 import reportWebVitals from './reportWebVitals.jsx';
 import { AuthProvider } from './contexts/AuthContext.jsx';
 
-const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID || '';
+const googleClientId = '817276821213-usk2qqqca7ijmlvjvdt99hsbagnl6b20.apps.googleusercontent.com';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <GoogleOAuthProvider clientId={googleClientId || 'placeholder.apps.googleusercontent.com'}>
+      <GoogleOAuthProvider clientId={googleClientId || 'dummy.apps.googleusercontent.com'}>
         <App />
       </GoogleOAuthProvider>
     </AuthProvider>
