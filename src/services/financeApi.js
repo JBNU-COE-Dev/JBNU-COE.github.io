@@ -10,7 +10,7 @@
  * - POST   /api/finance/reports/upload    : PDF 파일 업로드 (관리자)
  * - GET    /api/finance/reports/:id/download : PDF 파일 다운로드
  */
-import { get, post, put, del, uploadFile, getApiUrl } from './api';
+import { get, post, put, del, uploadFile } from './api';
 
 /**
  * 회계 보고서 목록 조회
@@ -139,8 +139,8 @@ export async function uploadFinancePDF(file, onProgress) {
  * @returns {string} 다운로드 URL
  */
 export function getDownloadUrl(id) {
-  const base = getApiUrl();
-  return `${base ? base : ''}/api/finance/reports/${id}/download`;
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+  return `${API_URL}/api/finance/reports/${id}/download`;
 }
 
 export default {

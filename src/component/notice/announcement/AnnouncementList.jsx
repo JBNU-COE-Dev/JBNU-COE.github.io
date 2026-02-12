@@ -3,8 +3,9 @@ import { motion } from 'framer-motion';
 import AnnouncementHeader from './AnnouncementHeader';
 import AnnouncementContent from './AnnouncementContent';
 import { formatDate } from './utils';
-import { getApiUrl } from '../../../services';
 import './announcement.css';
+
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
 export default function AnnouncementList() {
   const [notices, setNotices] = useState([]);
@@ -20,7 +21,7 @@ export default function AnnouncementList() {
     setLoading(true);
     setError(null);
     try {
-      let url = `${getApiUrl() || ''}/api/notices?page=${currentPage}&size=10`;
+      let url = `${API_URL}/api/notices?page=${currentPage}&size=10`;
       if (selectedCategory !== 'all') {
         url += `&category=${encodeURIComponent(selectedCategory)}`;
       }
@@ -38,7 +39,7 @@ export default function AnnouncementList() {
 
   const fetchPinnedNotices = useCallback(async () => {
     try {
-      const response = await fetch(`${getApiUrl() || ''}/api/notices/pinned`);
+      const response = await fetch(`${API_URL}/api/notices/pinned`);
       if (response.ok) {
         const data = await response.json();
         setPinnedNotices(data);
@@ -63,7 +64,7 @@ export default function AnnouncementList() {
     setLoading(true);
     setError(null);
     try {
-      let url = `${getApiUrl() || ''}/api/notices/search?keyword=${encodeURIComponent(searchKeyword)}&page=${currentPage}&size=10`;
+      let url = `${API_URL}/api/notices/search?keyword=${encodeURIComponent(searchKeyword)}&page=${currentPage}&size=10`;
       if (selectedCategory !== 'all') {
         url += `&category=${encodeURIComponent(selectedCategory)}`;
       }
