@@ -26,15 +26,7 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <!-- 배포 환경: 같은 호스트의 api 서브도메인으로 API 요청 (예: feel-test.113.198.66.98.nip.io → api.feel-test.113.198.66.98.nip.io). 로컬(localhost)에서는 빌드 시 설정한 REACT_APP_API_URL 사용 -->
-    <script>
-      (function() {
-        var h = window.location.hostname;
-        if (h && h !== 'localhost' && h !== '127.0.0.1') {
-          window.__FEEL_API_URL__ = window.location.protocol + '//api.' + h;
-        }
-      })();
-    </script>
+    <!-- API URL은 빌드 시 REACT_APP_API_URL만 사용 (Docker/nginx 배포 시 빌드 인자로 전달) -->
     <div id="root"></div>
     <!--
       This HTML file is a template.
