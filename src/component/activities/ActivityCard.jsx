@@ -23,7 +23,7 @@ function ActivityCard({ item }) {
     <article className="activity-card" onClick={handleClick}>
       <div className="activity-card-image-wrap">
         {thumbnailUrl ? (
-          <img src={thumbnailUrl} alt="" className="activity-card-image" />
+          <img src={thumbnailUrl} alt="" className="activity-card-image" loading="lazy" />
         ) : (
           <div className="activity-card-image-placeholder">
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
