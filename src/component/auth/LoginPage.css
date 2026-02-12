@@ -36,6 +36,26 @@
   color: #b91c1c;
   border-radius: 8px;
   font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.login-error-close {
+  background: none;
+  border: none;
+  color: #b91c1c;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 0.25rem;
+  line-height: 1;
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.login-error-close:hover {
+  opacity: 1;
 }
 
 .login-google-wrap {
@@ -92,6 +112,15 @@
 .login-nickname-input:focus {
   outline: none;
   border-color: #004ca5;
+  box-shadow: 0 0 0 3px rgba(0, 76, 165, 0.15);
+}
+
+.login-nickname-counter {
+  display: block;
+  text-align: right;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin-top: 0.3rem;
 }
 
 .login-actions {
@@ -113,4 +142,23 @@
 
 .login-submit:hover {
   background: #003d84;
+}
+
+.login-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ─── 반응형: 모바일 ─── */
+@media (max-width: 480px) {
+  .login-card {
+    max-width: 100%;
+    padding: 1.5rem 1rem;
+    box-shadow: none;
+    border: 1px solid #e5e7eb;
+  }
+
+  .login-card h1 {
+    font-size: 1.3rem;
+  }
 }

@@ -223,7 +223,7 @@ function ActivityList() {
       )}
 
       {/* Intersection Observer sentinel */}
-      <div ref={sentinelRef} style={{ height: 1 }} />
+      <div ref={sentinelRef} className="activities-scroll-sentinel" />
 
       <div className="activities-write-btn-wrap">
         <button

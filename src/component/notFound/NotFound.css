@@ -1,0 +1,71 @@
+.not-found-page {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.not-found-card {
+  text-align: center;
+  max-width: 420px;
+}
+
+.not-found-code {
+  display: block;
+  font-size: clamp(4rem, 12vw, 6rem);
+  font-weight: 800;
+  color: var(--color-primary, #004ca5);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.not-found-title {
+  font-size: clamp(1.2rem, 4vw, 1.5rem);
+  color: var(--color-text, #1f2937);
+  margin-bottom: 0.75rem;
+}
+
+.not-found-desc {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary, #6b7280);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.not-found-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.not-found-btn-primary {
+  background: var(--color-primary, #004ca5);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--radius-md, 8px);
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background var(--transition-fast, 0.15s ease);
+}
+
+.not-found-btn-primary:hover {
+  background: var(--color-primary-dark, #003d8a);
+}
+
+.not-found-btn-secondary {
+  background: none;
+  border: 1px solid var(--color-border, #d1d5db);
+  color: var(--color-text-secondary, #6b7280);
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--radius-md, 8px);
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background var(--transition-fast, 0.15s ease);
+}
+
+.not-found-btn-secondary:hover {
+  background: var(--color-bg-secondary, #f3f4f6);
+}

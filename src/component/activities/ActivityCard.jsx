@@ -19,11 +19,25 @@ function ActivityCard({ item }) {
     navigate(`/activities/${item.id}`);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleClick();
+    }
+  };
+
   return (
-    <article className="activity-card" onClick={handleClick}>
+    <article
+      className="activity-card"
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="link"
+      aria-label={`${item.title} - ${CATEGORY_LABEL[item.category] || item.category}`}
+    >
       <div className="activity-card-image-wrap">
         {thumbnailUrl ? (
-          <img src={thumbnailUrl} alt="" className="activity-card-image" loading="lazy" />
+          <img src={thumbnailUrl} alt={item.title} className="activity-card-image" loading="lazy" />
         ) : (
           <div className="activity-card-image-placeholder">
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

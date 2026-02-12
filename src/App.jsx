@@ -37,10 +37,11 @@ const ActivityList = lazy(() => import('./component/activities/ActivityList.jsx'
 const ActivityDetail = lazy(() => import('./component/activities/ActivityDetail.jsx'));
 const ActivityRecruitForm = lazy(() => import('./component/activities/ActivityRecruitForm.jsx'));
 const LoginPage = lazy(() => import('./component/auth/LoginPage.jsx'));
+const NotFound = lazy(() => import('./component/notFound/NotFound.jsx'));
 
 function PageLoader() {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '40vh' }}>
+    <div className="page-loader">
       <div className="activities-spinner" />
     </div>
   );
@@ -88,6 +89,7 @@ function App() {
               <Route path="/activities" element={<ActivityList />} />
               <Route path="/activities/recruit" element={<ActivityRecruitForm />} />
               <Route path="/activities/:id" element={<ActivityDetail />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </main>

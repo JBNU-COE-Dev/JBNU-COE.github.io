@@ -108,7 +108,7 @@ function ActivityDetail() {
 
       {thumbnailUrl && (
         <div className="activities-detail-thumbnail">
-          <img src={thumbnailUrl} alt="" loading="lazy" />
+          <img src={thumbnailUrl} alt={item.title} loading="lazy" />
         </div>
       )}
 

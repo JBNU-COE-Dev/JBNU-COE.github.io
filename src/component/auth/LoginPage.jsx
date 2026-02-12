@@ -4,14 +4,18 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../../contexts/AuthContext';
 import './LoginPage.css';
 
+const NICKNAME_MIN = 2;
+const NICKNAME_MAX = 50;
+
 function LoginPage() {
   const { login, completeSignup } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get('redirect') || '/activities';
   const [error, setError] = useState(null);
-  const [pendingSignup, setPendingSignup] = useState(null); // { idToken, email }
+  const [pendingSignup, setPendingSignup] = useState(null);
   const [nickname, setNickname] = useState('');
+  const [signupLoading, setSignupLoading] = useState(false);
 
   const handleGoogleSuccess = async (credentialResponse) => {
     setError(null);
@@ -35,15 +39,18 @@ function LoginPage() {
       setError('닉네임을 입력해주세요.');
       return;
     }
-    if (nickname.trim().length < 2) {
+    if (nickname.trim().length < NICKNAME_MIN) {
       setError('닉네임은 2자 이상 입력해주세요.');
       return;
     }
+    setSignupLoading(true);
     try {
       await completeSignup(pendingSignup.idToken, nickname.trim());
       navigate(redirect);
     } catch (err) {
       setError(err.message || '회원가입에 실패했습니다.');
+    } finally {
+      setSignupLoading(false);
     }
   };
 
@@ -60,29 +67,36 @@ function LoginPage() {
         <div className="login-card">
           <h1>닉네임 설정</h1>
           <p className="login-description">
-            사용할 닉네임을 입력해주세요. (2~50자)
+            사용할 닉네임을 입력해주세요. ({NICKNAME_MIN}~{NICKNAME_MAX}자)
           </p>
-          {error && <div className="login-error">{error}</div>}
-          <form onSubmit={handleSignupSubmit}>
+          {error && (
+            <div className="login-error">
+              {error}
+              <button type="button" className="login-error-close" onClick={() => setError(null)} aria-label="닫기">&times;</button>
+            </div>
+          )}
+          <form onSubmit={handleSignupSubmit} noValidate>
             <div className="login-nickname-group">
               <input
                 type="text"
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
                 placeholder="닉네임"
-                minLength={2}
-                maxLength={50}
+                minLength={NICKNAME_MIN}
+                maxLength={NICKNAME_MAX}
                 className="login-nickname-input"
                 autoFocus
               />
+              <span className="login-nickname-counter">{nickname.length}/{NICKNAME_MAX}</span>
             </div>
             <div className="login-actions">
-              <button type="submit" className="login-submit">
-                가입 완료
+              <button type="submit" className="login-submit" disabled={signupLoading}>
+                {signupLoading ? '가입 중...' : '가입 완료'}
               </button>
               <button
                 type="button"
                 className="login-back"
+                disabled={signupLoading}
                 onClick={() => {
                   setPendingSignup(null);
                   setNickname('');
@@ -107,7 +121,12 @@ function LoginPage() {
           <br />
           팀원 모집 글 작성 등에 로그인이 필요합니다.
         </p>
-        {error && <div className="login-error">{error}</div>}
+        {error && (
+          <div className="login-error">
+            {error}
+            <button type="button" className="login-error-close" onClick={() => setError(null)} aria-label="닫기">&times;</button>
+          </div>
+        )}
         {clientId ? (
           <div className="login-google-wrap">
             <GoogleLogin

@@ -91,6 +91,13 @@ html, body, #root{
   flex: 1;
 }
 
+.page-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 40vh;
+}
+
 
 /* 배너 스타일 (최하단) */
 .banner-container {
