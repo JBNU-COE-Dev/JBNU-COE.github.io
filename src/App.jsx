@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './component/home/home.jsx';
 
 import Benefits from './component/benefits/benefits.jsx';
@@ -23,8 +23,6 @@ import Pledge from './component/pledge/pledge.jsx';
 import Report from './component/contact/report/Report.jsx';
 import BoardInquiry from './component/contact/boardInquiry/BoardInquiry.jsx';
 import KakaoChannel from './component/contact/kakaoChannel/KakaoChannel.jsx';
-import Matching from './component/matching/Matching.jsx';
-import MatchingDetail from './component/matching/MatchingDetail.jsx';
 import ActivityList from './component/activities/ActivityList.jsx';
 import ActivityDetail from './component/activities/ActivityDetail.jsx';
 import ActivityRecruitForm from './component/activities/ActivityRecruitForm.jsx';
@@ -41,7 +39,7 @@ import { useLayoutResize } from './component/hooks/useLayoutResize.jsx';
 function App() {
   const { isMobile, isTablet, isDesktop } = useResponsive();
   useLayoutResize();
-  
+
   return (
     <BrowserRouter basename="/">
       <div className="app-container">
@@ -73,8 +71,8 @@ function App() {
               <Route path="/about/intro" element={<Intro />} />
               <Route path="/about/organization" element={<Organization />} />
               <Route path="/notice/pledge" element={<Pledge />} />
-              <Route path="/matching" element={<Matching />} />
-              <Route path="/matching/:id" element={<MatchingDetail />} />
+              <Route path="/matching" element={<Navigate to="/activities" replace />} />
+              <Route path="/matching/:id" element={<Navigate to="/activities" replace />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/activities" element={<ActivityList />} />
               <Route path="/activities/recruit" element={<ActivityRecruitForm />} />
@@ -93,4 +91,4 @@ function App() {
   );
 }
 
-export default App; 
+export default App;

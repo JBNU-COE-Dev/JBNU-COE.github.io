@@ -1,23 +1,11 @@
 import React from 'react';
+import { CATEGORY_OPTIONS, SORT_OPTIONS } from './activityConstants';
 import './activities.css';
 
-const CATEGORY_OPTIONS = [
-  { value: '', label: '전체' },
-  { value: 'EXTERNAL_ACTIVITY', label: '대외활동' },
-  { value: 'CONTEST', label: '공모전' },
-  { value: 'TEAM_RECRUITMENT', label: '팀원 모집' },
-];
-
-const SORT_OPTIONS = [
-  { value: 'latest', label: '최신순' },
-  { value: 'deadline', label: '마감 임박순' },
-  { value: 'viewCount', label: '조회수순' },
-];
-
 /**
- * 카테고리 필터 및 정렬 옵션 선택 바
+ * 카테고리 필터, 정렬 옵션, 검색 입력 바
  */
-function FilterBar({ category, sort, onCategoryChange, onSortChange }) {
+function FilterBar({ category, sort, onCategoryChange, onSortChange, searchQuery, onSearchChange }) {
   return (
     <div className="activities-filter-bar">
       <div className="activities-filter-group">
@@ -47,6 +35,28 @@ function FilterBar({ category, sort, onCategoryChange, onSortChange }) {
             </option>
           ))}
         </select>
+      </div>
+      <div className="activities-filter-group activities-search-group">
+        <label className="activities-filter-label">검색</label>
+        <div className="activities-search-wrap">
+          <input
+            type="text"
+            className="activities-filter-select activities-search-input"
+            placeholder="제목, 주최, 작성자 검색"
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              className="activities-search-clear"
+              onClick={() => onSearchChange('')}
+              aria-label="검색어 지우기"
+            >
+              &times;
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

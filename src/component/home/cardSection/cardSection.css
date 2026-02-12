@@ -31,10 +31,10 @@
   opacity: 1;
 }
 
-/* 카드 색상 지정 */
-.card1 { background-color: #5a91d4; } /* 공지사항 */
-.card2 { background-color: #9bbbd4; } /* 제휴지도 */
-.card4 { background-color: #5093df; } /* 민원접수 */
+/* 카드 색상 지정 (모던 그라디언트) */
+.card1 { background: linear-gradient(135deg, #3a7bd5 0%, #00538a 100%); } /* 공지사항 */
+.card2 { background: linear-gradient(135deg, #56b4d3 0%, #348f9b 100%); } /* 제휴지도 */
+.card4 { background: linear-gradient(135deg, #667eea 0%, #3b5cc6 100%); } /* 민원접수 */
 
 /* 카드 호버 효과 (PC) - 위로 늘어남 */
 .card1:hover,

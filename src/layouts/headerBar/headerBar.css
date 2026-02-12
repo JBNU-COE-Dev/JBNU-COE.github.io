@@ -8,7 +8,9 @@
     width: 100%;
     color: white;
     z-index: 9999;
-    /* Framer Motion이 배경/그림자 제어하므로 CSS 기본값 제거 */
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    backdrop-filter: blur(12px) saturate(180%);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* 기본: 투명 배경에서 파란 글씨(특정 경로 제외) */

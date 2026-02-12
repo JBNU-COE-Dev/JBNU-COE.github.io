@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getActivityList } from '../../services/activityApi';
-import PledgeCard from './PledgeCard';
+import { VALID_CATEGORIES, CATEGORY_LABEL } from './activityConstants';
+import ActivityCard from './ActivityCard';
 import FilterBar from './FilterBar';
 import './activities.css';
-
-const VALID_CATEGORIES = ['EXTERNAL_ACTIVITY', 'CONTEST', 'TEAM_RECRUITMENT'];
 
 function ActivityList() {
   const navigate = useNavigate();
@@ -20,6 +19,7 @@ function ActivityList() {
   const [sort, setSort] = useState('latest');
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
   const size = 12;
 
   // URL 쿼리와 동기화: 헤더에서 /activities?category=CONTEST 등으로 진입 시 반영
@@ -58,10 +58,49 @@ function ActivityList() {
     fetchList();
   }, [fetchList]);
 
+  // 클라이언트 사이드 검색 필터링
+  const filteredItems = useMemo(() => {
+    if (!searchQuery.trim()) return items;
+    const q = searchQuery.trim().toLowerCase();
+    return items.filter(
+      (item) =>
+        (item.title && item.title.toLowerCase().includes(q)) ||
+        (item.organization && item.organization.toLowerCase().includes(q)) ||
+        (item.author && item.author.toLowerCase().includes(q))
+    );
+  }, [items, searchQuery]);
+
+  const categoryName = category ? CATEGORY_LABEL[category] : null;
+
+  const renderEmptyState = () => {
+    if (searchQuery.trim()) {
+      return (
+        <div className="activities-empty">
+          <svg className="activities-empty-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <p>"{searchQuery}" 검색 결과가 없습니다.</p>
+          <p className="activities-empty-sub">다른 키워드로 검색해보세요.</p>
+        </div>
+      );
+    }
+    return (
+      <div className="activities-empty">
+        <svg className="activities-empty-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+        </svg>
+        <p>{categoryName ? `${categoryName} 카테고리에 ` : ''}등록된 게시글이 없습니다.</p>
+        <p className="activities-empty-sub">새 글을 작성해보세요!</p>
+      </div>
+    );
+  };
+
   return (
     <div className="activities-page">
       <header className="activities-header">
-        <h1>대외활동 · 공모전 · 팀원 모집</h1>
+        <h1>매칭플랫폼</h1>
         <p>공과대학 학우를 위한 대외활동, 공모전 정보와 팀원 모집을 한눈에 확인하세요.</p>
       </header>
 
@@ -73,32 +112,48 @@ function ActivityList() {
           setSort(v);
           setPage(0);
         }}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
       />
 
       {loading ? (
-        <div className="activities-loading">불러오는 중...</div>
+        <div className="activities-grid">
+          {Array.from({ length: 6 }, (_, i) => (
+            <div className="skeleton-card" key={`skel-${i}`}>
+              <div className="skeleton-bone skeleton-card-image" />
+              <div className="skeleton-card-body">
+                <div className="skeleton-bone skeleton-card-category" />
+                <div className="skeleton-bone skeleton-card-title" />
+                <div className="skeleton-bone skeleton-card-title-short" />
+                <div className="skeleton-card-meta">
+                  <div className="skeleton-bone skeleton-card-meta-left" />
+                  <div className="skeleton-bone skeleton-card-meta-right" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       ) : error ? (
         <div className="activities-empty">
           <p>{error}</p>
-          <p style={{ fontSize: '0.9rem', marginTop: '0.5rem', color: '#6b7280' }}>
+          <p className="activities-empty-sub">
             API 주소(REACT_APP_API_URL)와 백엔드 실행 여부를 확인해주세요.
           </p>
           <button
             type="button"
-            className="activities-detail-actions btn-primary"
-            style={{ marginTop: '1rem' }}
+            className="btn-primary activities-retry-btn"
             onClick={() => fetchList()}
           >
             다시 시도
           </button>
         </div>
-      ) : items.length === 0 ? (
-        <div className="activities-empty">등록된 게시글이 없습니다.</div>
+      ) : filteredItems.length === 0 ? (
+        renderEmptyState()
       ) : (
         <>
           <div className="activities-grid">
-            {items.map((item) => (
-              <PledgeCard key={item.id} item={item} />
+            {filteredItems.map((item) => (
+              <ActivityCard key={item.id} item={item} />
             ))}
           </div>
           {totalPages > 1 && (
@@ -132,10 +187,10 @@ function ActivityList() {
         </>
       )}
 
-      <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+      <div className="activities-write-btn-wrap">
         <button
           type="button"
-          className="activities-detail-actions btn-primary"
+          className="btn-primary activities-write-btn"
           onClick={() => navigate('/activities/recruit')}
         >
           팀원 모집 글쓰기

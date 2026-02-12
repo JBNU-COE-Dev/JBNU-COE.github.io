@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { FiShare2, FiBookmark } from 'react-icons/fi';
 import { getActivityById, getResourceFileUrl } from '../../services/activityApi';
+import { CATEGORY_LABEL } from './activityConstants';
 import { getDDayLabel } from '../../utils/dday';
 import './activities.css';
-
-const CATEGORY_LABEL = {
-  EXTERNAL_ACTIVITY: '대외활동',
-  CONTEST: '공모전',
-  TEAM_RECRUITMENT: '팀원 모집',
-};
 
 function ActivityDetail() {
   const { id } = useParams();
@@ -16,6 +12,8 @@ function ActivityDetail() {
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [bookmarked, setBookmarked] = useState(false);
+  const [shareTooltip, setShareTooltip] = useState('');
 
   useEffect(() => {
     if (!id) return;
@@ -25,15 +23,64 @@ function ActivityDetail() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <div className="activities-page activities-loading">불러오는 중...</div>;
+  // localStorage 북마크 상태 복원
+  useEffect(() => {
+    if (!id) return;
+    try {
+      const bookmarks = JSON.parse(localStorage.getItem('activityBookmarks') || '[]');
+      setBookmarked(bookmarks.includes(Number(id) || id));
+    } catch {}
+  }, [id]);
+
+  const toggleBookmark = useCallback(() => {
+    try {
+      const bookmarks = JSON.parse(localStorage.getItem('activityBookmarks') || '[]');
+      const key = Number(id) || id;
+      const next = bookmarks.includes(key)
+        ? bookmarks.filter((b) => b !== key)
+        : [...bookmarks, key];
+      localStorage.setItem('activityBookmarks', JSON.stringify(next));
+      setBookmarked(!bookmarked);
+    } catch {}
+  }, [id, bookmarked]);
+
+  const handleShare = useCallback(async () => {
+    const url = window.location.href;
+    const title = item?.title || '매칭플랫폼';
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, url });
+        return;
+      } catch {}
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      setShareTooltip('링크가 복사되었습니다!');
+      setTimeout(() => setShareTooltip(''), 2000);
+    } catch {}
+  }, [item]);
+
+  if (loading) {
+    return (
+      <div className="activities-page activities-loading">
+        <div className="activities-spinner" />
+        <p>불러오는 중...</p>
+      </div>
+    );
+  }
+
   if (error || !item) {
     return (
       <div className="activities-page activities-empty">
-        {error || '게시글을 찾을 수 없습니다.'}
+        <svg className="activities-empty-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+        <p>{error || '게시글을 찾을 수 없습니다.'}</p>
         <button
           type="button"
-          className="activities-detail-actions btn-secondary"
-          style={{ marginTop: '1rem' }}
+          className="btn-secondary activities-retry-btn"
           onClick={() => navigate('/activities')}
         >
           목록으로
@@ -48,7 +95,7 @@ function ActivityDetail() {
   return (
     <div className="activities-detail">
       <div className="activities-detail-header">
-        <span className="pledge-card-category">{CATEGORY_LABEL[item.category] || item.category}</span>
+        <span className="activity-card-category">{CATEGORY_LABEL[item.category] || item.category}</span>
         <h1 className="activities-detail-title">{item.title}</h1>
         <div className="activities-detail-meta">
           <span>작성자: {item.author}</span>
@@ -60,8 +107,8 @@ function ActivityDetail() {
       </div>
 
       {thumbnailUrl && (
-        <div className="pledge-card-image-wrap" style={{ paddingTop: '40%', marginBottom: '1.5rem' }}>
-          <img src={thumbnailUrl} alt="" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+        <div className="activities-detail-thumbnail">
+          <img src={thumbnailUrl} alt="" />
         </div>
       )}
 
@@ -78,6 +125,20 @@ function ActivityDetail() {
             오픈채팅/연락처
           </a>
         )}
+        <div className="activities-detail-icon-actions">
+          <button type="button" className="activities-icon-btn" onClick={handleShare} title="공유하기">
+            <FiShare2 size={18} />
+            {shareTooltip && <span className="activities-tooltip">{shareTooltip}</span>}
+          </button>
+          <button
+            type="button"
+            className={`activities-icon-btn ${bookmarked ? 'bookmarked' : ''}`}
+            onClick={toggleBookmark}
+            title={bookmarked ? '북마크 해제' : '북마크'}
+          >
+            <FiBookmark size={18} />
+          </button>
+        </div>
         <button type="button" className="btn-secondary" onClick={() => navigate('/activities')}>
           목록으로
         </button>

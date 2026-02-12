@@ -29,8 +29,8 @@ function HeaderBar({ isMobile, isTablet }) {
       <header
         className="header-bar header-scrolled"
         style={{
-          backgroundColor: 'rgba(0,76,165,1)',
-          boxShadow: '0 2px 6px rgba(0,0,0,0.15)'
+          backgroundColor: 'rgba(0,76,165,0.82)',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.12)'
         }}
       >
         <div className='header-left'>

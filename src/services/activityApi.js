@@ -1,7 +1,7 @@
 /**
  * 대외활동 / 공모전 / 팀원 모집 API
  */
-import { get, del, getResourceFileUrl, getApiUrl } from './api';
+import { get, del, uploadFile, getResourceFileUrl } from './api';
 
 const BASE = '/api/activities';
 
@@ -26,40 +26,14 @@ export async function getActivityById(id) {
  * 게시글 생성 (FormData: 필드 + thumbnail 파일)
  */
 export async function createActivity(formData) {
-  let token = null;
-  try {
-    token = localStorage.getItem('authToken');
-  } catch {}
-  const res = await fetch(`${getApiUrl()}${BASE}`, {
-    method: 'POST',
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
-    body: formData,
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.message || `HTTP ${res.status}`);
-  }
-  return res.json();
+  return uploadFile(BASE, formData);
 }
 
 /**
  * 게시글 수정
  */
 export async function updateActivity(id, formData) {
-  let token = null;
-  try {
-    token = localStorage.getItem('authToken');
-  } catch {}
-  const res = await fetch(`${getApiUrl()}${BASE}/${id}`, {
-    method: 'PUT',
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
-    body: formData,
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.message || `HTTP ${res.status}`);
-  }
-  return res.json();
+  return uploadFile(`${BASE}/${id}`, formData, undefined, 'PUT');
 }
 
 /**

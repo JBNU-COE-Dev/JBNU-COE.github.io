@@ -1,3 +1,47 @@
+/* ─── Design Tokens (CSS Custom Properties) ─── */
+:root {
+  /* Primary */
+  --color-primary: #004ca5;
+  --color-primary-dark: #003d8a;
+  --color-primary-light: #e8f0fe;
+  --color-primary-alpha-20: rgba(0, 76, 165, 0.2);
+  --color-primary-alpha-85: rgba(0, 76, 165, 0.85);
+
+  /* Semantic */
+  --color-success: #059669;
+  --color-error: #b91c1c;
+  --color-error-bg: #fef2f2;
+
+  /* Text */
+  --color-text: #1f2937;
+  --color-text-secondary: #6b7280;
+  --color-text-tertiary: #9ca3af;
+
+  /* Surfaces & Borders */
+  --color-bg: #ffffff;
+  --color-bg-secondary: #f3f4f6;
+  --color-bg-tertiary: #f5f5f5;
+  --color-border: #d1d5db;
+  --color-border-light: #e5e7eb;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  /* Transition */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.2s ease;
+  --transition-slow: 0.3s ease;
+}
+
 .App {
   text-align: center;
 }
