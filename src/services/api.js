@@ -1,12 +1,13 @@
 /**
  * API 유틸리티 함수
  * 백엔드 API와 통신하기 위한 중앙화된 함수들
- * - 배포 시: Docker 빌드 시 REACT_APP_API_URL 빌드 인자로 전달 (또는 아래 런타임 오버라이드 사용)
- * - 런타임 오버라이드: index.html 등에서 window.__FEEL_API_URL__ 설정 시 해당 URL 사용 (재빌드 없이 변경 가능)
+ * - API URL: 빌드 시 REACT_APP_API_URL만 사용 (Docker/nginx 등 배포 시 빌드 인자로 전달)
  */
 
 const API_TIMEOUT = 30000; // 30초
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 /** 현재 사용할 API 베이스 URL (런타임 오버라이드 + 동일 오리진 시 상대 경로) */
 export function getApiUrl() {
   if (typeof window !== 'undefined' && window.__FEEL_API_URL__ !== undefined) {
@@ -34,6 +35,15 @@ function getUploadsBaseUrl() {
   if (!apiBase) return '';
   if (apiBase.endsWith('/api')) return apiBase.slice(0, -4);
   return apiBase;
+=======
+/** 현재 사용할 API 베이스 URL (빌드 시점 REACT_APP_API_URL 사용) */
+export function getApiUrl() {
+=======
+/** 현재 사용할 API 베이스 URL (빌드 시점 REACT_APP_API_URL 사용) */
+export function getApiUrl() {
+>>>>>>> Stashed changes
+  return (process.env.REACT_APP_API_URL || 'http://localhost:8080').replace(/\/$/, '');
+>>>>>>> Stashed changes
 }
 
 /**
