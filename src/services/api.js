@@ -166,11 +166,11 @@ export async function del(endpoint) {
  */
 export async function uploadFile(endpoint, formData, onProgress) {
   const controller = new AbortController();
-  
+
   // Progress 이벤트 리스너 (XMLHttpRequest 사용)
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    
+
     // Progress 이벤트
     if (onProgress) {
       xhr.upload.addEventListener('progress', (e) => {
@@ -180,7 +180,7 @@ export async function uploadFile(endpoint, formData, onProgress) {
         }
       });
     }
-    
+
     // 완료 이벤트
     xhr.addEventListener('load', () => {
       if (xhr.status >= 200 && xhr.status < 300) {
@@ -194,17 +194,17 @@ export async function uploadFile(endpoint, formData, onProgress) {
         reject(new Error(`HTTP Error: ${xhr.status}`));
       }
     });
-    
+
     // 에러 이벤트
     xhr.addEventListener('error', () => {
       reject(new Error('파일 업로드에 실패했습니다.'));
     });
-    
+
     // 취소 이벤트
     xhr.addEventListener('abort', () => {
       reject(new Error('파일 업로드가 취소되었습니다.'));
     });
-    
+
     // 인증 토큰 추가
     let token = null;
     try {
@@ -215,10 +215,10 @@ export async function uploadFile(endpoint, formData, onProgress) {
     if (token) {
       xhr.setRequestHeader('Authorization', `Bearer ${token}`);
     }
-    
+
     xhr.open('POST', `${getApiUrl()}${endpoint}`);
     xhr.send(formData);
-    
+
     // AbortController와 연결
     controller.signal.addEventListener('abort', () => {
       xhr.abort();
