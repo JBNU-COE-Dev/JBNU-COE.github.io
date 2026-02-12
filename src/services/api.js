@@ -6,44 +6,9 @@
 
 const API_TIMEOUT = 30000; // 30초
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-/** 현재 사용할 API 베이스 URL (런타임 오버라이드 + 동일 오리진 시 상대 경로) */
-export function getApiUrl() {
-  if (typeof window !== 'undefined' && window.__FEEL_API_URL__ !== undefined) {
-    return String(window.__FEEL_API_URL__).replace(/\/$/, '');
-  }
-  const env = (process.env.REACT_APP_API_URL || 'http://localhost:8080').replace(/\/$/, '');
-  if (typeof window !== 'undefined') {
-    try {
-      const envOrigin = new URL(env).origin;
-      if (envOrigin === window.location.origin) {
-        return ''; // 동일 오리진 → 상대 경로 (engsc.jbnu.ac.kr, localhost Docker)
-      }
-    } catch {
-      /* ignore */
-    }
-  }
-  return env;
-}
-
-/**
- * 업로드/리소스 파일용 베이스 URL (uploads는 /api 밖에 있음)
- */
-function getUploadsBaseUrl() {
-  const apiBase = getApiUrl();
-  if (!apiBase) return '';
-  if (apiBase.endsWith('/api')) return apiBase.slice(0, -4);
-  return apiBase;
-=======
 /** 현재 사용할 API 베이스 URL (빌드 시점 REACT_APP_API_URL 사용) */
 export function getApiUrl() {
-=======
-/** 현재 사용할 API 베이스 URL (빌드 시점 REACT_APP_API_URL 사용) */
-export function getApiUrl() {
->>>>>>> Stashed changes
   return (process.env.REACT_APP_API_URL || 'http://localhost:8080').replace(/\/$/, '');
->>>>>>> Stashed changes
 }
 
 /**
@@ -203,11 +168,11 @@ export async function del(endpoint) {
  */
 export async function uploadFile(endpoint, formData, onProgress) {
   const controller = new AbortController();
-  
+
   // Progress 이벤트 리스너 (XMLHttpRequest 사용)
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    
+
     // Progress 이벤트
     if (onProgress) {
       xhr.upload.addEventListener('progress', (e) => {
@@ -217,7 +182,7 @@ export async function uploadFile(endpoint, formData, onProgress) {
         }
       });
     }
-    
+
     // 완료 이벤트
     xhr.addEventListener('load', () => {
       if (xhr.status >= 200 && xhr.status < 300) {
@@ -231,17 +196,17 @@ export async function uploadFile(endpoint, formData, onProgress) {
         reject(new Error(`HTTP Error: ${xhr.status}`));
       }
     });
-    
+
     // 에러 이벤트
     xhr.addEventListener('error', () => {
       reject(new Error('파일 업로드에 실패했습니다.'));
     });
-    
+
     // 취소 이벤트
     xhr.addEventListener('abort', () => {
       reject(new Error('파일 업로드가 취소되었습니다.'));
     });
-    
+
     // 인증 토큰 추가
     let token = null;
     try {
@@ -252,10 +217,10 @@ export async function uploadFile(endpoint, formData, onProgress) {
     if (token) {
       xhr.setRequestHeader('Authorization', `Bearer ${token}`);
     }
-    
+
     xhr.open('POST', `${getApiUrl()}${endpoint}`);
     xhr.send(formData);
-    
+
     // AbortController와 연결
     controller.signal.addEventListener('abort', () => {
       xhr.abort();
