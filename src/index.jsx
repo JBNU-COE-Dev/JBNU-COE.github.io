@@ -5,6 +5,7 @@ import './index.css';
 import App from './App.jsx';
 import reportWebVitals from './reportWebVitals.jsx';
 import { AuthProvider } from './contexts/AuthContext.jsx';
+import { ToastProvider } from './contexts/ToastContext.jsx';
 
 const googleClientId = '817276821213-usk2qqqca7ijmlvjvdt99hsbagnl6b20.apps.googleusercontent.com';
 
@@ -12,9 +13,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <GoogleOAuthProvider clientId={googleClientId || 'dummy.apps.googleusercontent.com'}>
-        <App />
-      </GoogleOAuthProvider>
+      <ToastProvider>
+        <GoogleOAuthProvider clientId={googleClientId || 'dummy.apps.googleusercontent.com'}>
+          <App />
+        </GoogleOAuthProvider>
+      </ToastProvider>
     </AuthProvider>
   </React.StrictMode>
 );

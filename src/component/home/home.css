@@ -91,9 +91,11 @@ html, body, #root {
   }
 
   .benefit-title {
+    display: block;
     font-size: 2rem;
     font-weight: 800;
     color: #1f2937;
+    cursor: default;
   }
 
   .benefit-search {
@@ -431,6 +433,13 @@ html, body, #root {
     width: 100%;
     display: flex;
     overflow-x: hidden; /* 가로 스크롤 방지 */
+  }
+
+  .calendar-error {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--color-text-secondary, #6b7280);
+    font-size: 0.95rem;
   }
 
   /* 홈화면에서 MonthlyCalendar 스타일 조정 */

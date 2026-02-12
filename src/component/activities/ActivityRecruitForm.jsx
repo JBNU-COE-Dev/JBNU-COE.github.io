@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createActivity } from '../../services/activityApi';
 import { useAuth } from '../../contexts/AuthContext';
+import { useToast } from '../../contexts/ToastContext';
 import './activities.css';
 
 const TITLE_MAX = 500;
@@ -10,6 +11,7 @@ const CONTENT_MAX = 5000;
 function ActivityRecruitForm() {
   const navigate = useNavigate();
   const { isAuthenticated, isLoading, userNickname, userEmail } = useAuth();
+  const toast = useToast();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -119,8 +121,10 @@ function ActivityRecruitForm() {
     if (thumbnailFile) fd.append('thumbnail', thumbnailFile);
     try {
       const created = await createActivity(fd);
+      toast.success('게시글이 등록되었습니다!');
       navigate(`/activities/${created.id}`);
     } catch (err) {
+      toast.error(err.message || '등록에 실패했습니다.');
       setError(err.message || '등록에 실패했습니다.');
     } finally {
       setLoading(false);

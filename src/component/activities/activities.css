@@ -15,7 +15,7 @@
 }
 
 .activities-header h1 {
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: 800;
   color: #1a1a2e;
   margin: 0 0 0.5rem 0;
@@ -720,6 +720,76 @@
   background: rgba(0, 0, 0, 0.75);
 }
 
+/* ─── 수정/삭제 버튼 ─── */
+.activities-icon-btn-danger {
+  color: var(--color-error);
+}
+
+.activities-icon-btn-danger:hover {
+  background: var(--color-error-bg);
+}
+
+.btn-danger {
+  background: var(--color-error);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background var(--transition-fast);
+}
+
+.btn-danger:hover {
+  background: #991b1b;
+}
+
+.btn-danger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ─── 삭제 확인 모달 ─── */
+.activities-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 99998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: toast-slide-in 0.2s ease;
+}
+
+.activities-modal {
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  max-width: 380px;
+  width: calc(100% - 2rem);
+  box-shadow: var(--shadow-lg);
+}
+
+.activities-modal-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 0.5rem 0;
+}
+
+.activities-modal-desc {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin: 0 0 1.25rem 0;
+}
+
+.activities-modal-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
 /* ─── 폼 검증 UI ─── */
 .activities-form-label-row {
   display: flex;
@@ -818,7 +888,8 @@
   }
 
   .activities-detail-actions .activities-icon-btn {
-    width: 40px;
+    width: 44px;
+    height: 44px;
   }
 
   .activities-detail-title {
@@ -828,16 +899,29 @@
   .activities-form {
     max-width: 100%;
   }
+
+  /* 모달 모바일 대응 */
+  .activities-modal {
+    max-width: calc(100% - 2rem);
+  }
+
+  .activities-modal-actions {
+    flex-direction: column;
+  }
+
+  .activities-modal-actions button {
+    width: 100%;
+  }
 }
 
 /* ─── 반응형: 소형 모바일 ─── */
 @media (max-width: 480px) {
   .activities-header h1 {
-    font-size: 1.5rem;
+    font-size: clamp(1.3rem, 5vw, 1.5rem);
   }
 
   .activities-header p {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   .activity-card-body {
@@ -848,13 +932,31 @@
     font-size: 0.9rem;
   }
 
-  .activities-pagination button {
-    padding: 0.4rem 0.75rem;
-    font-size: 0.8rem;
-  }
-
   .activities-detail-meta {
     flex-direction: column;
     gap: 0.5rem;
+  }
+
+  .activities-detail-title {
+    font-size: clamp(1.2rem, 5vw, 1.4rem);
+  }
+
+  /* 필터 뱃지 줄바꿈 */
+  .activities-filter-badge {
+    font-size: 0.75rem;
+  }
+
+  /* 아이콘 버튼 터치 타겟 최소 44px */
+  .activities-icon-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .activities-search-clear {
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

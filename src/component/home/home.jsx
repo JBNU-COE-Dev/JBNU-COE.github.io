@@ -27,6 +27,7 @@ const Home = () => {
   useLayoutResize();
   const [searchText, setSearchText] = useState('');
   const [calendarEvents, setCalendarEvents] = useState({});
+  const [calendarError, setCalendarError] = useState(false);
   const navigate = useNavigate();
 
   // calendar.json 데이터 가져오기 및 변환
@@ -68,6 +69,7 @@ const Home = () => {
         setCalendarEvents(convertedEvents);
       } catch (error) {
         console.error('Failed to fetch calendar data:', error);
+        setCalendarError(true);
       }
     };
 
@@ -90,11 +92,11 @@ const Home = () => {
 
       <div className='second-screen'>
         <div className='benefit-toolbar'>
-          <div className='benefit-title'>제휴 업체 검색</div>
+          <label className='benefit-title' htmlFor='benefit-search-input'>제휴 업체 검색</label>
           <div className='benefit-search'>
-            <input type='text' placeholder='' aria-label='제휴 업체 검색' value={searchText} onChange={(e)=>setSearchText(e.target.value)} />
+            <input id='benefit-search-input' type='text' placeholder='업체명 검색' aria-label='제휴 업체 검색' value={searchText} onChange={(e)=>setSearchText(e.target.value)} />
           </div>
-          <button className='benefit-add' aria-label='업체 제안'>+</button>
+          <button className='benefit-add' aria-label='업체 제안' title='제휴 업체 제안하기'>+</button>
         </div>
 
         <PartnerShowcase query={searchText} />
@@ -109,7 +111,13 @@ const Home = () => {
       <div className='third-screen'>
         {/* 툴바 + 행사 달력이 딱 한 화면에 나오도록 부탁드립니다. */}
         <div className='calender-container'>
-          <MonthlyCalendar />
+          {calendarError ? (
+            <div className='calendar-error'>
+              <p>캘린더 데이터를 불러오지 못했습니다.</p>
+            </div>
+          ) : (
+            <MonthlyCalendar />
+          )}
         </div>
       </div>
     </div>

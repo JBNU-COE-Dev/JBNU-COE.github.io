@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FiShare2, FiBookmark } from 'react-icons/fi';
-import { getActivityById, getResourceFileUrl } from '../../services/activityApi';
+import { FiShare2, FiBookmark, FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { getActivityById, deleteActivity, getResourceFileUrl } from '../../services/activityApi';
+import { useAuth } from '../../contexts/AuthContext';
+import { useToast } from '../../contexts/ToastContext';
 import { CATEGORY_LABEL } from './activityConstants';
 import { getDDayLabel } from '../../utils/dday';
 import './activities.css';
@@ -9,11 +11,15 @@ import './activities.css';
 function ActivityDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { isAuthenticated, userNickname, userEmail } = useAuth();
+  const toast = useToast();
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [bookmarked, setBookmarked] = useState(false);
-  const [shareTooltip, setShareTooltip] = useState('');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  // shareTooltip은 toast로 대체
 
   useEffect(() => {
     if (!id) return;
@@ -36,13 +42,15 @@ function ActivityDetail() {
     try {
       const bookmarks = JSON.parse(localStorage.getItem('activityBookmarks') || '[]');
       const key = Number(id) || id;
-      const next = bookmarks.includes(key)
+      const isBookmarked = bookmarks.includes(key);
+      const next = isBookmarked
         ? bookmarks.filter((b) => b !== key)
         : [...bookmarks, key];
       localStorage.setItem('activityBookmarks', JSON.stringify(next));
-      setBookmarked(!bookmarked);
+      setBookmarked(!isBookmarked);
+      toast.success(isBookmarked ? '북마크가 해제되었습니다.' : '북마크에 저장되었습니다.');
     } catch {}
-  }, [id, bookmarked]);
+  }, [id, toast]);
 
   const handleShare = useCallback(async () => {
     const url = window.location.href;
@@ -55,10 +63,26 @@ function ActivityDetail() {
     }
     try {
       await navigator.clipboard.writeText(url);
-      setShareTooltip('링크가 복사되었습니다!');
-      setTimeout(() => setShareTooltip(''), 2000);
+      toast('링크가 복사되었습니다!');
     } catch {}
-  }, [item]);
+  }, [item, toast]);
+
+  const isAuthor = isAuthenticated && item &&
+    (item.author === userNickname || item.author === userEmail);
+
+  const handleDelete = useCallback(async () => {
+    setDeleting(true);
+    try {
+      await deleteActivity(id);
+      toast.success('게시글이 삭제되었습니다.');
+      navigate('/activities', { replace: true });
+    } catch (err) {
+      toast.error(err.message || '삭제에 실패했습니다.');
+    } finally {
+      setDeleting(false);
+      setShowDeleteConfirm(false);
+    }
+  }, [id, navigate, toast]);
 
   if (loading) {
     return (
@@ -128,7 +152,6 @@ function ActivityDetail() {
         <div className="activities-detail-icon-actions">
           <button type="button" className="activities-icon-btn" onClick={handleShare} title="공유하기">
             <FiShare2 size={18} />
-            {shareTooltip && <span className="activities-tooltip">{shareTooltip}</span>}
           </button>
           <button
             type="button"
@@ -138,11 +161,58 @@ function ActivityDetail() {
           >
             <FiBookmark size={18} />
           </button>
+          {isAuthor && (
+            <>
+              <button
+                type="button"
+                className="activities-icon-btn"
+                onClick={() => navigate(`/activities/edit/${id}`)}
+                title="수정"
+              >
+                <FiEdit2 size={18} />
+              </button>
+              <button
+                type="button"
+                className="activities-icon-btn activities-icon-btn-danger"
+                onClick={() => setShowDeleteConfirm(true)}
+                title="삭제"
+              >
+                <FiTrash2 size={18} />
+              </button>
+            </>
+          )}
         </div>
         <button type="button" className="btn-secondary" onClick={() => navigate('/activities')}>
           목록으로
         </button>
       </div>
+
+      {showDeleteConfirm && (
+        <div className="activities-modal-overlay" onClick={() => setShowDeleteConfirm(false)}>
+          <div className="activities-modal" onClick={(e) => e.stopPropagation()}>
+            <h3 className="activities-modal-title">게시글 삭제</h3>
+            <p className="activities-modal-desc">정말 이 게시글을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
+            <div className="activities-modal-actions">
+              <button
+                type="button"
+                className="btn-danger"
+                onClick={handleDelete}
+                disabled={deleting}
+              >
+                {deleting ? '삭제 중...' : '삭제'}
+              </button>
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => setShowDeleteConfirm(false)}
+                disabled={deleting}
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

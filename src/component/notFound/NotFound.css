@@ -69,3 +69,15 @@
 .not-found-btn-secondary:hover {
   background: var(--color-bg-secondary, #f3f4f6);
 }
+
+@media (max-width: 480px) {
+  .not-found-actions {
+    flex-direction: column;
+  }
+
+  .not-found-btn-primary,
+  .not-found-btn-secondary {
+    width: 100%;
+    min-height: 44px;
+  }
+}
