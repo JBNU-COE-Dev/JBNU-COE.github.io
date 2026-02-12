@@ -7,54 +7,27 @@
 
 const API_TIMEOUT = 30000; // 30초
 
-/** 현재 사용할 API 베이스 URL (런타임 오버라이드 + 동일 오리진 시 상대 경로) */
+/** 현재 사용할 API 베이스 URL (런타임 오버라이드 지원) */
 export function getApiUrl() {
-  if (typeof window !== 'undefined' && window.__FEEL_API_URL__ !== undefined) {
+  if (typeof window !== 'undefined' && window.__FEEL_API_URL__) {
     return String(window.__FEEL_API_URL__).replace(/\/$/, '');
   }
-  const env = (process.env.REACT_APP_API_URL || 'http://localhost:8080').replace(/\/$/, '');
-  if (typeof window !== 'undefined') {
-    try {
-      const envOrigin = new URL(env).origin;
-      if (envOrigin === window.location.origin) {
-        return ''; // 동일 오리진 → 상대 경로 (engsc.jbnu.ac.kr, localhost Docker)
-      }
-    } catch {
-      /* ignore */
-    }
-  }
-  return env;
-}
-
-/**
- * 업로드/리소스 파일용 베이스 URL (uploads는 /api 밖에 있음)
- */
-function getUploadsBaseUrl() {
-  const apiBase = getApiUrl();
-  if (!apiBase) return '';
-  if (apiBase.endsWith('/api')) return apiBase.slice(0, -4);
-  return apiBase;
+  return (process.env.REACT_APP_API_URL || 'http://localhost:8080').replace(/\/$/, '');
 }
 
 /**
  * 리소스/파일 이미지 URL 정규화
- * - DB에 저장된 fileUrl은 업로드 시점 baseUrl 포함 (localhost, api.engsc 등)
- * - 현재 배포 환경 기준 URL로 변환하여 이미지 렌더링 보장
+ * - 로컬에서 업로드된 데이터는 fileUrl이 http://localhost:8080/... 로 저장되어
+ *   배포 환경에서는 이미지를 불러오지 못함. 현재 API 기준 URL로 변환.
  */
 export function getResourceFileUrl(fileUrl) {
   if (!fileUrl) return '';
-  const base = getUploadsBaseUrl();
+  const base = getApiUrl();
   try {
     if (fileUrl.startsWith('/')) {
       return base + fileUrl;
     }
     const u = new URL(fileUrl);
-    // /uploads/ 경로는 항상 현재 배포 origin 기준으로 변환
-    // (localhost, api.engsc.jbnu.ac.kr 등 이전/잘못된 호스트 대응)
-    if (u.pathname.startsWith('/uploads/')) {
-      return base + u.pathname;
-    }
-    // 다른 경로는 localhost/127.0.0.1만 변환 (기존 호환)
     if (u.hostname === 'localhost' || u.hostname === '127.0.0.1') {
       return base + u.pathname;
     }

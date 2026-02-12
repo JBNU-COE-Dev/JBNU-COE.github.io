@@ -1,7 +1,7 @@
 /**
  * API 서비스 통합 export
  */
-import api, { getApiUrl } from './api';
+import api from './api';
 import noticesApi from './noticesApi';
 import galleryApi from './galleryApi';
 import resourcesApi from './resourcesApi';
@@ -13,7 +13,7 @@ import pledgeApi from './pledgeApi';
 import activityApi from './activityApi';
 
 // Named exports
-export { api, getApiUrl, noticesApi, galleryApi, resourcesApi, calendarApi, rentalApi, financeApi, matchingApi, pledgeApi, activityApi };
+export { api, noticesApi, galleryApi, resourcesApi, calendarApi, rentalApi, financeApi, matchingApi, pledgeApi, activityApi };
 
 // Default export
 export default {

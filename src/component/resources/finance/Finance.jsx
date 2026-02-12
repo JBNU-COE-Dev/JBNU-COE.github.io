@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { FiSearch, FiDownload, FiEye, FiFileText, FiCalendar, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { financeApi, getApiUrl } from '../../../services';
+import { financeApi } from '../../../services';
 import './Finance.css';
+
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
 // 기본 데이터 (API 실패 시 fallback)
 const defaultReports = [
@@ -126,10 +128,9 @@ export default function Finance() {
 
   // PDF 미리보기 열기
   const handlePreview = (report) => {
-    const base = getApiUrl();
     const url = report.fileUrl?.startsWith('http') 
       ? report.fileUrl 
-      : `${base || ''}${report.fileUrl}`;
+      : `${API_URL}${report.fileUrl}`;
     setPreviewUrl(url);
   };
 
@@ -140,10 +141,9 @@ export default function Finance() {
 
   // PDF 다운로드
   const handleDownload = (report) => {
-    const base = getApiUrl();
     const url = report.fileUrl?.startsWith('http') 
       ? report.fileUrl 
-      : `${base || ''}${report.fileUrl}`;
+      : `${API_URL}${report.fileUrl}`;
     
     const link = document.createElement('a');
     link.href = url;
