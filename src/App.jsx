@@ -1,40 +1,50 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Home from './component/home/home.jsx';
 
-import Benefits from './component/benefits/benefits.jsx';
-import Contact from './component/contact/contact.jsx';
-import Notice from './component/notice/notice.jsx';
-import Resources from './component/resources/resources.jsx';
-import Intro from './component/about/intro/intro.jsx';
-import Organization from './component/about/organization/organization.jsx';
-import AnnouncementList from './component/notice/announcement/AnnouncementList.jsx';
-import AnnouncementDetail from './component/notice/announcement/AnnouncementDetail.jsx';
-import Gallery from './component/notice/gallery/Gallery.jsx';
-import ErrorBoundary from './component/ErrorBoundary.jsx';
-import StudySupport from './component/notice/studySupport/StudySupport.jsx';
-import MonthlyCalendar from './component/notice/calendar/MonthlyCalendar.jsx';
-import BuildingMap from './component/resources/buildingMap/BuildingMap.jsx';
-import Constitution from './component/resources/constitution/Constitution.jsx';
-import Rental from './component/resources/rental/Rental.jsx';
-import FacilityInspection from './component/resources/facilityInspection/FacilityInspection.jsx';
-import Finance from './component/resources/finance/Finance.jsx';
-import Pledge from './component/pledge/pledge.jsx';
-import Report from './component/contact/report/Report.jsx';
-import BoardInquiry from './component/contact/boardInquiry/BoardInquiry.jsx';
-import KakaoChannel from './component/contact/kakaoChannel/KakaoChannel.jsx';
-import ActivityList from './component/activities/ActivityList.jsx';
-import ActivityDetail from './component/activities/ActivityDetail.jsx';
-import ActivityRecruitForm from './component/activities/ActivityRecruitForm.jsx';
-import LoginPage from './component/auth/LoginPage.jsx';
 import HeaderBar from './layouts/headerBar/headerBar.jsx';
 import Banner from './layouts/banner/banner.jsx';
 import TopBar from './layouts/topBar/topBar.jsx';
 import FloatingButton from './layouts/floatingButton/FloatingButton.jsx';
+import ErrorBoundary from './component/ErrorBoundary.jsx';
 import './App.css';
 
 import { useResponsive } from './component/hooks/useResponsive.jsx';
 import { useLayoutResize } from './component/hooks/useLayoutResize.jsx';
+
+/* ── 라우트 컴포넌트 lazy 로딩 ── */
+const Home = lazy(() => import('./component/home/home.jsx'));
+const Benefits = lazy(() => import('./component/benefits/benefits.jsx'));
+const Contact = lazy(() => import('./component/contact/contact.jsx'));
+const Notice = lazy(() => import('./component/notice/notice.jsx'));
+const Resources = lazy(() => import('./component/resources/resources.jsx'));
+const Intro = lazy(() => import('./component/about/intro/intro.jsx'));
+const Organization = lazy(() => import('./component/about/organization/organization.jsx'));
+const AnnouncementList = lazy(() => import('./component/notice/announcement/AnnouncementList.jsx'));
+const AnnouncementDetail = lazy(() => import('./component/notice/announcement/AnnouncementDetail.jsx'));
+const Gallery = lazy(() => import('./component/notice/gallery/Gallery.jsx'));
+const StudySupport = lazy(() => import('./component/notice/studySupport/StudySupport.jsx'));
+const MonthlyCalendar = lazy(() => import('./component/notice/calendar/MonthlyCalendar.jsx'));
+const BuildingMap = lazy(() => import('./component/resources/buildingMap/BuildingMap.jsx'));
+const Constitution = lazy(() => import('./component/resources/constitution/Constitution.jsx'));
+const Rental = lazy(() => import('./component/resources/rental/Rental.jsx'));
+const FacilityInspection = lazy(() => import('./component/resources/facilityInspection/FacilityInspection.jsx'));
+const Finance = lazy(() => import('./component/resources/finance/Finance.jsx'));
+const Pledge = lazy(() => import('./component/pledge/pledge.jsx'));
+const Report = lazy(() => import('./component/contact/report/Report.jsx'));
+const BoardInquiry = lazy(() => import('./component/contact/boardInquiry/BoardInquiry.jsx'));
+const KakaoChannel = lazy(() => import('./component/contact/kakaoChannel/KakaoChannel.jsx'));
+const ActivityList = lazy(() => import('./component/activities/ActivityList.jsx'));
+const ActivityDetail = lazy(() => import('./component/activities/ActivityDetail.jsx'));
+const ActivityRecruitForm = lazy(() => import('./component/activities/ActivityRecruitForm.jsx'));
+const LoginPage = lazy(() => import('./component/auth/LoginPage.jsx'));
+
+function PageLoader() {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '40vh' }}>
+      <div className="activities-spinner" />
+    </div>
+  );
+}
 
 function App() {
   const { isMobile, isTablet, isDesktop } = useResponsive();
@@ -49,6 +59,7 @@ function App() {
         </div>
 
         <main className="main-content">
+          <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/notice" element={<Notice />} />
@@ -78,7 +89,8 @@ function App() {
               <Route path="/activities/recruit" element={<ActivityRecruitForm />} />
               <Route path="/activities/:id" element={<ActivityDetail />} />
             </Routes>
-          </main>
+          </Suspense>
+        </main>
 
         <div className='banner-container'>
             <Banner />

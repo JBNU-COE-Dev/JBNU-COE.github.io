@@ -4,6 +4,9 @@ import { createActivity } from '../../services/activityApi';
 import { useAuth } from '../../contexts/AuthContext';
 import './activities.css';
 
+const TITLE_MAX = 500;
+const CONTENT_MAX = 5000;
+
 function ActivityRecruitForm() {
   const navigate = useNavigate();
   const { isAuthenticated, isLoading, userNickname, userEmail } = useAuth();
@@ -27,6 +30,7 @@ function ActivityRecruitForm() {
     contactUrl: '',
     status: 'RECRUITING',
   });
+  const [touched, setTouched] = useState({});
   const [thumbnailFile, setThumbnailFile] = useState(null);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const fileInputRef = useRef(null);
@@ -44,6 +48,30 @@ function ActivityRecruitForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleBlur = (e) => {
+    setTouched((prev) => ({ ...prev, [e.target.name]: true }));
+  };
+
+  // 필드별 유효성 검사
+  const getFieldError = (name) => {
+    if (!touched[name]) return null;
+    switch (name) {
+      case 'title':
+        if (!form.title.trim()) return '제목을 입력해주세요.';
+        break;
+      case 'content':
+        if (!form.content.trim()) return '내용을 입력해주세요.';
+        break;
+      case 'contactUrl':
+        if (!form.contactUrl.trim()) return '연락처 URL을 입력해주세요.';
+        if (!/^https?:\/\/.+/.test(form.contactUrl.trim())) return 'http:// 또는 https://로 시작하는 URL을 입력해주세요.';
+        break;
+      default:
+        break;
+    }
+    return null;
   };
 
   const handleThumbnailChange = (e) => {
@@ -66,6 +94,16 @@ function ActivityRecruitForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // 모든 필드 touched 처리
+    setTouched({ title: true, content: true, contactUrl: true });
+    // 필수 필드 검증
+    if (!form.title.trim() || !form.content.trim() || !form.contactUrl.trim()) {
+      return;
+    }
+    if (!/^https?:\/\/.+/.test(form.contactUrl.trim())) {
+      return;
+    }
+
     setError(null);
     setLoading(true);
     const fd = new FormData();
@@ -98,6 +136,10 @@ function ActivityRecruitForm() {
     );
   }
 
+  const titleError = getFieldError('title');
+  const contentError = getFieldError('content');
+  const contactUrlError = getFieldError('contactUrl');
+
   return (
     <div className="activities-page">
       <header className="activities-header">
@@ -105,34 +147,45 @@ function ActivityRecruitForm() {
         <p>프로젝트·스터디 팀원을 구할 때 오픈채팅 등 연락처를 함께 적어주세요.</p>
       </header>
 
-      <form onSubmit={handleSubmit} className="activities-form">
+      <form onSubmit={handleSubmit} className="activities-form" noValidate>
         {error && (
           <div className="activities-form-error">
             {error}
           </div>
         )}
         <div className="activities-form-field">
-          <label className="activities-filter-label">제목 *</label>
+          <div className="activities-form-label-row">
+            <label className="activities-filter-label">제목 *</label>
+            <span className="activities-form-counter">{form.title.length}/{TITLE_MAX}</span>
+          </div>
           <input
             type="text"
             name="title"
             value={form.title}
             onChange={handleChange}
-            required
-            maxLength={500}
-            className="activities-form-input"
+            onBlur={handleBlur}
+            maxLength={TITLE_MAX}
+            placeholder="모집 글 제목을 입력해주세요"
+            className={`activities-form-input${titleError ? ' activities-form-input-error' : ''}`}
           />
+          {titleError && <span className="activities-form-field-error">{titleError}</span>}
         </div>
         <div className="activities-form-field">
-          <label className="activities-filter-label">내용 *</label>
+          <div className="activities-form-label-row">
+            <label className="activities-filter-label">내용 *</label>
+            <span className="activities-form-counter">{form.content.length}/{CONTENT_MAX}</span>
+          </div>
           <textarea
             name="content"
             value={form.content}
             onChange={handleChange}
-            required
+            onBlur={handleBlur}
             rows={8}
-            className="activities-form-input activities-form-textarea"
+            maxLength={CONTENT_MAX}
+            placeholder="프로젝트 소개, 모집 조건, 활동 기간 등을 자유롭게 작성해주세요"
+            className={`activities-form-input activities-form-textarea${contentError ? ' activities-form-input-error' : ''}`}
           />
+          {contentError && <span className="activities-form-field-error">{contentError}</span>}
         </div>
         <div className="activities-form-field">
           <label className="activities-filter-label">작성자(닉네임) *</label>
@@ -141,7 +194,6 @@ function ActivityRecruitForm() {
             name="author"
             value={form.author}
             readOnly
-            required
             aria-readonly="true"
             maxLength={100}
             className="activities-form-input activities-form-readonly"
@@ -188,10 +240,11 @@ function ActivityRecruitForm() {
             name="contactUrl"
             value={form.contactUrl}
             onChange={handleChange}
-            required
+            onBlur={handleBlur}
             placeholder="https://open.kakao.com/..."
-            className="activities-form-input"
+            className={`activities-form-input${contactUrlError ? ' activities-form-input-error' : ''}`}
           />
+          {contactUrlError && <span className="activities-form-field-error">{contactUrlError}</span>}
         </div>
         <div className="activities-form-field">
           <label className="activities-filter-label">썸네일 (선택)</label>

@@ -678,6 +678,46 @@
   background: rgba(0, 0, 0, 0.75);
 }
 
+/* ─── 폼 검증 UI ─── */
+.activities-form-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.activities-form-counter {
+  font-size: 0.8rem;
+  color: var(--color-text-tertiary);
+}
+
+.activities-form-input-error {
+  border-color: var(--color-error) !important;
+}
+
+.activities-form-input-error:focus {
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.15) !important;
+}
+
+.activities-form-field-error {
+  font-size: 0.82rem;
+  color: var(--color-error);
+  margin-top: 0.15rem;
+}
+
+/* ─── 무한 스크롤: 로딩 더보기 ─── */
+.activities-load-more {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.activities-end-message {
+  text-align: center;
+  padding: 1.5rem 0;
+  color: var(--color-text-tertiary);
+  font-size: 0.9rem;
+}
+
 /* ─── 반응형: 태블릿 ─── */
 @media (max-width: 1024px) {
   .activities-grid {
