@@ -74,12 +74,18 @@ html, body, #root{
   height: 10vh;
 }
 
-/* 모바일: topBar 이후 여백 없이 header-container 표시 */
+/* 모바일: header-container 완전 제거 (HeaderBar는 position:fixed라 영향 없음) */
 @media (max-width: 767px) {
   .header-container {
-    height: 0;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
     margin: 0;
     padding: 0;
+    overflow: hidden;
+    border: none;
+    line-height: 0;
+    font-size: 0;
   }
 }
 

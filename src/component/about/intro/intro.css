@@ -20,7 +20,7 @@ html, body, #root {
     position: relative !important;
     min-height: clamp(200px, 40vh, 300px) !important;
     max-height: clamp(300px, 60vh, 500px) !important;
-    margin-top: clamp(60px, 10vh, 12vh);
+    margin-top: 0;
 }
 
 /* 분류바 스타일 */
@@ -103,12 +103,12 @@ html, body, #root {
 }
 
 /* 드롭다운 메뉴에 hover 시에도 메뉴 유지 */
-.dropdown-menu:hover {
+.category-bar .dropdown-menu:hover {
   display: block !important;
 }
 
 /* 드롭다운 컨테이너에 hover 시 메뉴 유지 */
-.dropdown-container:hover .dropdown-menu {
+.category-bar .dropdown-container:hover .dropdown-menu {
   display: block !important;
 }
 
@@ -147,19 +147,19 @@ html, body, #root {
   transform: rotate(180deg);
 }
 
-/* 드롭다운 영역 설정 */
-.dropdown-container {
+/* 드롭다운 영역 설정 (category-bar 스코프로 제한) */
+.category-bar .dropdown-container {
   position: relative;
   display: flex;
 }
 
 /* category-item과 함께 사용되지 않은 dropdown-container를 위한 기본 스타일 */
-.dropdown-container:not(.category-item) {
+.category-bar .dropdown-container:not(.category-item) {
   padding-bottom: 10px !important;
 }
 
 /* 드롭다운에 마우스를 올렸을 때 보여질 서브메뉴 */
-.dropdown-menu {
+.category-bar .dropdown-menu {
   position: absolute !important;
   bottom: 100% !important;
   left: 0 !important;
@@ -175,7 +175,7 @@ html, body, #root {
 
 
 
-.dropdown-item {
+.category-bar .dropdown-item {
   color: white !important;
   padding: 0.8rem 1.2rem !important;
   display: block !important;
@@ -186,7 +186,7 @@ html, body, #root {
   cursor: pointer !important;
 }
 
-.dropdown-item:hover {
+.category-bar .dropdown-item:hover {
   background-color: white !important;
   color: #003c80 !important;
 }
@@ -366,8 +366,8 @@ html, body, #root {
     flex-direction: column;
     width: 100%;
     height: auto;
-    min-height: 60vh; /* 모바일에서는 고정된 100vh 제거 */
-    margin-top: 10vh; /* 헤더바 높이만큼 상단 여백 추가 */
+    min-height: 60vh;
+    margin-top: 0; /* 슬라이더가 헤더 뒤로 들어가도록 여백 제거 */
   }
 
   .imageSlider-container {
@@ -404,7 +404,7 @@ html, body, #root {
   }
 
   /* 모바일 드롭다운 메뉴 */
-  .dropdown-menu {
+  .category-bar .dropdown-menu {
     min-width: 120px !important;
     padding: 0.3rem 0 !important;
     position: absolute !important;
@@ -416,7 +416,7 @@ html, body, #root {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15) !important;
   }
 
-  .dropdown-item {
+  .category-bar .dropdown-item {
     padding: 0.6rem 1rem !important;
     font-size: 0.9rem !important;
     color: white !important;

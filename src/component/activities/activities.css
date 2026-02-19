@@ -1,5 +1,12 @@
 /* 활동(대외활동/공모전/팀원모집) - 링커리어 스타일 카드 그리드 */
 
+.activities-page,
+.activities-page *,
+.activities-detail,
+.activities-detail * {
+  box-sizing: border-box;
+}
+
 .activities-page {
   width: 100%;
   max-width: 1200px;
@@ -7,6 +14,7 @@
   padding: 2rem 1.5rem;
   padding-top: calc(40px + 10vh + 2rem);
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .activities-header {
@@ -264,9 +272,14 @@
 }
 
 .activity-card-category {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   color: var(--color-primary);
   font-weight: 600;
+}
+
+/* 상세 페이지의 카테고리 라벨은 더 크게 */
+.activities-detail .activity-card-category {
+  font-size: 1rem;
 }
 
 .activity-card-title {
@@ -477,6 +490,8 @@
   padding: 2rem 1.5rem;
   padding-top: calc(40px + 10vh + 2rem);
   box-sizing: border-box;
+  overflow-x: hidden;
+  word-break: break-word;
 }
 
 .activities-detail-header {
@@ -484,7 +499,7 @@
 }
 
 .activities-detail-title {
-  font-size: 1.75rem;
+  font-size: 2rem;
   font-weight: 800;
   color: var(--color-text);
   margin: 0 0 0.5rem 0;
@@ -495,13 +510,15 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--color-text-secondary);
+  word-break: break-word;
 }
 
 .activities-detail-thumbnail {
   position: relative;
   width: 100%;
+  max-width: 100%;
   padding-top: 40%;
   margin-bottom: 1.5rem;
   border-radius: var(--radius-md);
@@ -521,9 +538,12 @@
 .activities-detail-content {
   padding: 1.5rem 0;
   border-top: 1px solid var(--color-border-light);
-  line-height: 1.7;
+  font-size: 1.1rem;
+  line-height: 1.8;
   color: #374151;
   white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .activities-detail-actions {
@@ -879,7 +899,9 @@
   .activities-detail-actions a,
   .activities-detail-actions button:not(.activities-icon-btn) {
     width: 100%;
+    max-width: 100%;
     text-align: center;
+    box-sizing: border-box;
   }
 
   .activities-detail-icon-actions {

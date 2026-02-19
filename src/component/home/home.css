@@ -43,6 +43,7 @@ html, body, #root {
     scroll-snap-align: start;
     position: relative !important;
     overflow: hidden !important;
+    margin-top: -10vh; /* header-container(10vh) 공간 보정 → 뷰포트 꽉 채움 */
   }
 
   /* 이미지 슬라이더 영역 */
@@ -240,6 +241,7 @@ html, body, #root {
       height: 100vh;
       min-height: 100vh;
       max-height: 100vh;
+      margin-top: 0; /* 모바일: header-container가 0이므로 보정 불필요 */
     }
 
     .slider-container {
