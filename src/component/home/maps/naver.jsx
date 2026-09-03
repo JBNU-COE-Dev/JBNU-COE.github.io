@@ -10,7 +10,7 @@ function Naver({ containerStyle, address, name, lat, lng }) {
   const scriptLoadedRef = useRef(false);
 
   useEffect(() => {
-    const CLIENT_ID = 'stpjolhsdg';
+    const CLIENT_ID = process.env.REACT_APP_NAVER_CLIENT_ID;
     
     if (!CLIENT_ID) {
       setError('네이버 지도 API 키가 설정되지 않았습니다.');
