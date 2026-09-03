@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
 import ImageSlider from './ImageSlider';
+import SearchInput from '../../common/SearchInput';
 import { getResources } from '../../../services/resourcesApi';
 import { getResourceFileUrl } from '../../../services/api';
 import './gallery.css';
@@ -152,15 +153,10 @@ export default function Gallery() {
           transition={{ delay: 0.1 }}
         >
           <form className="gallery-search-form" onSubmit={handleSearch}>
-            <div className="search-input-wrapper" style={{ flex: 1 }}>
-              <input
-                type="text"
-                className="search-input"
-                placeholder="검색어를 입력하세요"
-                value={searchKeyword}
-                onChange={(e) => setSearchKeyword(e.target.value)}
-              />
-            </div>
+            <SearchInput
+              value={searchKeyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+            />
             <button type="submit" className="search-btn">
               <FiSearch />
               <span>검색</span>

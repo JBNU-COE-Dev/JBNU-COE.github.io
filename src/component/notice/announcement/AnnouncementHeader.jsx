@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FiSearch } from 'react-icons/fi';
+import SearchInput from '../../common/SearchInput';
 
 const CATEGORIES = [
   { id: 'all', label: '전체' },
@@ -35,16 +35,10 @@ export default function AnnouncementHeader({
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <div className="search-input-wrapper">
-            <FiSearch className="search-icon" />
-            <input
-              type="text"
-              placeholder="검색어를 입력하세요"
-              value={searchKeyword}
-              onChange={(e) => setSearchKeyword(e.target.value)}
-              className="search-input"
-            />
-          </div>
+          <SearchInput
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+          />
           <motion.button
             type="submit"
             className="search-button"

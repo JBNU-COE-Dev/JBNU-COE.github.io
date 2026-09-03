@@ -39,13 +39,7 @@
   max-width: 100%;
 }
 
-.search-icon {
-  position: absolute;
-  left: 1rem;
-  font-size: 1.2rem;
-  color: #9ca3af;
-  pointer-events: none;
-}
+/* .search-icon 은 common/SearchInput.css 에서 정의합니다. */
 
 .search-input {
   padding: 0.6rem 1rem 0.6rem 2.8rem;
