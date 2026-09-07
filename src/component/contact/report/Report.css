@@ -71,100 +71,6 @@
   font-weight: bold;
 }
 
-/* 카카오 카드 - KakaoChannel 스타일 통일 */
-.kakao-main-card {
-  background: linear-gradient(135deg, #FEE500 0%, #FFD700 100%);
-  border-radius: 20px;
-  padding: 2.5rem;
-  box-shadow: 0 10px 30px rgba(254, 229, 0, 0.3);
-  text-align: center;
-}
-
-.kakao-card-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.kakao-card-icon {
-  font-size: 4rem;
-  color: #3C1E1E;
-}
-
-.kakao-card-text h2 {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: #3C1E1E;
-  margin: 0 0 0.5rem 0;
-}
-
-.kakao-card-text p {
-  font-size: 1.1rem;
-  color: #3C1E1E;
-  opacity: 0.9;
-  margin: 0;
-}
-
-.kakao-card-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
-
-.kakao-card-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 2rem;
-  background: #3C1E1E;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(60, 30, 30, 0.3);
-  transition: all 0.3s ease;
-}
-
-.kakao-card-button:hover {
-  background: #2a1515;
-  box-shadow: 0 6px 20px rgba(60, 30, 30, 0.4);
-}
-
-.kakao-card-button .button-icon {
-  font-size: 1.5rem;
-}
-
-.kakao-qr-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.kakao-qr-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(60, 30, 30, 0.2);
-}
-
-.kakao-qr-image {
-  width: 180px;
-  height: 180px;
-  object-fit: contain;
-  border-radius: 12px;
-  background: white;
-  padding: 0.5rem;
-}
-
 /* 태블릿 반응형 */
 @media (max-width: 1023px) {
   .report-container {
@@ -178,18 +84,6 @@
 
   .report-main-icon {
     font-size: 3rem;
-  }
-
-  .kakao-card-icon {
-    font-size: 3rem;
-  }
-
-  .kakao-card-text h2 {
-    font-size: 1.5rem;
-  }
-
-  .kakao-main-card {
-    padding: 2rem 1.5rem;
   }
 }
 
@@ -212,8 +106,7 @@
     font-size: 2.5rem;
   }
 
-  .report-info-box,
-  .kakao-main-card {
+  .report-info-box {
     padding: 1.5rem;
   }
 
@@ -223,32 +116,6 @@
 
   .report-info-list li {
     font-size: 0.9rem;
-  }
-
-  .kakao-card-icon {
-    font-size: 3rem;
-  }
-
-  .kakao-card-text h2 {
-    font-size: 1.3rem;
-  }
-
-  .kakao-card-text p {
-    font-size: 0.95rem;
-  }
-
-  .kakao-card-button {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .kakao-card-actions {
-    gap: 1.5rem;
-  }
-
-  .kakao-qr-image {
-    width: 150px;
-    height: 150px;
   }
 }
 

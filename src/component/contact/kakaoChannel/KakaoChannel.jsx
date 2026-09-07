@@ -1,17 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { RiKakaoTalkFill } from 'react-icons/ri';
-import { FaComments, FaQrcode, FaMobileAlt } from 'react-icons/fa';
+import KakaoCard from '../../common/KakaoCard';
 import kakaoQR from '../../../img/qr-code/kakaoChQR.png';
 import './KakaoChannel.css';
 
 const KakaoChannel = () => {
-  const kakaoUrl = 'http://pf.kakao.com/_BHngn';
-
-  const handleKakaoClick = () => {
-    window.open(kakaoUrl, '_blank', 'noopener,noreferrer');
-  };
-
   return (
     <motion.div
       className="kakao-channel-container"
@@ -25,33 +19,15 @@ const KakaoChannel = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.5 }}
       >
-        <div className="kakao-channel-main-card">
-          <div className="kakao-channel-info">
-            <RiKakaoTalkFill className="kakao-channel-icon" />
-            <div className="kakao-channel-text">
-              <h2>전북대학교 공과대학 학생회 카카오톡 채널</h2>
-              <p>학생회와 실시간으로 소통하고, 문의사항을 편리하게 전달하세요</p>
-            </div>
-          </div>
-          
-          <div className="kakao-channel-actions">
-            <motion.button
-              className="kakao-channel-button"
-              onClick={handleKakaoClick}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <RiKakaoTalkFill className="button-icon" />
-              카카오톡 채널 입장하기
-            </motion.button>
-            
-            <div className="kakao-qr-section">
-              <div className="kakao-qr-container">
-                <img src={kakaoQR} alt="카카오톡 채널 QR 코드" className="kakao-qr-image" />
-              </div>
-            </div>
-          </div>
-        </div>
+        <KakaoCard
+          kakaoUrl="https://pf.kakao.com/_BHngn"
+          title="전북대학교 공과대학 학생회 카카오톡 채널"
+          description="학생회와 실시간으로 소통하고, 문의사항을 편리하게 전달하세요"
+          buttonText="카카오톡 채널 입장하기"
+          qrImage={kakaoQR}
+          qrAlt="카카오톡 채널 QR 코드"
+        />
+
         <div className="kakao-channel-notice">
           <h3>이용 안내</h3>
           <ul>
