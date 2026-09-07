@@ -3,8 +3,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './component/home/home.jsx';
 
 import Benefits from './component/benefits/benefits.jsx';
-import Contact from './component/contact/contact.jsx';
-import Notice from './component/notice/notice.jsx';
 import Resources from './component/resources/resources.jsx';
 import Intro from './component/about/intro/intro.jsx';
 import Organization from './component/about/organization/organization.jsx';
@@ -53,14 +51,12 @@ function App() {
         <main className="main-content">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/notice" element={<Notice />} />
               <Route path="/notice/announcement" element={<AnnouncementList />} />
               <Route path="/notice/announcement/:id" element={<AnnouncementDetail />} />
               <Route path="/notice/gallery" element={<ErrorBoundary><Gallery /></ErrorBoundary>} />
               <Route path="/notice/study-support" element={<StudySupport />} />
               <Route path="/notice/calendar" element={<MonthlyCalendar />} />
               <Route path="/benefits" element={<Benefits />} />
-              <Route path="/contact" element={<Contact />} />
               <Route path="/contact/report" element={<Report />} />
               <Route path="/contact/board-inquiry" element={<BoardInquiry />} />
               <Route path="/contact/kakao-channel" element={<KakaoChannel />} />

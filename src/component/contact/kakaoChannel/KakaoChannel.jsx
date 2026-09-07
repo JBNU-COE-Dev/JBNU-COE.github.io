@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { RiKakaoTalkFill } from 'react-icons/ri';
 import KakaoCard from '../../common/KakaoCard';
 import kakaoQR from '../../../img/qr-code/kakaoChQR.png';
 import './KakaoChannel.css';

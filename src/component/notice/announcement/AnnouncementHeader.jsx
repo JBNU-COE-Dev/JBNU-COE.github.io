@@ -46,7 +46,7 @@ export default function AnnouncementHeader({
             whileTap={{ scale: 0.95 }}
           >
             검색
-          </motion.button>  n m      
+          </motion.button>
         </motion.form>
       </div>
 
