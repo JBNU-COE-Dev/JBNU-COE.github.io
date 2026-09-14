@@ -33,13 +33,6 @@
   gap: 0.55rem;
 }
 
-.announcement-eyebrow {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  color: #4a90d9;
-}
-
 .announcement-header h1 {
   margin: 0;
   font-size: 1.875rem;
@@ -47,13 +40,6 @@
   line-height: 1.2;
   letter-spacing: -0.02em;
   color: #1a1a2e;
-}
-
-.announcement-desc {
-  margin: 0;
-  font-size: 0.875rem;
-  line-height: 1.6;
-  color: #6b7280;
 }
 
 /* 검색
@@ -130,66 +116,13 @@
 /* 본문: 분류 내비 + 목록 */
 .announcement-body {
   display: grid;
-  grid-template-columns: 232px minmax(0, 1fr);
-  /* flex-grow 로 남는 세로 공간이 자동 행(1180px 이하의 분류 칩 줄)에
+  grid-template-columns: 208px minmax(0, 1fr);
+  /* flex-grow 로 남는 세로 공간이 자동 행(1024px 이하의 분류 칩 줄)에
      분배되지 않도록 행을 위로 정렬합니다. */
   align-content: start;
   gap: 3rem;
   flex-grow: 1;
   padding: 1.75rem clamp(1.25rem, 3.5vw, 3.5rem) 3rem;
-}
-
-/* 분류 내비 */
-.category-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  align-self: start;
-}
-
-.category-nav-label {
-  padding: 0 0 0.75rem 2px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: #9ca3af;
-}
-
-.category-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  height: 44px;
-  padding: 0 0.875rem;
-  border: none;
-  border-left: 3px solid transparent;
-  border-radius: 0 6px 6px 0;
-  background: transparent;
-  color: #4b5563;
-  font-family: inherit;
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.category-button:hover {
-  background: #f5f7fa;
-  color: #1f2937;
-}
-
-.category-button.active {
-  border-left-color: #004ca5;
-  background: #f0f6ff;
-  color: #004ca5;
-  font-weight: 700;
-}
-
-.category-count {
-  font-size: 0.8rem;
-  font-weight: 600;
 }
 
 /* 목록 영역 */
@@ -589,43 +522,8 @@
 
 /* ===== 반응형 ===== */
 
-/* 태블릿: 분류 내비를 가로 칩으로 */
+/* 표에서 작성자 열을 덜어냅니다 */
 @media (max-width: 1180px) {
-  .announcement-body {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1.5rem;
-  }
-
-  .category-nav {
-    flex-direction: row;
-    gap: 0.5rem;
-    overflow-x: auto;
-    padding-bottom: 0.25rem;
-  }
-
-  .category-nav-label {
-    display: none;
-  }
-
-  .category-button {
-    height: 38px;
-    padding: 0 1rem;
-    flex-shrink: 0;
-    border: 1px solid #d1d5db;
-    border-left-width: 1px;
-    border-radius: 999px;
-  }
-
-  .category-button.active {
-    border-color: #004ca5;
-    background: #004ca5;
-    color: #ffffff;
-  }
-
-  .category-button.active .category-count {
-    color: rgba(255, 255, 255, 0.75);
-  }
-
   .notice-row,
   .skeleton-row {
     grid-template-columns: 96px minmax(0, 1fr) 96px 72px;
@@ -635,6 +533,14 @@
   .notice-row .notice-author,
   .skeleton-row .skeleton-author {
     display: none;
+  }
+}
+
+/* 분류 레일이 가로 칩으로 바뀌는 지점 (common/FilterRail/FilterRail.css) */
+@media (max-width: 1024px) {
+  .announcement-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
   }
 }
 

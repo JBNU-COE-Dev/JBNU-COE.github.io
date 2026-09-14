@@ -33,21 +33,6 @@
   }
 }
 
-.gallery-title-content h1 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin: 0 0 0.5rem 0;
-  margin-top: 3rem;
-  letter-spacing: -0.02em;
-}
-
-.gallery-title-content p {
-  font-size: 1.1rem;
-  opacity: 0.9;
-  margin: 0;
-  font-weight: 500;
-}
-
 /* ========================================
    메인 컨텐츠
    ======================================== */
@@ -73,34 +58,6 @@
   display: flex;
   gap: 0.75rem;
   align-items: stretch;
-}
-
-.search-select-wrapper {
-  flex-shrink: 0;
-}
-
-.search-select {
-  height: 100%;
-  min-height: 44px;
-  padding: 0 1rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  color: #374151;
-  background: white;
-  cursor: pointer;
-  transition: border-color 0.2s;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.5rem center;
-  background-size: 1.25rem;
-  padding-right: 2.5rem;
-}
-
-.search-select:focus {
-  outline: none;
-  border-color: #2955a6;
 }
 
 .search-input-wrapper {
@@ -641,28 +598,12 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 1.25rem;
   }
-  
-  .gallery-title-content h1 {
-    font-size: 2rem;
-  }
 }
 
 /* ========================================
    반응형 - 작은 태블릿 (768px 이하)
    ======================================== */
 @media (max-width: 768px) {
-  .gallery-title-section {
-    height: 160px;
-    margin-top: 60px;
-  }
-  
-  .gallery-title-content h1 {
-    font-size: 1.75rem;
-  }
-  
-  .gallery-title-content p {
-    font-size: 0.95rem;
-  }
   
   .gallery-main {
     padding: 1.5rem 1rem 3rem;
@@ -674,14 +615,6 @@
   
   .gallery-search-form {
     flex-wrap: wrap;
-  }
-  
-  .search-select-wrapper {
-    width: 100%;
-  }
-  
-  .search-select {
-    width: 100%;
   }
   
   .search-input-wrapper {
@@ -726,18 +659,6 @@
    반응형 - 모바일 (480px 이하)
    ======================================== */
 @media (max-width: 480px) {
-  .gallery-title-section {
-    height: 140px;
-  }
-  
-  .gallery-title-content h1 {
-    font-size: 1.5rem;
-  }
-  
-  .gallery-title-content p {
-    font-size: 0.85rem;
-    padding: 0 1rem;
-  }
   
   .gallery-search-form {
     flex-direction: column;

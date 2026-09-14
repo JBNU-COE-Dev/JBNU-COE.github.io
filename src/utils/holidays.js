@@ -74,28 +74,11 @@ const koreanHolidays = {
 };
 
 /**
- * 특정 날짜가 공휴일인지 확인
- * @param {Date|string} date - 확인할 날짜
- * @returns {Object|null} 공휴일 정보 또는 null
- */
-export function isHoliday(date) {
-  const dateStr = typeof date === 'string' ? date : formatDate(date);
-  const year = dateStr.substring(0, 4);
-  
-  if (!koreanHolidays[year]) {
-    return null;
-  }
-  
-  const holiday = koreanHolidays[year].find(h => h.date === dateStr);
-  return holiday || null;
-}
-
-/**
  * 특정 년도의 모든 공휴일 가져오기
  * @param {number|string} year - 년도 (예: 2024, "2024")
  * @returns {Array} 공휴일 배열
  */
-export function getHolidaysForYear(year) {
+function getHolidaysForYear(year) {
   const yearStr = String(year);
   return koreanHolidays[yearStr] || [];
 }
@@ -106,7 +89,7 @@ export function getHolidaysForYear(year) {
  * @param {Date|string} endDate - 종료 날짜
  * @returns {Array} 공휴일 배열
  */
-export function getHolidaysInRange(startDate, endDate) {
+function getHolidaysInRange(startDate, endDate) {
   const start = typeof startDate === 'string' ? startDate : formatDate(startDate);
   const end = typeof endDate === 'string' ? endDate : formatDate(endDate);
   
@@ -166,10 +149,3 @@ export function getHolidaysAsEvents(startDate, endDate) {
   
   return events;
 }
-
-export default {
-  isHoliday,
-  getHolidaysForYear,
-  getHolidaysInRange,
-  getHolidaysAsEvents,
-};

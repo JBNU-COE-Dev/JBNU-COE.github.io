@@ -23,13 +23,6 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
-.pledge-eyebrow {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  color: #4a90d9;
-}
-
 .pledge-header h1 {
   margin: 0;
   font-size: 1.875rem;
@@ -37,13 +30,6 @@
   line-height: 1.2;
   letter-spacing: -0.02em;
   color: #1a1a2e;
-}
-
-.pledge-desc {
-  margin: 0;
-  font-size: 0.875rem;
-  line-height: 1.6;
-  color: #6b7280;
 }
 
 /* 요약 스트립 */

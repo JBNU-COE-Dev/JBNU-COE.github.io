@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  FaBuilding, FaUsers, FaCalendarAlt, FaMapMarkerAlt, 
-  FaStar, FaGlobe, FaGift, FaBookmark, FaRegBookmark,
-  FaShareAlt, FaArrowLeft, FaHeart, FaEye, FaComment
-} from 'react-icons/fa';
-import { RiKakaoTalkFill } from 'react-icons/ri';
+import { FaBookmark, FaRegBookmark, FaArrowLeft, FaEye, FaComment } from 'react-icons/fa';
 import './matchingDetail.css';
 
 const MatchingDetail = () => {
@@ -92,26 +87,6 @@ const MatchingDetail = () => {
     if (postData?.details?.homepage) {
       window.open(postData.details.homepage, '_blank');
     }
-  };
-
-  const handleShare = (platform) => {
-    const url = window.location.href;
-    const title = postData?.title || '';
-    
-    const shareUrls = {
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-      twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
-      kakao: `https://sharer.kakao.com/talk/friends/picker/link?url=${encodeURIComponent(url)}`,
-    };
-
-    if (shareUrls[platform]) {
-      window.open(shareUrls[platform], '_blank', 'width=600,height=400');
-    }
-  };
-
-  const copyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-    alert('링크가 복사되었습니다!');
   };
 
   if (loading) {

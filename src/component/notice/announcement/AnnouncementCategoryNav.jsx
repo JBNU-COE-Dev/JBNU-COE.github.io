@@ -1,11 +1,12 @@
 import React from 'react';
+import { FilterRail, FilterRailOptions } from '../../common/FilterRail/FilterRail';
 
-export const CATEGORIES = [
-  { id: 'all', label: '전체' },
-  { id: '일반공지', label: '일반공지' },
-  { id: '학사공지', label: '학사공지' },
-  { id: '사업단공지', label: '사업단공지' },
-  { id: '취업정보', label: '취업정보' },
+const CATEGORIES = [
+  { value: 'all', label: '전체' },
+  { value: '일반공지', label: '일반공지' },
+  { value: '학사공지', label: '학사공지' },
+  { value: '사업단공지', label: '사업단공지' },
+  { value: '취업정보', label: '취업정보' },
 ];
 
 /**
@@ -19,25 +20,19 @@ export default function AnnouncementCategoryNav({
   handleCategoryChange,
   totalElements
 }) {
+  const options = CATEGORIES.map((category) => ({
+    ...category,
+    count: selectedCategory === category.value ? totalElements : null,
+  }));
+
   return (
-    <nav className="category-nav">
-      <span className="category-nav-label">분류</span>
-      {CATEGORIES.map((category) => {
-        const isActive = selectedCategory === category.id;
-        return (
-          <button
-            key={category.id}
-            type="button"
-            onClick={() => handleCategoryChange(category.id)}
-            className={`category-button ${isActive ? 'active' : ''}`}
-          >
-            {category.label}
-            {isActive && totalElements != null && (
-              <span className="category-count">{totalElements}</span>
-            )}
-          </button>
-        );
-      })}
-    </nav>
+    <FilterRail as="nav" aria-label="분류">
+      <FilterRailOptions
+        heading="분류"
+        options={options}
+        value={selectedCategory}
+        onChange={handleCategoryChange}
+      />
+    </FilterRail>
   );
 }
