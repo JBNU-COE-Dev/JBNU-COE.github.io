@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './pledge.css';
-import CircularProgress from './CircularProgress';
 import PledgeList from './PledgeList';
 import { pledgeData, calculateOverallRate, calculateCategoryRate } from './pledgeData';
 import { getPledgeProgress } from '../../services/pledgeApi';
@@ -32,89 +31,94 @@ function Pledge() {
   }, []);
 
   const overallPercentage = calculateOverallRate(categories);
+  const allPledges = categories.flatMap((cat) => cat.pledges);
+  const totalCount = allPledges.length;
+  const completedCount = allPledges.filter((p) => p.completed).length;
 
   return (
-    <div className="pledge-container">
-      <div className="pledge-header">
+    <div className="pledge-page">
+      <header className="pledge-header">
         <h1>공약 이행률</h1>
-        <p>제58대 공과대학 학생회 '심(心)'의 공약 이행 현황을 확인해보세요</p>
-      </div>
+      </header>
 
-      <div className="pledge-content">
-        {/* 전체 공약 이행률 */}
-        <div className="overall-progress-section">
-          <h2>전체 공약 이행률</h2>
-          <div className="overall-progress-container">
-            <CircularProgress
-              percentage={overallPercentage}
-              color="#004ca5"
-              size={200}
-              strokeWidth={15}
-            />
-            <div className="overall-progress-text">
-              <span className="percentage">{overallPercentage}%</span>
-              <span className="description">전체 공약 이행률</span>
-            </div>
-          </div>
-          <div className="overall-stats">
-            <div className="stat-item">
-              <span className="stat-label">전체 공약</span>
-              <span className="stat-value">
-                {categories.reduce((sum, cat) => sum + cat.pledges.length, 0)}개
-              </span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-label">이행 완료</span>
-              <span className="stat-value completed">
-                {categories.reduce((sum, cat) =>
-                  sum + cat.pledges.filter(p => p.completed).length, 0
-                )}개
-              </span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-label">진행 중</span>
-              <span className="stat-value pending">
-                {categories.reduce((sum, cat) =>
-                  sum + cat.pledges.filter(p => !p.completed).length, 0
-                )}개
-              </span>
-            </div>
-          </div>
+      {/* 요약 스트립 */}
+      <div className="pledge-summary">
+        <div className="summary-rate">
+          <span className="summary-label">전체 이행률</span>
+          <span className="summary-value">
+            {overallPercentage}<span className="unit">%</span>
+          </span>
         </div>
 
-        {/* 분야별 공약 이행률 */}
-        <div className="category-progress-section">
-          <h2>분야별 공약 이행률</h2>
-          <div className="category-grid">
-            {categories.map((category) => {
-              const categoryPercentage = calculateCategoryRate(category.pledges);
-              const completedCount = category.pledges.filter(p => p.completed).length;
-              const totalCount = category.pledges.length;
+        <div className="summary-matrix">
+          <div className="matrix-cells">
+            {allPledges.map((pledge) => (
+              <span
+                key={pledge.id}
+                className={`matrix-cell ${pledge.completed ? 'done' : ''}`}
+                title={`${pledge.title} · ${pledge.completed ? '이행 완료' : '진행 중'}`}
+              />
+            ))}
+          </div>
+          <span className="matrix-caption">
+            전체 공약 {totalCount}개 · 칸 하나가 공약 하나입니다
+          </span>
+        </div>
 
-              return (
-                <div key={category.id} className="category-card">
-                  <div className="category-header">
-                    <CircularProgress
-                      percentage={categoryPercentage}
-                      color={category.color}
-                      size={280}
-                      strokeWidth={20}
-                    />
-                    <div className="category-info">
-                      <h3>{category.title}</h3>
-                      <span className="category-percentage">{categoryPercentage}%</span>
-                      <span className="category-count">
-                        {completedCount} / {totalCount} 완료
-                      </span>
+        <div className="summary-stats">
+          <div className="pledge-stat">
+            <span className="pledge-stat-label">전체</span>
+            <span className="pledge-stat-value">{totalCount}</span>
+          </div>
+          <div className="pledge-stat">
+            <span className="pledge-stat-label">이행 완료</span>
+            <span className="pledge-stat-value completed">{completedCount}</span>
+          </div>
+          <div className="pledge-stat">
+            <span className="pledge-stat-label">진행 중</span>
+            <span className="pledge-stat-value pending">{totalCount - completedCount}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* 분야별 보드 */}
+      <div className="pledge-board">
+        <div className="board-head">
+          <h2>분야별 이행 현황</h2>
+          <span className="board-count">{categories.length}개 분야</span>
+        </div>
+
+        <div className="pledge-category-grid">
+          {categories.map((category) => {
+            const categoryPercentage = calculateCategoryRate(category.pledges);
+            const categoryCompleted = category.pledges.filter((p) => p.completed).length;
+
+            return (
+              <section key={category.id} className="pledge-category-card">
+                <header className="pledge-category-head">
+                  <div className="pledge-category-title-row">
+                    <h3>{category.title}</h3>
+                    <span className="pledge-category-count">
+                      {categoryCompleted} / {category.pledges.length}
+                    </span>
+                  </div>
+                  <div className="pledge-category-rate">
+                    <span className="pledge-category-percentage">
+                      {categoryPercentage}<span className="unit">%</span>
+                    </span>
+                    <div className="pledge-category-bar">
+                      <div
+                        className="pledge-category-bar-fill"
+                        style={{ width: `${categoryPercentage}%` }}
+                      />
                     </div>
                   </div>
-                  <div className="category-content">
-                    <PledgeList pledges={category.pledges} />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                </header>
+
+                <PledgeList pledges={category.pledges} />
+              </section>
+            );
+          })}
         </div>
       </div>
     </div>

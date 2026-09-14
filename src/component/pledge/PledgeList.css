@@ -1,169 +1,108 @@
-.pledge-list {
-  margin: 0;
-  padding: 0;
-}
+/*
+ * 분야별 공약 목록 (pledge-category-card 안에 들어갑니다)
+ */
 
-.pledge-list ul {
+.pledge-list {
+  display: flex;
+  flex-direction: column;
   list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 0.25rem 1rem 0.75rem;
 }
 
 .pledge-item {
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-bottom: none;
-  border-radius: 0;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-.pledge-item:first-child {
-  border-radius: 4px 4px 0 0;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #f1f3f5;
 }
 
 .pledge-item:last-child {
-  border-bottom: 1px solid #e5e7eb;
-  border-radius: 0 0 4px 4px;
+  border-bottom: none;
 }
 
-.pledge-item:only-child {
-  border-radius: 4px;
-}
-
-.pledge-item:hover {
-  border-color: #004ca5;
-  background: #f0f7ff;
-}
-
-.pledge-item.completed {
-  border-left: 3px solid #10b981;
-}
-
-.pledge-item.pending {
-  border-left: 3px solid #ef4444;
-}
-
-/* 공약 헤더 (클릭 영역) */
-.pledge-item-header {
+.pledge-item-button {
   display: flex;
   align-items: center;
-  padding: 0.6rem 0.8rem;
-  gap: 0.5rem;
+  gap: 0.625rem;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.625rem 0.25rem;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
 }
 
-/* O/X 상태 표시 */
+.pledge-item-button:hover .pledge-title {
+  color: #004ca5;
+}
+
+/* 이행 여부 표시 */
 .pledge-status {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
+  position: relative; /* .sr-only 기준 */
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-size: 0.7rem;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
+  border: 1.5px solid #dfe3e9;
+  border-radius: 4px;
+  background: #ffffff;
+  box-sizing: border-box;
 }
 
-.status-complete {
-  background: #10b981;
-  color: white;
+.pledge-item.completed .pledge-status {
+  border-color: #004ca5;
+  background: #004ca5;
+  color: #ffffff;
 }
 
-.status-pending {
-  background: #ef4444;
-  color: white;
-}
-
-/* 공약 제목 */
 .pledge-title {
-  flex: 1;
-  font-size: 0.85rem;
+  flex-grow: 1;
+  font-size: 0.875rem;
   font-weight: 500;
-  color: #374151;
-  line-height: 1.3;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: #4b5563;
+  transition: color 0.2s ease;
 }
 
-/* 펼침 화살표 */
+.pledge-item.completed .pledge-title {
+  font-weight: 600;
+  color: #1f2937;
+}
+
 .pledge-expand {
-  font-size: 0.6rem;
-  color: #9ca3af;
-  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
   flex-shrink: 0;
+  color: #c3c9d2;
+  transition: transform 0.25s ease;
 }
 
 .pledge-expand.expanded {
   transform: rotate(180deg);
 }
 
-/* 공약 상세 설명 */
 .pledge-description {
-  padding: 0.5rem 0.6rem 0.5rem 2rem;
-  font-size: 0.8rem;
+  margin: 0;
+  padding: 0 0.25rem 0.875rem 1.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.7;
   color: #6b7280;
-  line-height: 1.5;
-  border-top: 1px solid #e5e7eb;
-  background: #f5f5f5;
-  animation: slideDown 0.2s ease;
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    max-height: 0;
-  }
-  to {
-    opacity: 1;
-    max-height: 500px;
-  }
-}
-
-/* 반응형 디자인 */
-@media (max-width: 768px) {
-  .pledge-item-header {
-    padding: 0.5rem 0.6rem;
-    gap: 0.4rem;
-  }
-
-  .pledge-status {
-    width: 16px;
-    height: 16px;
-    font-size: 0.65rem;
-  }
-
-  .pledge-title {
-    font-size: 0.8rem;
-  }
-
-  .pledge-description {
-    padding: 0.4rem 0.5rem 0.4rem 1.8rem;
-    font-size: 0.75rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .pledge-item-header {
-    padding: 0.45rem 0.5rem;
-    gap: 0.35rem;
-  }
-
-  .pledge-status {
-    width: 14px;
-    height: 14px;
-    font-size: 0.6rem;
-  }
-
-  .pledge-title {
-    font-size: 0.75rem;
-  }
-
-  .pledge-description {
-    padding: 0.35rem 0.4rem 0.35rem 1.5rem;
-    font-size: 0.7rem;
-  }
-
-  .pledge-expand {
-    font-size: 0.5rem;
-  }
+/* 스크린리더 전용 텍스트 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
