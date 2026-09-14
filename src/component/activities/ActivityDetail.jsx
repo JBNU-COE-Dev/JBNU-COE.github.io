@@ -2,13 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getActivityById, getResourceFileUrl } from '../../services/activityApi';
 import { getDDayLabel } from '../../utils/dday';
+import { CATEGORY_LABEL } from './utils';
 import './activities.css';
-
-const CATEGORY_LABEL = {
-  EXTERNAL_ACTIVITY: '대외활동',
-  CONTEST: '공모전',
-  TEAM_RECRUITMENT: '팀원 모집',
-};
 
 function ActivityDetail() {
   const { id } = useParams();
@@ -48,7 +43,7 @@ function ActivityDetail() {
   return (
     <div className="activities-detail">
       <div className="activities-detail-header">
-        <span className="pledge-card-category">{CATEGORY_LABEL[item.category] || item.category}</span>
+        <span className="activities-detail-category">{CATEGORY_LABEL[item.category] || item.category}</span>
         <h1 className="activities-detail-title">{item.title}</h1>
         <div className="activities-detail-meta">
           <span>작성자: {item.author}</span>
@@ -60,8 +55,8 @@ function ActivityDetail() {
       </div>
 
       {thumbnailUrl && (
-        <div className="pledge-card-image-wrap" style={{ paddingTop: '40%', marginBottom: '1.5rem' }}>
-          <img src={thumbnailUrl} alt="" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+        <div className="activities-detail-thumb">
+          <img src={thumbnailUrl} alt="" />
         </div>
       )}
 

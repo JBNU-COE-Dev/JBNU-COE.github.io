@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { rentalApi } from '../../../services';
+import SearchInput from '../../common/SearchInput';
 import './rental.css';
 
 // 기본 대여 물품 데이터 (API 실패 시 fallback)
@@ -120,15 +121,13 @@ export default function Rental() {
       {/* 헤더 */}
       <div className="rental-header">
         <h1>대여사업 물품 목록</h1>
-        <div className="rental-search">
-          <input
-            type="text"
-            placeholder="물품명 검색..."
-            value={searchKeyword}
-            onChange={(e) => setSearchKeyword(e.target.value)}
-            className="rental-search-input"
-          />
-        </div>
+        <SearchInput
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+          placeholder="물품명 검색..."
+          wrapperClassName="rental-search"
+          inputClassName="rental-search-input"
+        />
       </div>
 
       {/* 카테고리 필터 */}

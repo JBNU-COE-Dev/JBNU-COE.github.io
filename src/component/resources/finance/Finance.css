@@ -56,14 +56,7 @@
   position: relative;
 }
 
-.search-input-wrapper .search-icon {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #9ca3af;
-  font-size: 1.1rem;
-}
+/* .search-icon 은 common/SearchInput.css 에서 정의합니다. */
 
 .finance-search-input {
   width: 100%;
