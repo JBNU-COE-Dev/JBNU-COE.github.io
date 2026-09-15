@@ -1,17 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../../contexts/AuthContext';
 import './LoginPage.css';
 
+const DEFAULT_REDIRECT = '/activities';
+
+/** 내부 경로만 허용 (오픈 리다이렉트 방지) */
+function getSafeRedirect(value) {
+  if (!value || typeof value !== 'string') return DEFAULT_REDIRECT;
+  if (!value.startsWith('/') || value.startsWith('//')) return DEFAULT_REDIRECT;
+  return value;
+}
+
 function LoginPage() {
-  const { login, completeSignup } = useAuth();
+  const { login, completeSignup, isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const redirect = searchParams.get('redirect') || '/activities';
+  const redirect = getSafeRedirect(searchParams.get('redirect'));
   const [error, setError] = useState(null);
   const [pendingSignup, setPendingSignup] = useState(null); // { idToken, email }
   const [nickname, setNickname] = useState('');
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated && !pendingSignup) {
+      navigate(redirect, { replace: true });
+    }
+  }, [isLoading, isAuthenticated, pendingSignup, navigate, redirect]);
 
   const handleGoogleSuccess = async (credentialResponse) => {
     setError(null);
@@ -53,6 +68,10 @@ function LoginPage() {
 
   const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID || '';
 
+  if (isLoading || (isAuthenticated && !pendingSignup)) {
+    return null;
+  }
+
   // 닉네임 입력 단계 (신규 회원)
   if (pendingSignup) {
     return (
@@ -62,6 +81,9 @@ function LoginPage() {
           <p className="login-description">
             사용할 닉네임을 입력해주세요. (2~50자)
           </p>
+          {pendingSignup.email && (
+            <p className="login-email">{pendingSignup.email}</p>
+          )}
           {error && <div className="login-error">{error}</div>}
           <form onSubmit={handleSignupSubmit}>
             <div className="login-nickname-group">
