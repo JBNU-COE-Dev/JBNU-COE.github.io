@@ -70,6 +70,7 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/activities" element={<ActivityList />} />
               <Route path="/activities/recruit" element={<ActivityRecruitForm />} />
+              <Route path="/activities/:id/edit" element={<ActivityRecruitForm />} />
               <Route path="/activities/:id" element={<ActivityDetail />} />
 
               {/* 구 주소 호환: 갤러리는 /notice 아래에 있었습니다 */}

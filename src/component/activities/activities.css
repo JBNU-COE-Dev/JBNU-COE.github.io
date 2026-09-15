@@ -560,6 +560,30 @@
   background: #e5e7eb;
 }
 
+.activities-detail-actions .btn-danger {
+  background: #dc2626;
+  color: #fff;
+}
+
+.activities-detail-actions .btn-danger:hover {
+  background: #b91c1c;
+}
+
+.activities-detail-actions .btn-danger:disabled,
+.activities-detail-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.activities-detail-error {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: #fef2f2;
+  color: #b91c1c;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
 /* ---------------------------------------------------------------- 반응형 */
 
 /* 필터 레일이 가로 칩으로 바뀌는 지점 (common/FilterRail/FilterRail.css) */
