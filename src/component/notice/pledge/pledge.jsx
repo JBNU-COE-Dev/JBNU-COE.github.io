@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './pledge.css';
 import PledgeList from './PledgeList';
 import { pledgeData, calculateOverallRate, calculateCategoryRate } from './pledgeData';
-import { getPledgeProgress } from '../../services/pledgeApi';
+import { getPledgeProgress } from '../../../services/pledgeApi';
 
 function Pledge() {
   // API에서 ID별 completed를 받아 정적 데이터와 매칭한 카테고리
@@ -61,7 +61,7 @@ function Pledge() {
             ))}
           </div>
           <span className="matrix-caption">
-            전체 공약 {totalCount}개 · 칸 하나가 공약 하나입니다
+            전체 공약 {totalCount}개
           </span>
         </div>
 
