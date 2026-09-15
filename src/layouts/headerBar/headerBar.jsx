@@ -110,7 +110,7 @@ function HeaderBar({ isMobile, isTablet }) {
                     <li><Link to="/resources/constitution">공과대학 학생회칙</Link></li>
                     <li><Link to="/resources/finance">회계 내역 공개</Link></li>
                     <li><Link to="/resources/inspection">시설 정기 점검 결과</Link></li>
-                    <li><Link to="/notice/gallery">갤러리</Link></li>
+                    <li><Link to="/resources/gallery">갤러리</Link></li>
                   </div>
                 )}
               </li>
@@ -196,7 +196,7 @@ function HeaderBar({ isMobile, isTablet }) {
                           <li><Link to="/resources/constitution" onClick={() => setMenuOpen(false)}>공과대학 학생회칙</Link></li>
                           <li><Link to="/resources/finance" onClick={() => setMenuOpen(false)}>회계 내역 공개</Link></li>
                           <li><Link to="/resources/inspection" onClick={() => setMenuOpen(false)}>시설 정기 점검 결과</Link></li>
-                          <li><Link to="/notice/gallery" onClick={() => setMenuOpen(false)}>갤러리</Link></li>
+                          <li><Link to="/resources/gallery" onClick={() => setMenuOpen(false)}>갤러리</Link></li>
                         </ul>
                       )}
                     </li>

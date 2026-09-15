@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './component/home/home.jsx';
 
 import Benefits from './component/benefits/benefits.jsx';
@@ -8,25 +8,23 @@ import Intro from './component/about/intro/intro.jsx';
 import Organization from './component/about/organization/organization.jsx';
 import AnnouncementList from './component/notice/announcement/AnnouncementList.jsx';
 import AnnouncementDetail from './component/notice/announcement/AnnouncementDetail.jsx';
-import Gallery from './component/notice/gallery/Gallery.jsx';
+import Gallery from './component/resources/gallery/Gallery.jsx';
 import ErrorBoundary from './component/ErrorBoundary.jsx';
-import StudySupport from './component/notice/studySupport/StudySupport.jsx';
+import StudySupport from './component/notice/study-support/StudySupport.jsx';
 import MonthlyCalendar from './component/notice/calendar/MonthlyCalendar.jsx';
-import BuildingMap from './component/resources/buildingMap/BuildingMap.jsx';
+import BuildingMap from './component/resources/map/BuildingMap.jsx';
 import Constitution from './component/resources/constitution/Constitution.jsx';
 import Rental from './component/resources/rental/Rental.jsx';
-import FacilityInspection from './component/resources/facilityInspection/FacilityInspection.jsx';
+import FacilityInspection from './component/resources/inspection/FacilityInspection.jsx';
 import Finance from './component/resources/finance/Finance.jsx';
-import Pledge from './component/pledge/pledge.jsx';
+import Pledge from './component/notice/pledge/pledge.jsx';
 import Report from './component/contact/report/Report.jsx';
-import BoardInquiry from './component/contact/boardInquiry/BoardInquiry.jsx';
-import KakaoChannel from './component/contact/kakaoChannel/KakaoChannel.jsx';
-import Matching from './component/matching/Matching.jsx';
-import MatchingDetail from './component/matching/MatchingDetail.jsx';
+import BoardInquiry from './component/contact/board-inquiry/BoardInquiry.jsx';
+import KakaoChannel from './component/contact/kakao-channel/KakaoChannel.jsx';
 import ActivityList from './component/activities/ActivityList.jsx';
 import ActivityDetail from './component/activities/ActivityDetail.jsx';
 import ActivityRecruitForm from './component/activities/ActivityRecruitForm.jsx';
-import LoginPage from './component/auth/LoginPage.jsx';
+import LoginPage from './component/login/LoginPage.jsx';
 import HeaderBar from './layouts/headerBar/headerBar.jsx';
 import Banner from './layouts/banner/banner.jsx';
 import TopBar from './layouts/topBar/topBar.jsx';
@@ -53,7 +51,6 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/notice/announcement" element={<AnnouncementList />} />
               <Route path="/notice/announcement/:id" element={<AnnouncementDetail />} />
-              <Route path="/notice/gallery" element={<ErrorBoundary><Gallery /></ErrorBoundary>} />
               <Route path="/notice/study-support" element={<StudySupport />} />
               <Route path="/notice/calendar" element={<MonthlyCalendar />} />
               <Route path="/benefits" element={<Benefits />} />
@@ -66,15 +63,17 @@ function App() {
               <Route path="/resources/rental" element={<Rental />} />
               <Route path="/resources/finance" element={<Finance />} />
               <Route path="/resources/inspection" element={<FacilityInspection />} />
+              <Route path="/resources/gallery" element={<ErrorBoundary><Gallery /></ErrorBoundary>} />
               <Route path="/about/intro" element={<Intro />} />
               <Route path="/about/organization" element={<Organization />} />
               <Route path="/notice/pledge" element={<Pledge />} />
-              <Route path="/matching" element={<Matching />} />
-              <Route path="/matching/:id" element={<MatchingDetail />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/activities" element={<ActivityList />} />
               <Route path="/activities/recruit" element={<ActivityRecruitForm />} />
               <Route path="/activities/:id" element={<ActivityDetail />} />
+
+              {/* 구 주소 호환: 갤러리는 /notice 아래에 있었습니다 */}
+              <Route path="/notice/gallery" element={<Navigate to="/resources/gallery" replace />} />
             </Routes>
           </main>
 

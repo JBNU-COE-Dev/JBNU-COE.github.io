@@ -1,0 +1,53 @@
+.kakao-channel-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  padding-top: calc(40px + 10vh + 2rem);
+  box-sizing: border-box;
+}
+
+.kakao-channel-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.kakao-channel-notice {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 2rem;
+  border-left: 4px solid #FEE500;
+}
+
+.kakao-channel-notice h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 1rem 0;
+}
+
+.kakao-channel-notice ul {
+  list-style: none;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+.kakao-channel-notice li {
+  list-style-type: none!important;
+  padding: 0.5rem 0;
+  color: #374151;
+  font-size: 1rem;
+  line-height: 1.6;
+  position: relative;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .kakao-channel-container {
+    padding: 1.5rem 1rem;
+    padding-top: calc(40px + 10vh + 1rem);
+  }
+}
+

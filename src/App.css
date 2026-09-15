@@ -1,30 +1,13 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
 html, body, #root{
   margin: 0;
   padding: 0;
   height: 100%;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
 }
 
 .app-container{
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-}
-.top-bar-container{
-  height: 10vh;
 }
 .header-container{
   height: 10vh;
@@ -39,14 +22,9 @@ html, body, #root{
   }
 }
 
-.App-link {
-  color: #61dafb;
-}
-
 .main-content {
   flex: 1;
 }
-
 
 /* 배너 스타일 (최하단) */
 .banner-container {
@@ -55,19 +33,4 @@ html, body, #root{
   justify-content: center;
   align-items: center;
   background-color: #f5f5f5;
-}
-
-.banner-img {
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }

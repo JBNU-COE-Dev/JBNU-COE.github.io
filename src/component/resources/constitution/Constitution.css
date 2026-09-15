@@ -6,23 +6,6 @@
   background: #f5f5f5;
 }
 
-.constitution-header {
-  max-width: 900px;
-  margin: 0 auto 40px;
-  text-align: center;
-  padding: 40px 20px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.constitution-header h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #004ca5;
-  margin: 0;
-}
-
 .constitution-content {
   background: white;
   padding: clamp(1.5rem, 4vw, 3rem);
@@ -176,10 +159,6 @@
     padding: 50px 40px;
   }
 
-  .constitution-header h1 {
-    font-size: 2.2rem;
-  }
-
   .section-title-main {
     font-size: 1.8rem;
   }
@@ -190,14 +169,6 @@
 }
 
 @media (max-width: 768px) {
-  .constitution-header {
-    padding: 30px 20px;
-    margin-bottom: 30px;
-  }
-
-  .constitution-header h1 {
-    font-size: 1.8rem;
-  }
 
   .section-title-main {
     font-size: 1.6rem;
@@ -230,14 +201,6 @@
 }
 
 @media (max-width: 480px) {
-  .constitution-header {
-    padding: 25px 15px;
-    margin-bottom: 20px;
-  }
-
-  .constitution-header h1 {
-    font-size: 1.5rem;
-  }
 
   .section-title-main {
     font-size: 1.4rem;
@@ -284,7 +247,6 @@
   }
 }
 
-
 /* 인쇄 스타일 */
 @media print {
   .constitution-container {
@@ -292,7 +254,6 @@
     padding: 0;
   }
 
-  .constitution-header,
   .constitution-content {
     box-shadow: none;
     border-radius: 0;
@@ -343,7 +304,6 @@
   }
 }
 
-.constitution-header,
 .constitution-content {
   animation: fadeIn 0.5s ease-out;
 }

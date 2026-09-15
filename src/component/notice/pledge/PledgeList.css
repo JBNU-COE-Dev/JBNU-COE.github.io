@@ -1,0 +1,108 @@
+/*
+ * 분야별 공약 목록 (pledge-category-card 안에 들어갑니다)
+ */
+
+.pledge-list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 1rem 0.75rem;
+}
+
+.pledge-item {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #f1f3f5;
+}
+
+.pledge-item:last-child {
+  border-bottom: none;
+}
+
+.pledge-item-button {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.625rem 0.25rem;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.pledge-item-button:hover .pledge-title {
+  color: #004ca5;
+}
+
+/* 이행 여부 표시 */
+.pledge-status {
+  position: relative; /* .sr-only 기준 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border: 1.5px solid #dfe3e9;
+  border-radius: 4px;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.pledge-item.completed .pledge-status {
+  border-color: #004ca5;
+  background: #004ca5;
+  color: #ffffff;
+}
+
+.pledge-title {
+  flex-grow: 1;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: #4b5563;
+  transition: color 0.2s ease;
+}
+
+.pledge-item.completed .pledge-title {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.pledge-expand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: #c3c9d2;
+  transition: transform 0.25s ease;
+}
+
+.pledge-expand.expanded {
+  transform: rotate(180deg);
+}
+
+.pledge-description {
+  margin: 0;
+  padding: 0 0.25rem 0.875rem 1.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: #6b7280;
+}
+
+/* 스크린리더 전용 텍스트 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

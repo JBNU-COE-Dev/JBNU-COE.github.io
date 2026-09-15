@@ -11,34 +11,10 @@
     /* Framer Motion이 배경/그림자 제어하므로 CSS 기본값 제거 */
 }
 
-/* 기본: 투명 배경에서 파란 글씨(특정 경로 제외) */
-.header-bar.at-top-blue .nav-list li a,
-.header-bar.at-top-blue .nav-list > li > ul,
-.header-bar.at-top-blue .nav-list > li > span,
-.header-bar.at-top-blue .nav-label {
-  color: #004ca5 !important;
-}
-
-/* 스크롤하지 않았을 때 드롭다운 스타일 */
-.header-bar.at-top-blue .dropdown-container {
-  background-color: white;
-  border: 1px solid #e0e0e0;
-}
-
-.header-bar.at-top-blue .dropdown-container a {
-  color: #004ca5 !important;
-}
-
-.header-bar.at-top-blue .dropdown-container a:hover {
-  background-color: #f0f8ff;
-  color: #004ca5 !important;
-}
-
 /* 스크롤 시: 흰 글씨 */
 .header-bar.header-scrolled .nav-list li a,
 .header-bar.header-scrolled .nav-list > li > ul,
-.header-bar.header-scrolled .nav-list > li > span,
-.header-bar.header-scrolled .nav-label {
+.header-bar.header-scrolled .nav-list > li > span {
   color: white !important;
 }
 
@@ -102,20 +78,6 @@
   }
 }
 
-.logo-title {
-    gap: 5rem;
-    font-weight: bold;
-    font-size: 1.5rem;
-    color: white;
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-  
-.logo-title:hover {
-    color: #aaccff;
-    text-decoration: underline;
-}
-
 .nav-menu {
     display: flex;
     justify-content: center;
@@ -136,18 +98,6 @@
 .nav-list li a {
     color: white;
     text-decoration: none;
-}
-
-.nav-link {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1.5rem;
-    transition: color 0.2s ease;
-}
-
-.nav-link:hover {
-    color: #aaccff;
 }
 
 .menu-button {
@@ -180,7 +130,6 @@
   backdrop-filter: blur(10px); /* 블러 효과 */
 }
 
-
 /* 마지막 메뉴(자료실)만 드롭다운을 중앙 정렬 */
 .nav-list .dropdown:last-child .dropdown-container {
   left: 50%;
@@ -195,38 +144,6 @@
   font-size: clamp(0.95rem, 1.1vw, 1.1rem); /* 드롭다운 폰트도 유동적으로 */
   transition: background-color 0.2s ease;
   white-space: nowrap;
-}
-
-/* 슬라이더 아이템 스타일 */
-.dropdown-slider-item {
-  position: relative;
-  padding: 0.8rem 1.2rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.dropdown-slider-item > span {
-  display: block;
-  font-size: 1.1rem;
-  white-space: nowrap;
-}
-
-.dropdown-slider-item:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* 슬라이더 드롭다운 래퍼 */
-.slider-dropdown-wrapper {
-  display: none;
-  position: absolute;
-  left: 100%;
-  top: 0;
-  margin-left: 10px;
-  z-index: 10001;
-}
-
-.dropdown-slider-item:hover .slider-dropdown-wrapper {
-  display: block;
 }
 
 /* hover 시 메뉴 열기 (PC용) */
@@ -306,24 +223,6 @@
 }
 
 .mobile-nav-list li a:hover {
-  background-color: white;
-  color: #003f87;
-  text-decoration: none;
-}
-
-.mobile-nav-link {
-  display: block;
-  color: white;
-  background-color: transparent;
-  font-size: 1.1rem;
-  text-decoration: none;
-  font-weight: bold;
-  padding: 0.7rem 1rem;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-}
-
-.mobile-nav-link:hover {
   background-color: white;
   color: #003f87;
   text-decoration: none;
@@ -424,10 +323,6 @@
       margin-left: 0;
       max-width: 140px;
       height: auto;
-    }
-  
-    .logo-title {
-      font-size: 1.4rem;
     }
   
     .nav-menu {

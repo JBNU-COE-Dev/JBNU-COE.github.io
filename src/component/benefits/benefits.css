@@ -299,15 +299,6 @@
   line-height: 1.5;
 }
 
-.benefit-modal-how {
-  margin: 0;
-  padding: 0.75rem;
-  background: #fef3c7;
-  border-radius: 8px;
-  color: #92400e;
-  font-size: 0.9rem;
-}
-
 .benefit-modal-footer {
   display: flex;
   gap: 0.75rem;
