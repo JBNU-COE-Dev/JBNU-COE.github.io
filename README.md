@@ -46,7 +46,6 @@ CRA 규칙에 따라 `REACT_APP_` 접두사가 붙은 값만 번들에 주입되
 | `REACT_APP_API_URL` | ✅ | 백엔드 API 베이스 URL. 미설정 시 `http://localhost:8080` |
 | `REACT_APP_GOOGLE_CLIENT_ID` | ✅ | Google OAuth 로그인 클라이언트 ID |
 | `REACT_APP_NAVER_CLIENT_ID` | ✅ | 네이버 지도(제휴 혜택 / 위치 안내) |
-| `REACT_APP_KAKAOAPIKEY` | 선택 | 카카오 지도(`src/component/home/maps/kakao.jsx`) 사용 시 |
 
 `.env`는 `.gitignore`에 포함되어 있습니다. 키를 커밋하지 마세요. 템플릿은 `.env.example` 참고.
 
