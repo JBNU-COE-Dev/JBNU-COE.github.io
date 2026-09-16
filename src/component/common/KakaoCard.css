@@ -1,152 +1,145 @@
-/* 카카오 카드 - Report / BoardInquiry / KakaoChannel 공통 스타일 */
-.kakao-main-card {
-  background: linear-gradient(135deg, #FEE500 0%, #FFD700 100%);
-  border-radius: 20px;
-  padding: 2.5rem;
-  box-shadow: 0 10px 30px rgba(254, 229, 0, 0.3);
-  text-align: center;
-}
+/*
+ * 카카오 카드 - Report / BoardInquiry / KakaoChannel 공통
+ *
+ * 사이트 카드 규격(흰 배경 / 1px #e5e7eb / radius 12px)을 따르고,
+ * 카카오 브랜드 옐로우는 아이콘 칩과 입장 버튼에만 남깁니다.
+ */
 
-.kakao-card-info {
+.kakao-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 1rem;
-  margin-bottom: 2rem;
+  padding: 1.25rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
 }
 
-.kakao-card-icon {
-  font-size: 4rem;
-  color: #3C1E1E;
+.kakao-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
 }
 
-.kakao-card-text h2 {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: #3C1E1E;
-  margin: 0 0 0.5rem 0;
+.kakao-card-badge {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  background: #fee500;
+  color: #3c1e1e;
+  font-size: 1.25rem;
 }
 
-.kakao-card-text p {
-  font-size: 1.1rem;
-  color: #3C1E1E;
-  opacity: 0.9;
-  margin: 0;
-}
-
-.kakao-card-actions {
+.kakao-card-text {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 2rem;
+  gap: 0.25rem;
+  min-width: 0;
 }
+
+.kakao-card-title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #1a1a2e;
+}
+
+.kakao-card-description {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: #6b7280;
+}
+
+/* ------------------------------------------------------------------ 버튼 */
 
 .kakao-card-button {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 2rem;
-  background: #3C1E1E;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 1.1rem;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.75rem;
+  border-radius: 8px;
+  background: #fee500;
+  color: #3c1e1e;
+  font-size: 0.875rem;
   font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(60, 30, 30, 0.3);
-  transition: all 0.3s ease;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
 }
 
+/* 전역 a:hover 가 파란색을 덮어쓰지 않도록 색을 다시 고정합니다. */
 .kakao-card-button:hover {
-  background: #2a1515;
-  box-shadow: 0 6px 20px rgba(60, 30, 30, 0.4);
+  background: #f5dc00;
+  color: #3c1e1e;
+  text-decoration: none;
 }
 
-.kakao-card-button .button-icon {
-  font-size: 1.5rem;
+.kakao-card-button-icon {
+  font-size: 1.125rem;
 }
 
-.kakao-qr-section {
+/* --------------------------------------------------------------------- QR */
+
+.kakao-card-qr {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.625rem;
+  padding: 1rem;
+  border: 1px solid #f3f4f6;
+  border-radius: 8px;
+  background: #f9fafb;
 }
 
-.kakao-qr-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(60, 30, 30, 0.2);
-}
-
-.kakao-qr-image {
-  width: 180px;
-  height: 180px;
+.kakao-card-qr-image {
+  width: clamp(6.5rem, 18vw, 8rem);
+  height: auto;
+  aspect-ratio: 1 / 1;
   object-fit: contain;
-  border-radius: 12px;
-  background: white;
-  padding: 0.5rem;
+  border-radius: 4px;
+  background: #ffffff;
 }
 
-.kakao-qr-text {
-  font-size: 0.95rem;
-  color: #3C1E1E;
+.kakao-card-qr-text {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+/* 좁은 화면에서만 쓰는 접기 (KakaoCard.jsx 가 isMobile 일 때만 렌더) */
+
+.kakao-card-qr-toggle {
+  padding-top: 0.75rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.kakao-card-qr-toggle > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  color: #6b7280;
+  font-size: 0.8125rem;
   font-weight: 600;
-  margin: 0;
+  cursor: pointer;
+  list-style: none;
 }
 
-/* 태블릿 반응형 */
-@media (max-width: 1023px) {
-  .kakao-main-card {
-    padding: 2rem 1.5rem;
-  }
-
-  .kakao-card-icon {
-    font-size: 3rem;
-  }
-
-  .kakao-card-text h2 {
-    font-size: 1.5rem;
-  }
+.kakao-card-qr-toggle > summary::-webkit-details-marker {
+  display: none;
 }
 
-/* 모바일 반응형 */
-@media (max-width: 767px) {
-  .kakao-main-card {
-    padding: 1.5rem;
-  }
+.kakao-card-qr-chevron {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
 
-  .kakao-card-icon {
-    font-size: 3rem;
-  }
-
-  .kakao-card-text h2 {
-    font-size: 1.3rem;
-  }
-
-  .kakao-card-text p {
-    font-size: 0.95rem;
-  }
-
-  .kakao-card-button {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .kakao-card-actions {
-    gap: 1.5rem;
-  }
-
-  .kakao-qr-image {
-    width: 150px;
-    height: 150px;
-  }
-
-  .kakao-qr-text {
-    font-size: 0.85rem;
-  }
+.kakao-card-qr-toggle[open] .kakao-card-qr-chevron {
+  transform: rotate(180deg);
 }

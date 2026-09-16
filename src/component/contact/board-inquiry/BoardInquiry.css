@@ -1,243 +1,159 @@
-.board-inquiry-container {
-  max-width: 900px;
-  margin: clamp(5rem, 10vw, 8rem) auto 0 auto;
-  padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 3vw, 2rem);
-  min-height: calc(100vh - 200px);
-}
+/*
+ * 게시판 이용 문의 — 페이지 고유 스타일
+ *
+ * 헤더 밴드/본문 2단/목록 등 공통 조각은 ContactPage.css 에 있습니다.
+ * 여기에는 이 페이지에만 있는 절차 스텝과 학생회칙 아코디언만 둡니다.
+ */
 
-.board-inquiry-header {
-  text-align: center;
-  margin-bottom: 3rem;
-}
+/* --------------------------------------------------------- 게시 절차 스텝 */
 
-.board-inquiry-main-icon {
-  font-size: clamp(2.5rem, 6vw, 4rem);
-  color: #004ca5;
-  margin-bottom: 1rem;
-}
-
-.board-inquiry-header h1 {
-  font-size: clamp(1.8rem, 5vw, 2.5rem);
-  color: #004ca5;
-  margin-bottom: 1rem;
-  font-weight: bold;
-}
-
-.board-inquiry-header p {
-  font-size: 1.1rem;
-  color: #666;
-  line-height: 1.6;
-}
-
-.board-inquiry-content {
+.board-inquiry-steps {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-}
-
-.board-inquiry-info-box {
-  background: linear-gradient(135deg, #f5f7fa 0%, #e8f0fe 100%);
-  padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 76, 165, 0.1);
-}
-
-.board-inquiry-info-box h2 {
-  font-size: 1.5rem;
-  color: #004ca5;
-  margin-bottom: 1rem;
-  font-weight: bold;
-}
-
-.info-description {
-  font-size: 1rem;
-  color: #333;
-  line-height: 1.8;
-  margin-bottom: 1.5rem;
-}
-
-.board-inquiry-info-list {
-  list-style: none;
+  margin: 0;
   padding: 0;
-  margin: 0;
+  list-style: none;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-.board-inquiry-info-list li {
-  font-size: 1rem;
-  color: #333;
-  line-height: 2;
-  padding-left: 1.5rem;
-  position: relative;
+.board-inquiry-steps li {
+  display: flex;
+  gap: 0.875rem;
+  padding: 1.125rem 1.25rem;
 }
 
-.board-inquiry-info-list li::before {
-  content: '✓';
-  position: absolute;
-  left: 0;
+.board-inquiry-steps li + li {
+  border-top: 1px solid #f3f4f6;
+}
+
+.board-inquiry-step-no {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.625rem;
+  height: 1.625rem;
+  border-radius: 50%;
+  background: #f0f7ff;
   color: #004ca5;
-  font-weight: bold;
+  font-size: 0.8125rem;
+  font-weight: 700;
 }
 
-.contact-methods {
+.board-inquiry-step-text {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0.25rem;
+  min-width: 0;
 }
 
-.button-icon {
-  font-size: 1.5rem;
-}
-
-.board-inquiry-notice {
-  background: #fff3cd;
-  padding: 2rem;
-  border-radius: 15px;
-}
-
-.board-inquiry-notice h2 {
-  font-size: 1.5rem;
-  color: #856404;
-  margin-bottom: 1.5rem;
-  font-weight: bold;
-}
-
-.notice-section {
-  margin-bottom: 2rem;
-}
-
-.notice-section:last-child {
-  margin-bottom: 0;
-}
-
-.notice-section h3 {
-  font-size: 1.3rem;
-  color: #856404;
-  margin-bottom: 1rem;
-  font-weight: bold;
-  border-bottom: 2px solid #ffc107;
-  padding-bottom: 0.5rem;
-}
-
-.procedure-list {
-  list-style: decimal;
-  padding-left: 1.5rem;
+.board-inquiry-step-title {
   margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #1f2937;
 }
 
-.procedure-list li {
-  font-size: 0.95rem;
-  color: #856404;
+.board-inquiry-step-body {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: #6b7280;
+}
+
+/* ------------------------------------------------------- 학생회칙 아코디언 */
+
+.board-inquiry-articles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.board-inquiry-article {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.board-inquiry-article > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  padding: 0.9375rem 1.25rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.board-inquiry-article > summary::-webkit-details-marker {
+  display: none;
+}
+
+.board-inquiry-article > summary:hover .board-inquiry-article-title {
+  color: #004ca5;
+}
+
+.board-inquiry-article-no {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #004ca5;
+}
+
+.board-inquiry-article-title {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #1f2937;
+  transition: color 0.2s ease;
+}
+
+.board-inquiry-article-chevron {
+  flex-shrink: 0;
+  margin-left: auto;
+  color: #9ca3af;
+  transition: transform 0.2s ease;
+}
+
+.board-inquiry-article[open] .board-inquiry-article-chevron {
+  transform: rotate(180deg);
+}
+
+.board-inquiry-article-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.875rem 1.25rem 1.125rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.board-inquiry-article-body p {
+  margin: 0;
+  font-size: 0.875rem;
   line-height: 1.8;
-  margin-bottom: 0.75rem;
+  color: #4b5563;
 }
 
-.regulation-item {
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 8px;
+.board-inquiry-restrictions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.regulation-item:last-child {
-  margin-bottom: 0;
+.board-inquiry-restrictions li {
+  display: flex;
+  gap: 0.625rem;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: #4b5563;
 }
 
-.regulation-item h4 {
-  font-size: 1.1rem;
-  color: #856404;
-  margin-bottom: 0.75rem;
-  font-weight: bold;
+.board-inquiry-restrictions li > span:first-child {
+  flex-shrink: 0;
+  color: #9ca3af;
+  font-variant-numeric: tabular-nums;
 }
-
-.regulation-item p {
-  font-size: 0.95rem;
-  color: #856404;
-  line-height: 1.8;
-  margin-bottom: 0.5rem;
-}
-
-.regulation-item p:last-child {
-  margin-bottom: 0;
-}
-
-.restriction-list {
-  list-style: decimal;
-  padding-left: 1.5rem;
-  margin-top: 0.5rem;
-  margin-bottom: 0;
-}
-
-.restriction-list li {
-  font-size: 0.95rem;
-  color: #856404;
-  line-height: 1.8;
-  margin-bottom: 0.5rem;
-}
-
-/* 태블릿 반응형 */
-@media (max-width: 1023px) {
-  .board-inquiry-container {
-    margin-top: 7rem;
-    padding: 2rem 1.5rem;
-  }
-
-  .board-inquiry-header h1 {
-    font-size: 2rem;
-  }
-
-  .board-inquiry-main-icon {
-    font-size: 3rem;
-  }
-}
-
-/* 모바일 반응형 */
-@media (max-width: 767px) {
-  .board-inquiry-container {
-    margin-top: 7rem;
-    padding: 1.5rem 1rem;
-  }
-
-  .board-inquiry-header h1 {
-    font-size: 1.8rem;
-  }
-
-  .board-inquiry-header p {
-    font-size: 1rem;
-  }
-
-  .board-inquiry-main-icon {
-    font-size: 2.5rem;
-  }
-
-  .board-inquiry-info-box,
-.board-inquiry-notice {
-    padding: 1.5rem;
-  }
-
-  .board-inquiry-info-box h2 {
-    font-size: 1.3rem;
-  }
-
-  .board-inquiry-info-list li {
-    font-size: 0.9rem;
-  }
-
-  .board-inquiry-notice h2 {
-    font-size: 1.3rem;
-  }
-
-  .notice-section h3 {
-    font-size: 1.1rem;
-  }
-
-  .regulation-item h4 {
-    font-size: 1rem;
-  }
-
-  .procedure-list li,
-  .regulation-item p,
-  .restriction-list li {
-    font-size: 0.85rem;
-  }
-}
-

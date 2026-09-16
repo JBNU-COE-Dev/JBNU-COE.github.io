@@ -1,56 +1,52 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { FaComments } from 'react-icons/fa';
+import ContactPage, { ContactSection, ContactList } from '../ContactPage.jsx';
 import KakaoCard from '../../common/KakaoCard';
 import './Report.css';
 import kakaoQR from '../../../img/qr-code/kakaoQR.png';
 
+const GUIDE = [
+  '학생회에 건의사항이나 문의사항이 있으시면 언제든지 연락해 주세요.',
+  '카카오톡 오픈채팅방을 통해 편리하게 소통하실 수 있습니다.',
+  '접수하신 민원은 확인 후 빠른 시일 내에 답변드리겠습니다.',
+];
+
+const REQUIRED = ['소속', '성명', '학번'];
+
 const Report = () => {
   return (
-    <motion.div
-      className="report-container"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="report-header">
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-        >
-          <FaComments className="report-main-icon" />
-        </motion.div>
-        <h1>민원 접수</h1>
-      </div>
-
-      <motion.div
-        className="report-content"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.5 }}
-      >
-        <div className="report-info-box">
-          <h2>📢 민원 접수 안내</h2>
-          <ul className="report-info-list">
-            <li>학생회에 건의사항이나 문의사항이 있으시면 언제든지 연락해주세요.</li>
-            <li>카카오톡 오픈채팅방을 통해 편리하게 소통하실 수 있습니다.</li>
-            <li>문의하실때 소속, 성명, 학번을 밝혀주세요.</li>
-            <li>접수하신 민원은 확인 후 빠른 시일 내에 답변드리겠습니다.</li>
-          </ul>
-        </div>
-
+    <ContactPage
+      title="민원 접수"
+      description="학생회에 건의하거나 문의할 내용이 있다면 카카오톡 오픈채팅으로 연락해 주세요."
+      asideLabel="접수 채널"
+      aside={
         <KakaoCard
           kakaoUrl="https://open.kakao.com/o/suMsRU8h"
-          title="전북대학교 공과대학 민원접수 채팅방"
-          description="아래 버튼을 클릭하여 카카오톡 오픈채팅방으로 이동하세요"
+          title="민원접수 채팅방"
+          description="카카오톡 오픈채팅으로 접수하세요"
+          buttonText="오픈채팅방 입장하기"
           qrImage={kakaoQR}
           qrAlt="카카오톡 오픈채팅 QR코드"
         />
-      </motion.div>
-    </motion.div>
+      }
+    >
+      <ContactSection label="안내">
+        <ContactList items={GUIDE} />
+      </ContactSection>
+
+      <ContactSection label="문의 시 꼭 알려주세요">
+        <div className="contact-card report-required">
+          <p>
+            민원을 정확히 확인하고 답변드릴 수 있도록, 채팅을 시작하실 때 아래 세 가지를 함께 남겨 주세요.
+          </p>
+          <div className="report-required-chips">
+            {REQUIRED.map((label) => (
+              <span key={label} className="report-required-chip">{label}</span>
+            ))}
+          </div>
+        </div>
+      </ContactSection>
+    </ContactPage>
   );
 };
 
 export default Report;
-
