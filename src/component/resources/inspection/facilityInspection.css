@@ -46,94 +46,13 @@
   margin: 0;
 }
 
-/* 슬라이더 컨테이너 */
-.facility-inspection-slider-container {
-  position: relative;
-  margin-bottom: 3rem;
-}
-
-/* 슬라이더 래퍼 */
-.slider-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* 슬라이더 컨트롤 버튼 */
-.slider-control-button {
-  flex-shrink: 0;
-  width: 64px;
-  height: 64px;
-  background: linear-gradient(135deg, #2955a6 0%, #1e3d7a 100%);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(41, 85, 166, 0.3);
-  z-index: 5;
-  position: relative;
-}
-
-.slider-control-button:hover:not(:disabled) {
-  transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(41, 85, 166, 0.4);
-}
-
-.slider-control-button:active:not(:disabled) {
-  transform: scale(0.95);
-}
-
-.slider-control-button:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-  background: #9ca3af;
-  box-shadow: none;
-}
-
 /* 슬라이드 콘텐츠 */
-.slider-content {
-  flex: 1;
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-  isolation: isolate;
-}
 
 .slide {
   width: 100%;
   display: flex;
   flex-direction: column;
   will-change: transform, opacity;
-}
-
-/* 월 헤더 (슬라이드용) */
-.month-header-slide {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2.5rem;
-  position: relative;
-  z-index: 1;
-}
-
-.month-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 1rem 3rem;
-  background: linear-gradient(135deg, #2955a6 0%, #1e3d7a 100%);
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 800;
-  border-radius: 50px;
-  box-shadow: 0 4px 16px rgba(41, 85, 166, 0.3);
-  white-space: nowrap;
-  margin: 0 auto;
 }
 
 /* 점검 그리드 */
@@ -263,51 +182,11 @@
   transform: translateY(-2px);
 }
 
-.indicator-label {
-  white-space: nowrap;
-}
-
 /* 슬라이드 카운터 */
-.slider-counter-display {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #0b1526;
-  margin-top: 1rem;
-  position: relative;
-  z-index: 1;
-}
-
-.current-slide {
-  color: #2955a6;
-}
 
 .separator {
   margin: 0 0.5rem;
   color: #9ca3af;
-}
-
-.total-slides {
-  color: #6b7280;
-}
-
-/* 안내 메시지 */
-.inspection-notice {
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-  border: 2px solid #bae6fd;
-  border-radius: 16px;
-  padding: 2rem;
-  text-align: center;
-}
-
-.inspection-notice p {
-  margin: 0;
-  color: #0c4a6e;
-  font-size: 1.1rem;
-  font-weight: 600;
-  line-height: 1.6;
 }
 
 /* 연도/월 선택 바 */
@@ -574,24 +453,9 @@
     padding: 1.5rem;
   }
 
-  .slider-wrapper {
-    gap: 1rem;
-  }
-
-  .slider-control-button {
-    width: 56px;
-    height: 56px;
-    font-size: 1.8rem;
-  }
-
   .inspection-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
-  }
-
-  .month-badge {
-    font-size: 1.3rem;
-    padding: 0.8rem 2.5rem;
   }
 }
 
@@ -618,26 +482,6 @@
 
   .facility-inspection-header p {
     font-size: 1rem;
-  }
-
-  .slider-wrapper {
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .slider-control-button {
-    width: 44px;
-    height: 44px;
-    font-size: 1.5rem;
-  }
-
-  .month-badge {
-    font-size: 1.1rem;
-    padding: 0.7rem 1.8rem;
-  }
-
-  .month-header-slide {
-    margin-bottom: 1.5rem;
   }
 
   .inspection-grid {
@@ -669,19 +513,6 @@
   .indicator-dot {
     padding: 0.5rem 1rem;
     font-size: 0.8rem;
-  }
-
-  .slider-counter-display {
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .inspection-notice {
-    padding: 1.5rem;
-  }
-
-  .inspection-notice p {
-    font-size: 1rem;
   }
 
   .modal-image {
@@ -726,21 +557,6 @@
     font-size: 1.5rem;
   }
 
-  .slider-wrapper {
-    gap: 0.3rem;
-  }
-
-  .slider-control-button {
-    width: 40px;
-    height: 40px;
-    font-size: 1.3rem;
-  }
-
-  .month-badge {
-    font-size: 1rem;
-    padding: 0.6rem 1.5rem;
-  }
-
   .inspection-image-container {
     height: 200px;
   }
@@ -752,9 +568,5 @@
   .indicator-dot {
     padding: 0.4rem 0.8rem;
     font-size: 0.75rem;
-  }
-
-  .slider-counter-display {
-    font-size: 1rem;
   }
 }

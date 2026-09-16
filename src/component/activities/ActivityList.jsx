@@ -119,9 +119,7 @@ function ActivityList() {
     <div className="activities-page">
       <header className="activities-header">
         <div className="activities-header-text">
-          <span className="activities-eyebrow">JBNU COLLEGE OF ENGINEERING</span>
           <h1>대외활동 · 공모전 · 팀원 모집</h1>
-          <p>마감이 가까운 순서대로, 한 화면에 더 많이 훑어볼 수 있게.</p>
         </div>
         <button
           type="button"

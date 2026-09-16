@@ -43,6 +43,14 @@ const resourceCards = [
     icon: '📋',
     link: '/resources/inspection',
     color: 'orange'
+  },
+  {
+    id: 6,
+    title: '갤러리',
+    description: '공과대학 학생회의 행사 사진을 확인할 수 있습니다.',
+    icon: '🖼️',
+    link: '/resources/gallery',
+    color: 'purple'
   }
 ];
 

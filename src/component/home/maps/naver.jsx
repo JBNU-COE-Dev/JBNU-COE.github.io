@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import './naver.css';
 
 function Naver({ containerStyle, address, name, lat, lng }) {
-  const mapRef = useRef(null);
   const markerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);

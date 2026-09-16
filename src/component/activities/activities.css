@@ -25,13 +25,6 @@
   gap: 0.625rem;
 }
 
-.activities-eyebrow {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  color: #4a90d9;
-}
-
 .activities-header h1 {
   font-size: 2rem;
   font-weight: 800;
@@ -78,146 +71,6 @@
   gap: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid #e5e7eb;
-}
-
-/* --------------------------------------------------------- 왼쪽 필터 레일 */
-
-.activities-filters {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding-top: 0.5rem;
-}
-
-.activities-filter-block {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.activities-filter-block + .activities-filter-block {
-  padding-top: 1.5rem;
-  border-top: 1px solid #f3f4f6;
-}
-
-.activities-filter-heading {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #9ca3af;
-}
-
-.activities-filter-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  height: 44px;
-  padding: 0 0.75rem;
-  border: none;
-  border-radius: 8px;
-  background: #fff;
-  color: #6b7280;
-  font-family: inherit;
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-align: left;
-  cursor: pointer;
-}
-
-.activities-filter-item:hover {
-  background: #f9fafb;
-  color: #374151;
-}
-
-.activities-filter-item.is-active {
-  background: #f0f7ff;
-  color: #004ca5;
-  font-weight: 700;
-}
-
-.activities-filter-count {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #9ca3af;
-}
-
-.activities-filter-item.is-active .activities-filter-count {
-  color: #4a90d9;
-}
-
-/* 모집중만 보기 체크박스 (네이티브 input 은 남겨두고 시각만 교체) */
-.activities-filter-check {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  min-height: 44px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #374151;
-  cursor: pointer;
-}
-
-.activities-filter-check input {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  margin: 0;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.activities-filter-checkbox {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-  border: 1.5px solid #d1d5db;
-  border-radius: 5px;
-  background: #fff;
-  color: transparent;
-}
-
-.activities-filter-check input:checked + .activities-filter-checkbox {
-  border-color: #004ca5;
-  background: #004ca5;
-  color: #fff;
-}
-
-.activities-filter-check input:focus-visible + .activities-filter-checkbox {
-  box-shadow: 0 0 0 3px rgba(0, 76, 165, 0.25);
-}
-
-.activities-filter-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.375rem;
-}
-
-.activities-filter-chip {
-  padding: 0.4375rem 0.75rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 999px;
-  background: #fff;
-  color: #6b7280;
-  font-family: inherit;
-  font-size: 0.78125rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.activities-filter-chip:hover {
-  border-color: #d1d5db;
-  color: #374151;
-}
-
-.activities-filter-chip.is-active {
-  border-color: #dc2626;
-  background: #fef2f2;
-  color: #dc2626;
-  font-weight: 700;
 }
 
 /* -------------------------------------------------------------- 오른쪽 */
@@ -707,65 +560,37 @@
   background: #e5e7eb;
 }
 
+.activities-detail-actions .btn-danger {
+  background: #dc2626;
+  color: #fff;
+}
+
+.activities-detail-actions .btn-danger:hover {
+  background: #b91c1c;
+}
+
+.activities-detail-actions .btn-danger:disabled,
+.activities-detail-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.activities-detail-error {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: #fef2f2;
+  color: #b91c1c;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
 /* ---------------------------------------------------------------- 반응형 */
 
-@media (max-width: 900px) {
+/* 필터 레일이 가로 칩으로 바뀌는 지점 (common/FilterRail/FilterRail.css) */
+@media (max-width: 1024px) {
   .activities-body {
     grid-template-columns: 1fr;
     gap: 1.25rem;
-  }
-
-  .activities-filters {
-    gap: 1rem;
-    padding-top: 0;
-  }
-
-  .activities-filter-block + .activities-filter-block {
-    padding-top: 0;
-    border-top: none;
-  }
-
-  /* 카테고리는 가로 스크롤 칩으로 */
-  .activities-filter-block-category {
-    flex-direction: row;
-    gap: 0.5rem;
-    overflow-x: auto;
-    margin: 0 -1.5rem;
-    padding: 0 1.5rem 0.25rem;
-  }
-
-  .activities-filter-block-category .activities-filter-heading {
-    display: none;
-  }
-
-  .activities-filter-block-category .activities-filter-item {
-    flex-shrink: 0;
-    padding: 0 1rem;
-    border: 1px solid #d1d5db;
-    border-radius: 999px;
-  }
-
-  .activities-filter-block-category .activities-filter-item.is-active {
-    border-color: #004ca5;
-    background: #004ca5;
-    color: #fff;
-  }
-
-  .activities-filter-block-category .activities-filter-item.is-active .activities-filter-count {
-    color: rgba(255, 255, 255, 0.75);
-  }
-
-  /* 상태 / 마감 필터는 한 줄에 나란히 */
-  .activities-filter-block-status,
-  .activities-filter-block-within {
-    flex-direction: row;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .activities-filter-block-status .activities-filter-heading,
-  .activities-filter-block-within .activities-filter-heading {
-    display: none;
   }
 }
 
@@ -774,11 +599,6 @@
   .activities-detail {
     padding: 1.5rem 1rem;
     padding-top: calc(40px + 8vh + 1rem);
-  }
-
-  .activities-filter-block-category {
-    margin: 0 -1rem;
-    padding: 0 1rem 0.25rem;
   }
 
   .activities-header {

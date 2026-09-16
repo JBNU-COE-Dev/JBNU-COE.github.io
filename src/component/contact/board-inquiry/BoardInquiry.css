@@ -84,70 +84,6 @@
   gap: 1.5rem;
 }
 
-.contact-email-section {
-  background: linear-gradient(135deg, #004ca5 0%, #003d85 100%);
-  padding: 2.5rem;
-  border-radius: 15px;
-  box-shadow: 0 6px 20px rgba(0, 76, 165, 0.2);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
-
-.email-info {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  width: 100%;
-  max-width: 600px;
-}
-
-.email-icon {
-  font-size: 4rem;
-  color: white;
-  flex-shrink: 0;
-}
-
-.email-text {
-  flex: 1;
-}
-
-.email-text h3 {
-  font-size: 1.3rem;
-  color: white;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-}
-
-.email-text p {
-  font-size: 0.95rem;
-  color: white;
-  opacity: 0.9;
-  margin: 0;
-}
-
-.email-button {
-  background: white;
-  color: #004ca5;
-  border: none;
-  padding: 1rem 2.5rem;
-  font-size: 1.1rem;
-  font-weight: bold;
-  border-radius: 30px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
-  transition: all 0.3s ease;
-}
-
-.email-button:hover {
-  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
-  transform: translateY(-2px);
-}
-
 .button-icon {
   font-size: 1.5rem;
 }
@@ -252,14 +188,6 @@
   .board-inquiry-main-icon {
     font-size: 3rem;
   }
-
-  .email-icon {
-    font-size: 3rem;
-  }
-
-  .email-text h3 {
-    font-size: 1.5rem;
-  }
 }
 
 /* 모바일 반응형 */
@@ -282,8 +210,7 @@
   }
 
   .board-inquiry-info-box,
-  .contact-email-section,
-  .board-inquiry-notice {
+.board-inquiry-notice {
     padding: 1.5rem;
   }
 
@@ -293,23 +220,6 @@
 
   .board-inquiry-info-list li {
     font-size: 0.9rem;
-  }
-
-  .email-icon {
-    font-size: 3rem;
-  }
-
-  .email-text h3 {
-    font-size: 1.3rem;
-  }
-
-  .email-text p {
-    font-size: 0.95rem;
-  }
-
-  .email-button {
-    width: 100%;
-    justify-content: center;
   }
 
   .board-inquiry-notice h2 {

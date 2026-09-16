@@ -10,7 +10,7 @@ export const VALID_CATEGORIES = Object.keys(CATEGORY_LABEL);
 
 const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토'];
 
-export function parseDate(value) {
+function parseDate(value) {
   if (!value) return null;
   if (typeof value === 'string') {
     const m = value.match(/^(\d{4})-(\d{2})-(\d{2})/);
