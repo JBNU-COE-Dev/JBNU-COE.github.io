@@ -2,15 +2,6 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import './benefits.css';
 import { partners, categories } from './partnersData.js';
 
-// 카테고리별 아이콘
-const categoryIcons = {
-  '음식점': '🍽️',
-  '카페': '☕',
-  '여가': '🎮',
-  '기타': '📦',
-  '전체': '📋'
-};
-
 // 네이버 지도 SDK 로드
 const loadNaverIfNeeded = () => {
   return new Promise((resolve, reject) => {
@@ -66,6 +57,13 @@ const normalizeAddress = (raw, name) => {
   return out.trim();
 };
 
+// 카드/목록용 짧은 주소 ('덕진구' 앞부분을 잘라낸다)
+const shortAddress = (raw) => {
+  if (!raw) return '';
+  const trimmed = String(raw).replace(/^.*?덕진구\s*/, '');
+  return trimmed || raw;
+};
+
 // 지오코딩 캐시
 const GEO_CACHE_STORAGE_KEY = 'feel_geo_cache_v1';
 const locationCache = (() => {
@@ -118,132 +116,90 @@ const geocodeByAddress = async (addr) => {
   });
 };
 
-// 카드 컴포넌트
-const BenefitCard = ({ partner, onViewDetail }) => {
-  const icon = categoryIcons[partner.category] || '📦';
-  const briefBenefit = partner.benefits && partner.benefits.length > 0
-    ? partner.benefits[0]
-    : '혜택 정보 없음';
-
+// 카드 컴포넌트 — 카드 전체가 클릭 영역
+const BenefitCard = ({ partner, onSelect }) => {
   return (
-    <div className="benefit-card">
-      <div className="benefit-card-icon">{icon}</div>
-      <div className="benefit-card-content">
-        <h3 className="benefit-card-name">{partner.name}</h3>
-        <p className="benefit-card-brief">{briefBenefit}</p>
+    <article
+      className="benefit-card"
+      onClick={() => onSelect(partner)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onSelect(partner);
+        }
+      }}
+    >
+      <div className="benefit-card-head">
         <span className="benefit-card-category">{partner.category}</span>
+        <h3 className="benefit-card-name t1">{partner.name}</h3>
       </div>
-      <button
-        className="benefit-card-btn"
-        onClick={() => onViewDetail(partner)}
-      >
-        혜택보기
-      </button>
-    </div>
+      <ul className="benefit-card-benefits">
+        {(partner.benefits && partner.benefits.length > 0 ? partner.benefits : ['혜택 정보 없음']).map((b, i) => (
+          <li key={i}>
+            <span className="benefit-card-dot" />
+            <span className="t2">{b}</span>
+          </li>
+        ))}
+      </ul>
+      <div className="benefit-card-footer">
+        <span className="benefit-card-address t1">{shortAddress(partner.address)}</span>
+        <span className="benefit-card-phone">{partner.phone}</span>
+      </div>
+    </article>
   );
 };
 
-// 모달 컴포넌트
-const BenefitModal = ({ partner, onClose, onViewMap }) => {
-  if (!partner) return null;
-
-  const icon = categoryIcons[partner.category] || '📦';
-
-  // 길찾기 (네이버 지도 앱/웹)
-  const handleDirection = () => {
-    const query = encodeURIComponent(partner.address || partner.name);
-    window.open(`https://map.naver.com/v5/search/${query}`, '_blank');
-  };
-
-  return (
-    <div className="benefit-modal-overlay" onClick={onClose}>
-      <div className="benefit-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="benefit-modal-header">
-          <h2>{partner.name}</h2>
-          <button className="benefit-modal-close" onClick={onClose}>✕</button>
-        </div>
-
-        <div className="benefit-modal-body">
-          <div className="benefit-modal-icon">{icon}</div>
-
-          <div className="benefit-modal-info">
-            <div className="benefit-modal-row">
-              <span className="label">주소</span>
-              <span className="value">{partner.address}</span>
-            </div>
-            {partner.phone && (
-              <div className="benefit-modal-row">
-                <span className="label">연락처</span>
-                <a className="value" href={`tel:${partner.phone}`}>{partner.phone}</a>
-              </div>
-            )}
-          </div>
-
-          <div className="benefit-modal-section">
-            <h3>제휴 혜택</h3>
-            <ul className="benefit-modal-list">
-              {partner.benefits && partner.benefits.map((b, i) => (
-                <li key={i}>{b}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div className="benefit-modal-footer">
-          <button className="benefit-modal-btn secondary" onClick={handleDirection}>
-            길찾기
-          </button>
-          <button className="benefit-modal-btn primary" onClick={() => onViewMap(partner)}>
-            위치 확인하기
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// 지도 뷰 컴포넌트
-const BenefitMapView = ({ partner, onBack }) => {
+// 상세 — 모달(데스크톱) / 바텀시트(모바일), 혜택 → 지도 → 주소·연락처 → 버튼
+const BenefitDetail = ({ partner, onClose }) => {
   const mapRef = useRef(null);
-  const mapInstanceRef = useRef(null);
   const markerRef = useRef(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [mapError, setMapError] = useState(null);
+  const mapInstanceRef = useRef(null);
+  const [mapStatus, setMapStatus] = useState('loading'); // loading | ready | unavailable
 
   useEffect(() => {
     if (!partner) return;
+    let cancelled = false;
+    setMapStatus('loading');
+
+    const key = process.env.REACT_APP_NAVER_CLIENT_ID;
+    if (!key) {
+      setMapStatus('unavailable');
+      return;
+    }
 
     loadNaverIfNeeded()
       .then(async () => {
+        if (cancelled) return;
         const container = mapRef.current;
         if (!container) return;
 
-        const DEFAULT_CENTER = new window.naver.maps.LatLng(35.8464522, 127.1296552);
-        let position = DEFAULT_CENTER;
-
-        // 좌표 가져오기
+        let position = null;
         if (partner.lat && partner.lng) {
           position = new window.naver.maps.LatLng(partner.lat, partner.lng);
         } else if (partner.address) {
           const addr = normalizeAddress(partner.address, partner.name);
           const geo = await geocodeByAddress(addr);
-          if (geo) {
-            position = new window.naver.maps.LatLng(geo.lat, geo.lng);
-          }
+          if (geo) position = new window.naver.maps.LatLng(geo.lat, geo.lng);
         }
 
-        // 지도 생성
+        if (cancelled) return;
+        if (!position) {
+          setMapStatus('unavailable');
+          return;
+        }
+
         const map = new window.naver.maps.Map(container, {
           center: position,
           zoom: 16,
           zoomControl: true,
           zoomControlOptions: {
             position: window.naver.maps.Position.TOP_RIGHT,
-            style: window.naver.maps.ZoomControlStyle.SMALL
-          }
+            style: window.naver.maps.ZoomControlStyle.SMALL,
+          },
         });
 
-        // 마커 생성
         const markerHTML = `
           <div class="custom-marker">
             <div class="marker-pulse"></div>
@@ -256,69 +212,110 @@ const BenefitMapView = ({ partner, onBack }) => {
         `;
 
         markerRef.current = new window.naver.maps.Marker({
-          position: position,
-          map: map,
+          position,
+          map,
           icon: {
             content: markerHTML,
-            anchor: new window.naver.maps.Point(12, 24)
+            anchor: new window.naver.maps.Point(12, 24),
           },
-          title: partner.name
+          title: partner.name,
         });
 
         mapInstanceRef.current = map;
-        setIsLoading(false);
+        setMapStatus('ready');
       })
-      .catch((err) => {
-        setMapError(err.message || '지도 로드 실패');
-        setIsLoading(false);
+      .catch(() => {
+        if (!cancelled) setMapStatus('unavailable');
       });
 
     return () => {
+      cancelled = true;
       if (markerRef.current) markerRef.current.setMap(null);
       mapInstanceRef.current = null;
     };
   }, [partner]);
 
-  // 길찾기
+  if (!partner) return null;
+
   const handleDirection = () => {
     const query = encodeURIComponent(partner.address || partner.name);
     window.open(`https://map.naver.com/v5/search/${query}`, '_blank');
   };
 
   return (
-    <div className="benefit-map-page">
-      <div className="benefit-map-header">
-        <button className="benefit-map-back" onClick={onBack}>
-          ← 뒤로가기
-        </button>
-        <h2>{partner.name}</h2>
-      </div>
+    <div className="benefit-detail-overlay" onClick={onClose}>
+      <div className="benefit-detail-panel" onClick={(e) => e.stopPropagation()}>
+        <div className="benefit-detail-handle" />
 
-      <div className="benefit-map-container" ref={mapRef}>
-        {isLoading && (
-          <div className="benefit-map-loading">
-            <div className="loading-spinner"></div>
-            <p>지도를 불러오는 중...</p>
+        <header className="benefit-detail-header">
+          <div className="benefit-detail-heading">
+            <span className="benefit-detail-category">{partner.category}</span>
+            <h2 className="benefit-detail-name">{partner.name}</h2>
           </div>
-        )}
-        {mapError && (
-          <div className="benefit-map-error">
-            지도 로드 실패: {mapError}
-          </div>
-        )}
-      </div>
+          <button type="button" className="benefit-detail-close" onClick={onClose} aria-label="닫기">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+              <path d="M6 6l12 12" />
+              <path d="M18 6L6 18" />
+            </svg>
+          </button>
+        </header>
 
-      <div className="benefit-map-info">
-        <h3>{partner.name}</h3>
-        <p className="benefit-map-address">{partner.address}</p>
-        <div className="benefit-map-actions">
+        <div className="benefit-detail-section">
+          <span className="benefit-detail-label">제휴 혜택</span>
+          <ul className="benefit-detail-benefits">
+            {(partner.benefits && partner.benefits.length > 0 ? partner.benefits : ['혜택 정보 없음']).map((b, i) => (
+              <li key={i}>
+                <span className="benefit-detail-dot" />
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="benefit-detail-section benefit-detail-section--map">
+          <span className="benefit-detail-label">위치</span>
+          <div className="benefit-detail-map" ref={mapRef}>
+            {mapStatus === 'loading' && (
+              <div className="benefit-detail-map-status">
+                <div className="loading-spinner" />
+                <p>지도를 불러오는 중...</p>
+              </div>
+            )}
+            {mapStatus === 'unavailable' && (
+              <div className="benefit-detail-map-status">
+                <p>위치를 불러올 수 없습니다</p>
+              </div>
+            )}
+          </div>
+          <div className="benefit-detail-info">
+            <div className="benefit-detail-info-row">
+              <span className="label">주소</span>
+              <span className="value">{partner.address}</span>
+            </div>
+            {partner.phone && (
+              <div className="benefit-detail-info-row">
+                <span className="label">연락처</span>
+                <a className="value" href={`tel:${partner.phone}`}>{partner.phone}</a>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="benefit-detail-actions">
           {partner.phone && (
-            <a href={`tel:${partner.phone}`} className="benefit-map-btn">
-              📞 전화걸기
+            <a href={`tel:${partner.phone}`} className="benefit-detail-btn secondary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6.5 3h3l1.5 4.5-2 1.5a12 12 0 0 0 6 6l1.5-2 4.5 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 5.2 2 2 0 0 1 6.5 3z" />
+              </svg>
+              전화걸기
             </a>
           )}
-          <button className="benefit-map-btn primary" onClick={handleDirection}>
-            🗺️ 길찾기
+          <button type="button" className="benefit-detail-btn primary" onClick={handleDirection}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" />
+              <circle cx="12" cy="10" r="2.5" />
+            </svg>
+            길찾기
           </button>
         </div>
       </div>
@@ -329,102 +326,114 @@ const BenefitMapView = ({ partner, onBack }) => {
 // 메인 컴포넌트
 const Benefits = () => {
   const [selectedCategory, setSelectedCategory] = useState('전체');
-  const [modalPartner, setModalPartner] = useState(null);
-  const [mapPartner, setMapPartner] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedPartner, setSelectedPartner] = useState(null);
 
-  // 브라우저 뒤로가기 처리
+  // 브라우저 뒤로가기로 상세 닫기
   useEffect(() => {
-    const handlePopState = (e) => {
-      if (e.state?.view === 'map' || mapPartner) {
-        // 지도에서 뒤로가기 → 모달로
-        setMapPartner(null);
-        if (e.state?.partner) {
-          setModalPartner(e.state.partner);
-        }
-      } else if (e.state?.view === 'modal' || modalPartner) {
-        // 모달에서 뒤로가기 → 리스트로
-        setModalPartner(null);
-      }
+    const handlePopState = () => {
+      setSelectedPartner(null);
     };
-
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [mapPartner, modalPartner]);
+  }, []);
 
-  // 카테고리 필터링
-  const filteredPartners = useMemo(() => {
-    if (selectedCategory === '전체') {
-      return partners;
+  // 분류별 개수
+  const categoryCounts = useMemo(() => {
+    const counts = { 전체: partners.length };
+    for (const cat of categories) {
+      if (cat === '전체') continue;
+      counts[cat] = partners.filter((p) => p && p.category === cat).length;
     }
-    return partners.filter(p => p && p.category === selectedCategory);
-  }, [selectedCategory]);
+    return counts;
+  }, []);
 
-  // 모달 열기
-  const handleViewDetail = (partner) => {
-    window.history.pushState({ view: 'modal', partner }, '');
-    setModalPartner(partner);
+  // 분류 + 검색 필터링
+  const filteredPartners = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
+    return partners.filter((p) => {
+      if (!p) return false;
+      if (selectedCategory !== '전체' && p.category !== selectedCategory) return false;
+      if (!term) return true;
+      const haystack = [p.name, ...(p.benefits || [])].join(' ').toLowerCase();
+      return haystack.includes(term);
+    });
+  }, [selectedCategory, searchTerm]);
+
+  const handleSelect = (partner) => {
+    window.history.pushState({ view: 'detail' }, '');
+    setSelectedPartner(partner);
   };
 
-  // 모달 닫기
-  const handleCloseModal = () => {
+  const handleClose = () => {
     window.history.back();
   };
-
-  // 지도 보기
-  const handleViewMap = (partner) => {
-    window.history.pushState({ view: 'map', partner }, '');
-    setModalPartner(null);
-    setMapPartner(partner);
-  };
-
-  // 지도에서 목록으로 돌아가기
-  const handleBackToList = () => {
-    window.history.back();
-  };
-
-  // 지도 뷰 모드
-  if (mapPartner) {
-    return <BenefitMapView partner={mapPartner} onBack={handleBackToList} />;
-  }
 
   return (
     <div className="benefits-page">
-      {/* 카테고리 탭 */}
-      <div className="benefits-categories">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            className={`benefits-category-tab ${selectedCategory === cat ? 'active' : ''}`}
-            onClick={() => setSelectedCategory(cat)}
-          >
-            {categoryIcons[cat]} {cat}
-          </button>
-        ))}
+      <header className="benefits-header">
+        <div className="benefits-header-text">
+          <h1 className="benefits-title">제휴업체</h1>
+        </div>
+        <form
+          className="benefits-search"
+          onSubmit={(e) => e.preventDefault()}
+        >
+          <div className="benefits-search-field">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="benefits-search-icon">
+              <circle cx="11" cy="11" r="7" />
+              <path d="M20 20l-3.5-3.5" />
+            </svg>
+            <input
+              type="text"
+              className="benefits-search-input"
+              placeholder="업체명 또는 혜택 검색"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <button type="submit" className="benefits-search-btn">검색</button>
+        </form>
+      </header>
+
+      <div className="benefits-body">
+        <nav className="benefits-category-nav">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              className={`benefits-category-btn ${selectedCategory === cat ? 'active' : ''}`}
+              onClick={() => setSelectedCategory(cat)}
+            >
+              <span>{cat}</span>
+              <span className="benefits-category-count">{categoryCounts[cat] ?? 0}</span>
+            </button>
+          ))}
+        </nav>
+
+        <section className="benefits-content">
+          <div className="benefits-content-head">
+            <div className="benefits-content-title">
+              <h2>{selectedCategory === '전체' ? '전체 업체' : selectedCategory}</h2>
+              <span>{filteredPartners.length}</span>
+            </div>
+            <span className="benefits-content-hint">업체를 선택하면 전체 혜택과 위치를 볼 수 있습니다</span>
+          </div>
+
+          {filteredPartners.length === 0 ? (
+            <p className="benefits-empty">검색 결과가 없습니다</p>
+          ) : (
+            <div className="benefits-grid">
+              {filteredPartners.map((partner, idx) => (
+                <BenefitCard key={idx} partner={partner} onSelect={handleSelect} />
+              ))}
+            </div>
+          )}
+        </section>
       </div>
 
-      {/* 업체 수 표시 */}
-      <div className="benefits-count">
-        총 <strong>{filteredPartners.length}</strong>개 업체
-      </div>
-
-      {/* 카드 리스트 */}
-      <div className="benefits-list">
-        {filteredPartners.map((partner, idx) => (
-          <BenefitCard
-            key={idx}
-            partner={partner}
-            onViewDetail={handleViewDetail}
-          />
-        ))}
-      </div>
-
-      {/* 모달 */}
-      {modalPartner && (
-        <BenefitModal
-          partner={modalPartner}
-          onClose={handleCloseModal}
-          onViewMap={handleViewMap}
-        />
+      {selectedPartner && (
+        <BenefitDetail partner={selectedPartner} onClose={handleClose} />
       )}
     </div>
   );
