@@ -39,6 +39,12 @@ jobs:
             SERVICE=user-front
             WAIT_SEC=10
 
+            # 세 레포(backend/user-front/admin)가 같은 서버의 같은 compose 프로젝트를
+            # 건드린다. GitHub의 concurrency는 레포 단위라 레포 간 동시 실행을 막지
+            # 못하므로 서버에서 잠근다.
+            exec 9>/tmp/feel-deploy.lock
+            flock -w 300 9 || { echo "ERR: 다른 배포가 진행 중 (5분 대기 초과)"; exit 1; }
+
             compose() { docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" "$@"; }
 
             require_env() {
@@ -94,7 +100,10 @@ jobs:
             fi
 
             echo "=== 정적 파일 응답 확인 ==="
-            if ! docker exec "$CID" wget -q -T 5 -O /dev/null "http://localhost/"; then
+            # nginx.conf에 listen [::]:80을 넣어 두었지만, busybox wget은
+            # 해석된 주소 하나만 시도하고 폴백하지 않는다. 이미지 재빌드 여부와
+            # 무관하게 맞도록 127.0.0.1을 직접 쓴다.
+            if ! docker exec "$CID" wget -q -T 5 -O /dev/null "http://127.0.0.1/"; then
               echo "ERR: 컨테이너는 살아 있으나 응답 없음 — 최근 로그 100줄"
               compose logs --tail=100 "$SERVICE"
               exit 1
