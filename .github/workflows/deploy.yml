@@ -52,7 +52,8 @@ jobs:
             [ -f "$ENV_FILE" ] || { echo "ERR: $ENV_FILE 없음"; exit 1; }
 
             echo "=== .env 필수 키 확인 ==="
-            require_env REACT_APP_API_URL REACT_APP_GOOGLE_CLIENT_ID REACT_APP_NAVER_CLIENT_ID
+            require_env REACT_APP_API_URL REACT_APP_GOOGLE_CLIENT_ID REACT_APP_NAVER_CLIENT_ID \
+                        REACT_APP_KAKAOAPIKEY
             echo "OK"
 
             echo "=== main 최신화 ==="
