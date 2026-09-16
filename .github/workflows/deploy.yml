@@ -18,36 +18,43 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         env:
           NO_CACHE: ${{ inputs.no_cache }}
-          REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
-          REACT_APP_NAVER_CLIENT_ID: ${{ secrets.REACT_APP_NAVER_CLIENT_ID }}
-          REACT_APP_GOOGLE_CLIENT_ID: ${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}
         with:
           host: ${{ secrets.JCLOUD_SSH_HOST }}
           username: ${{ secrets.JCLOUD_SSH_USER }}
           key: ${{ secrets.JCLOUD_SSH_KEY }}
           port: ${{ secrets.JCLOUD_SSH_PORT }}
-          envs: NO_CACHE,REACT_APP_API_URL,REACT_APP_NAVER_CLIENT_ID,REACT_APP_GOOGLE_CLIENT_ID
+          envs: NO_CACHE
+          command_timeout: 20m
           script: |
             set -e
             REPO_DIR=/home/ubuntu/JBNU-COE.github.io
             COMPOSE_FILE=/home/ubuntu/docker-compose.yml
+            ENV_FILE=/home/ubuntu/.env
             SERVICE=user-front
             WAIT_SEC=10
 
-            # 빈 Secret이 서버 .env 값을 빈 문자열로 덮어쓰지 않도록 unset
-            for V in REACT_APP_API_URL REACT_APP_NAVER_CLIENT_ID REACT_APP_GOOGLE_CLIENT_ID; do
-              if [ -z "$(eval echo \$$V)" ]; then
-                echo "WARN: $V Secret 미설정 — 서버 .env 값을 사용합니다"
-                unset "$V"
-              fi
-            done
+            compose() { docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" "$@"; }
+
+            require_env() {
+              for v in "$@"; do
+                grep -qE "^[[:space:]]*${v}=.+" "$ENV_FILE" \
+                  || { echo "ERR: $ENV_FILE 에 ${v} 없음 또는 빈 값"; exit 1; }
+              done
+            }
 
             cd "$REPO_DIR" || { echo "ERR: $REPO_DIR 없음"; exit 1; }
+            [ -f "$ENV_FILE" ] || { echo "ERR: $ENV_FILE 없음"; exit 1; }
+
+            echo "=== .env 필수 키 확인 ==="
+            require_env REACT_APP_API_URL REACT_APP_GOOGLE_CLIENT_ID \
+                        REACT_APP_NAVER_CLIENT_ID REACT_APP_KAKAOAPIKEY
+            echo "OK"
 
             echo "=== main 최신화 ==="
             git fetch --prune origin main
@@ -60,18 +67,18 @@ jobs:
             fi
 
             echo "=== 빌드 ==="
-            docker compose -f "$COMPOSE_FILE" build $BUILD_OPTS "$SERVICE"
+            compose build $BUILD_OPTS "$SERVICE"
 
             echo "=== 컨테이너 교체 ==="
-            docker compose -f "$COMPOSE_FILE" up -d --force-recreate "$SERVICE"
+            compose up -d --force-recreate "$SERVICE"
 
             echo "=== 기동 확인 (${WAIT_SEC}초 대기) ==="
             sleep "$WAIT_SEC"
 
-            CID=$(docker compose -f "$COMPOSE_FILE" ps -q "$SERVICE")
+            CID=$(compose ps -q "$SERVICE")
             if [ -z "$CID" ]; then
               echo "ERR: $SERVICE 컨테이너를 찾을 수 없음 — 최근 로그 100줄"
-              docker compose -f "$COMPOSE_FILE" logs --tail=100 "$SERVICE"
+              compose logs --tail=100 "$SERVICE"
               exit 1
             fi
 
@@ -80,20 +87,21 @@ jobs:
             RESTARTS=${RESTARTS:-0}
             echo "status=$STATUS, 재시작=${RESTARTS}회"
 
-            # --force-recreate로 컨테이너가 새로 만들어지며 RestartCount는 0에서 시작한다.
-            # 따라서 0보다 크면 이번 배포 이후 최소 한 번 죽었다는 뜻(crash-loop).
-            # restart 정책이 걸려 있으면 재시작 직후 status가 running으로 보일 수 있어
-            # 이 검사가 없으면 crash-loop를 놓친다.
             if [ "$STATUS" != "running" ] || [ "$RESTARTS" -gt 0 ]; then
               echo "ERR: $SERVICE 비정상 (status=$STATUS, 재시작=${RESTARTS}회) — 최근 로그 100줄"
-              docker compose -f "$COMPOSE_FILE" logs --tail=100 "$SERVICE"
+              compose logs --tail=100 "$SERVICE"
+              exit 1
+            fi
+
+            echo "=== 정적 파일 응답 확인 ==="
+            if ! docker exec "$CID" wget -q -T 5 -O /dev/null "http://localhost/"; then
+              echo "ERR: 컨테이너는 살아 있으나 응답 없음 — 최근 로그 100줄"
+              compose logs --tail=100 "$SERVICE"
               exit 1
             fi
 
             echo "=== nginx 업스트림 갱신 ==="
-            # --force-recreate로 컨테이너 IP가 바뀌어도 nginx는 설정 로드 시점에
-            # resolve한 예전 IP를 계속 물고 있어 502가 난다. reload로 재해석시킨다.
-            docker compose -f "$COMPOSE_FILE" exec -T nginx nginx -s reload \
+            compose exec -T nginx nginx -s reload \
               || echo "WARN: nginx reload 실패 — 502 발생 시 'docker compose restart nginx' 필요"
 
             docker image prune -f
