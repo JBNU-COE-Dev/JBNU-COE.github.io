@@ -1,0 +1,161 @@
+/*
+ * 소통(contact) 페이지 공통 셸
+ *
+ * 헤더 밴드 + 본문 2단(좌 본문 / 우 카카오 카드) 을 세 페이지가 공유합니다.
+ * 크기는 전부 rem + clamp() 이라 브레이크포인트마다 값을 다시 적지 않아도
+ * 화면 크기에 따라 비율이 이어집니다. 한 단으로 접히는 지점만 미디어쿼리입니다.
+ */
+
+.contact-page {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 12vh);
+  /* 고정된 TopBar + HeaderBar 를 비우는 여백. 공지사항·제휴업체와 같은 값입니다. */
+  padding-top: clamp(100px, 13vh, 132px);
+  background: #ffffff;
+  color: #1f2937;
+}
+
+/* ------------------------------------------------------------- 헤더 밴드 */
+
+.contact-header {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.contact-header-inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 3.5vw, 3.5rem) 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* 1440px 에서 사이트 공통 1.875rem, 390px 에서 1.5rem, 그 사이는 연속적으로 */
+.contact-title {
+  margin: 0;
+  font-size: clamp(1.5rem, 1.125rem + 1.6vw, 1.875rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #1a1a2e;
+}
+
+.contact-description {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #6b7280;
+}
+
+/* ----------------------------------------------------------------- 본문 */
+
+.contact-body {
+  flex-grow: 1;
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(17rem, 23vw, 21rem);
+  align-content: start;
+  gap: clamp(2rem, 4vw, 3rem);
+  padding: 1.875rem clamp(1.25rem, 3.5vw, 3.5rem) 3rem;
+}
+
+.contact-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+  min-width: 0;
+}
+
+.contact-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  align-self: start;
+  position: sticky;
+  top: 1.5rem;
+  min-width: 0;
+}
+
+/* ------------------------------------------------------- 공통 조각 */
+
+.contact-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #9ca3af;
+}
+
+.contact-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.contact-section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.625rem;
+}
+
+.contact-section-count {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-list li {
+  display: flex;
+  gap: 0.625rem;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: #4b5563;
+}
+
+.contact-list-dot {
+  flex-shrink: 0;
+  width: 3px;
+  height: 3px;
+  margin-top: 0.625rem;
+  border-radius: 50%;
+  background: #9ca3af;
+}
+
+.contact-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+/* ---------------------------------------------------------------- 반응형
+ * 한 단으로 접히는 지점. 공지사항/대외활동의 레일이 접히는 값과 맞춥니다.
+ * 카카오 카드(aside)는 본문 위로 올라옵니다 — 아래로 밀리면 정작 연결
+ * 버튼을 보지 못하기 때문입니다.
+ */
+
+@media (max-width: 1024px) {
+  .contact-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+  }
+
+  .contact-aside {
+    position: static;
+    order: -1;
+  }
+
+  .contact-main {
+    gap: 1.75rem;
+  }
+}
