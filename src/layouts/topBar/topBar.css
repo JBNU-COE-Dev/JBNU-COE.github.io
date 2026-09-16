@@ -15,16 +15,10 @@
   box-sizing: border-box;
 }
 
-.top-bar-left,
 .top-bar-right {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-}
-
-.top-bar-text {
-  color: #ffffff;
-  font-weight: 400;
 }
 
 .top-bar-divider {
@@ -77,13 +71,8 @@
     font-size: 0.75rem;
   }
 
-  .top-bar-left,
   .top-bar-right {
     gap: 0.5rem;
-  }
-
-  .top-bar-text:first-child {
-    display: none;
   }
 }
 
@@ -94,7 +83,6 @@
     padding: 0 0.5rem;
   }
 
-  .top-bar-left,
   .top-bar-right {
     gap: 0.3rem;
   }

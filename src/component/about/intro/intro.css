@@ -143,10 +143,6 @@ html, body, #root {
   pointer-events: auto !important;
 }
 
-.chevron-icon.rotated {
-  transform: rotate(180deg);
-}
-
 /* 드롭다운 영역 설정 */
 .dropdown-container {
   position: relative;
@@ -172,8 +168,6 @@ html, body, #root {
   margin-bottom: 0 !important;
   display: none !important;
 }
-
-
 
 .dropdown-item {
   color: white !important;
@@ -220,11 +214,6 @@ html, body, #root {
   color: #17a2b8;
   font-weight: 800;
   margin-right: 0.5rem;
-}
-
-.imageSlider .imageSliderButton-left,
-.imageSlider .imageSliderButton-right{
-    display: none;
 }
 
 .main-wrapper {
@@ -358,7 +347,6 @@ html, body, #root {
   
 
 @media (max-width: 768px) {
-
 
   .intro-container {
     flex: 1;

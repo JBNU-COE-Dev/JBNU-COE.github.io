@@ -1,8 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FiClock, FiUser, FiEye, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { BsPinAngleFill } from 'react-icons/bs';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+
+const PAGE_WINDOW = 5;
+
+/** 현재 페이지 주변의 페이지 번호 목록 (최대 5개) */
+const getPageNumbers = (currentPage, totalPages) => {
+  const start = Math.max(0, Math.min(currentPage - Math.floor(PAGE_WINDOW / 2), totalPages - PAGE_WINDOW));
+  const end = Math.min(totalPages, start + PAGE_WINDOW);
+  return Array.from({ length: end - start }, (_, i) => start + i);
+};
+
+const SkeletonRow = () => (
+  <div className="skeleton-row">
+    <div className="skeleton-bar"></div>
+    <div className="skeleton-bar wide"></div>
+    <div className="skeleton-bar skeleton-author"></div>
+    <div className="skeleton-bar"></div>
+    <div className="skeleton-bar"></div>
+  </div>
+);
 
 export default function AnnouncementContent({
   notices,
@@ -11,169 +28,134 @@ export default function AnnouncementContent({
   currentPage,
   setCurrentPage,
   totalPages,
+  totalElements,
   formatDate
 }) {
-  // 스켈레톤 로딩 컴포넌트
-  const SkeletonCard = () => (
-    <div className="skeleton-card">
-      <div className="skeleton-badge"></div>
-      <div className="skeleton-content">
-        <div className="skeleton-title"></div>
-        <div className="skeleton-meta">
-          <div className="skeleton-text"></div>
-          <div className="skeleton-text"></div>
-          <div className="skeleton-text"></div>
-        </div>
-      </div>
-    </div>
-  );
-
-  if (loading) {
-    return (
-      <>
-        {[1, 2, 3, 4, 5].map((i) => (
-          <SkeletonCard key={i} />
-        ))}
-      </>
-    );
-  }
-
   return (
-    <>
-      {/* 고정 공지사항 */}
-      <AnimatePresence>
-        {pinnedNotices.length > 0 && (
-          <motion.div
-            className="pinned-notices"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <div className="pinned-header">
-              <BsPinAngleFill className="pin-icon" />
+    <section className="notice-section">
+      {/* 고정 공지 */}
+      {pinnedNotices.length > 0 && (
+        <>
+          <div className="section-head">
+            <div className="section-title-group">
               <h2>고정 공지</h2>
+              <span className="section-count">{pinnedNotices.length}</span>
             </div>
-            {pinnedNotices.map((notice, index) => (
-              <motion.div
+          </div>
+          {/* 전체 공지와 같은 행 형식 (열 구성 동일) */}
+          <div className="notice-table pinned-table">
+            {pinnedNotices.map((notice) => (
+              <Link
                 key={notice.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 + index * 0.1 }}
+                to={`/notice/announcement/${notice.id}`}
+                className="notice-row"
               >
-                <Link
-                  to={`/notice/announcement/${notice.id}`}
-                  className="notice-item pinned"
-                >
-                  <div className="notice-badge">
-                    <BsPinAngleFill /> 고정
-                  </div>
-                  <div className="notice-info">
-                    <h3>{notice.title}</h3>
-                    <div className="notice-meta">
-                      <span className="notice-author">
-                        <FiUser /> {notice.author}
-                      </span>
-                      <span className="notice-date">
-                        <FiClock /> {formatDate(notice.createdAt)}
-                      </span>
-                      <span className="notice-views">
-                        <FiEye /> {notice.viewCount}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
+                <span className="notice-category">{notice.category}</span>
+                <span className="notice-title">
+                  {notice.title}
+                </span>
+                <span className="notice-author">{notice.author}</span>
+                <span className="notice-date">{formatDate(notice.createdAt)}</span>
+                <span className="notice-views">{notice.viewCount}</span>
+                <span className="notice-row-mobile-meta">
+                  <span>{formatDate(notice.createdAt)}</span>
+                  <span className="meta-divider">|</span>
+                  <span>조회 {notice.viewCount}</span>
+                </span>
+              </Link>
             ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </>
+      )}
 
-      {/* 일반 공지사항 목록 */}
-      <motion.div
-        className="notice-list"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-      >
-        <AnimatePresence mode="wait">
-          {notices.length === 0 ? (
-            <motion.div
-              className="no-notices"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-            >
-              공지사항이 없습니다.
-            </motion.div>
-          ) : (
-            notices.map((notice, index) => (
-              <motion.div
-                key={notice.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ y: -4 }}
-              >
-                <Link
-                  to={`/notice/announcement/${notice.id}`}
-                  className="notice-item"
-                >
-                  {notice.category && (
-                    <span className="notice-category">[{notice.category}]</span>
-                  )}
-                  <div className="notice-info">
-                    <h3>{notice.title}</h3>
-                    <div className="notice-meta">
-                      <span className="notice-author">
-                        <FiUser /> {notice.author}
-                      </span>
-                      <span className="notice-date">
-                        <FiClock /> {formatDate(notice.createdAt)}
-                      </span>
-                      <span className="notice-views">
-                        <FiEye /> {notice.viewCount}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))
+      {/* 전체 공지 */}
+      <div className="section-head">
+        <div className="section-title-group">
+          <h2>전체 공지</h2>
+          {totalElements != null && (
+            <span className="section-count">{totalElements}</span>
           )}
-        </AnimatePresence>
-      </motion.div>
+        </div>
+        {totalPages > 0 && (
+          <span className="section-page">
+            {currentPage + 1} / {totalPages} 페이지
+          </span>
+        )}
+      </div>
+
+      <div className="notice-table">
+        <div className="notice-row notice-table-head">
+          <span>분류</span>
+          <span>제목</span>
+          <span className="notice-author">작성자</span>
+          <span>등록일</span>
+          <span className="notice-views">조회</span>
+        </div>
+
+        {loading ? (
+          [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => <SkeletonRow key={i} />)
+        ) : notices.length === 0 ? (
+          <div className="no-notices">공지사항이 없습니다.</div>
+        ) : (
+          /* 행은 .notice-table 의 직계 자식이어야 합니다 (:last-child 테두리) */
+          notices.map((notice) => (
+            <Link
+              key={notice.id}
+              to={`/notice/announcement/${notice.id}`}
+              className="notice-row"
+            >
+              <span className="notice-category">{notice.category}</span>
+              <span className="notice-title">{notice.title}</span>
+              <span className="notice-author">{notice.author}</span>
+              <span className="notice-date">{formatDate(notice.createdAt)}</span>
+              <span className="notice-views">{notice.viewCount}</span>
+              {/* 모바일에서만 보이는 메타 줄 */}
+              <span className="notice-row-mobile-meta">
+                <span>{formatDate(notice.createdAt)}</span>
+                <span className="meta-divider">|</span>
+                <span>조회 {notice.viewCount}</span>
+              </span>
+            </Link>
+          ))
+        )}
+      </div>
 
       {/* 페이지네이션 */}
       {totalPages > 1 && (
-        <motion.div
-          className="pagination"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          <motion.button
+        <div className="pagination">
+          <button
+            type="button"
             onClick={() => setCurrentPage((prev) => Math.max(0, prev - 1))}
             disabled={currentPage === 0}
-            className="pagination-button"
-            whileHover={{ scale: currentPage === 0 ? 1 : 1.05 }}
-            whileTap={{ scale: currentPage === 0 ? 1 : 0.95 }}
+            className="page-button"
+            aria-label="이전 페이지"
           >
-            <FiChevronLeft /> 이전
-          </motion.button>
-          <span className="pagination-info">
-            {currentPage + 1} / {totalPages}
-          </span>
-          <motion.button
+            <FiChevronLeft />
+          </button>
+
+          {getPageNumbers(currentPage, totalPages).map((page) => (
+            <button
+              key={page}
+              type="button"
+              onClick={() => setCurrentPage(page)}
+              className={`page-button ${page === currentPage ? 'active' : ''}`}
+              aria-current={page === currentPage ? 'page' : undefined}
+            >
+              {page + 1}
+            </button>
+          ))}
+
+          <button
+            type="button"
             onClick={() => setCurrentPage((prev) => Math.min(totalPages - 1, prev + 1))}
             disabled={currentPage >= totalPages - 1}
-            className="pagination-button"
-            whileHover={{ scale: currentPage >= totalPages - 1 ? 1 : 1.05 }}
-            whileTap={{ scale: currentPage >= totalPages - 1 ? 1 : 0.95 }}
+            className="page-button"
+            aria-label="다음 페이지"
           >
-            다음 <FiChevronRight />
-          </motion.button>
-        </motion.div>
+            <FiChevronRight />
+          </button>
+        </div>
       )}
-    </>
+    </section>
   );
 }

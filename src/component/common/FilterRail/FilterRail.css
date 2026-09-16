@@ -1,0 +1,207 @@
+/*
+ * 목록 페이지 왼쪽 필터 레일 (공지사항 분류 / 대외활동 필터 공용)
+ *
+ * 1024px 이하에서는 세로 레일이 가로 스크롤 칩으로 바뀝니다.
+ * 이 값을 바꿀 때는 레일을 쓰는 페이지의 본문 그리드가 한 칸으로 접히는
+ * breakpoint (announcement.css, activities.css) 도 같이 맞춰주세요.
+ */
+
+.filter-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-self: start;
+  padding-top: 0.5rem;
+}
+
+.filter-rail-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-rail-group + .filter-rail-group {
+  padding-top: 1.5rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.filter-rail-heading {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #9ca3af;
+}
+
+/* ----------------------------------------------------------- 옵션 목록 */
+
+.filter-rail-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  height: 44px;
+  padding: 0 0.75rem;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #6b7280;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.filter-rail-option:hover {
+  background: #f9fafb;
+  color: #374151;
+}
+
+.filter-rail-option.is-active {
+  background: #f0f7ff;
+  color: #004ca5;
+  font-weight: 700;
+}
+
+.filter-rail-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #9ca3af;
+}
+
+.filter-rail-option.is-active .filter-rail-count {
+  color: #4a90d9;
+}
+
+/* -------------------------------------------------------------- 체크박스 */
+
+.filter-rail-check {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 44px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+}
+
+.filter-rail-check input {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.filter-rail-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border: 1.5px solid #d1d5db;
+  border-radius: 5px;
+  background: #fff;
+  color: transparent;
+}
+
+.filter-rail-check input:checked + .filter-rail-checkbox {
+  border-color: #004ca5;
+  background: #004ca5;
+  color: #fff;
+}
+
+.filter-rail-check input:focus-visible + .filter-rail-checkbox {
+  box-shadow: 0 0 0 3px rgba(0, 76, 165, 0.25);
+}
+
+/* ------------------------------------------------------------------ 칩 */
+
+.filter-rail-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.filter-rail-chip {
+  padding: 0.4375rem 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  background: #fff;
+  color: #6b7280;
+  font-family: inherit;
+  font-size: 0.78125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.filter-rail-chip:hover {
+  border-color: #d1d5db;
+  color: #374151;
+}
+
+.filter-rail-chip.is-active {
+  border-color: #dc2626;
+  background: #fef2f2;
+  color: #dc2626;
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------------- 반응형 */
+
+@media (max-width: 1024px) {
+  .filter-rail {
+    gap: 1rem;
+    padding-top: 0;
+  }
+
+  .filter-rail-group + .filter-rail-group {
+    padding-top: 0;
+    border-top: none;
+  }
+
+  /* 옵션 목록은 가로 스크롤 칩으로 */
+  .filter-rail-group-options {
+    flex-direction: row;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+  }
+
+  .filter-rail-group-options .filter-rail-heading {
+    display: none;
+  }
+
+  .filter-rail-group-options .filter-rail-option {
+    flex-shrink: 0;
+    padding: 0 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 999px;
+  }
+
+  .filter-rail-group-options .filter-rail-option.is-active {
+    border-color: #004ca5;
+    background: #004ca5;
+    color: #fff;
+  }
+
+  .filter-rail-group-options .filter-rail-option.is-active .filter-rail-count {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  /* 나머지 묶음은 제목을 숨기고 한 줄에 나란히 */
+  .filter-rail-group:not(.filter-rail-group-options) {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .filter-rail-group:not(.filter-rail-group-options) .filter-rail-heading {
+    display: none;
+  }
+}

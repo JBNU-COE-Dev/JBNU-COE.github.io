@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { FiSearch, FiDownload, FiEye, FiFileText, FiCalendar, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiDownload, FiEye, FiFileText, FiCalendar, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { financeApi } from '../../../services';
+import SearchInput from '../../common/SearchInput';
 import './Finance.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
@@ -204,16 +205,12 @@ export default function Finance() {
         transition={{ delay: 0.1 }}
       >
         <form className="finance-search-form" onSubmit={handleSearch}>
-          <div className="search-input-wrapper">
-            <FiSearch className="search-icon" />
-            <input
-              type="text"
-              placeholder="보고서 제목 또는 내용 검색..."
-              value={searchKeyword}
-              onChange={(e) => setSearchKeyword(e.target.value)}
-              className="finance-search-input"
-            />
-          </div>
+          <SearchInput
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            placeholder="보고서 제목 또는 내용 검색..."
+            inputClassName="finance-search-input"
+          />
           <button type="submit" className="search-btn">검색</button>
         </form>
 

@@ -133,16 +133,6 @@ export async function uploadFinancePDF(file, onProgress) {
   return uploadFile('/api/finance/reports/upload', formData, onProgress);
 }
 
-/**
- * PDF 파일 다운로드 URL 생성
- * @param {number|string} id - 보고서 ID
- * @returns {string} 다운로드 URL
- */
-export function getDownloadUrl(id) {
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
-  return `${API_URL}/api/finance/reports/${id}/download`;
-}
-
 export default {
   getFinanceReports,
   getFinanceReportDetail,
@@ -150,5 +140,4 @@ export default {
   updateFinanceReport,
   deleteFinanceReport,
   uploadFinancePDF,
-  getDownloadUrl,
 };

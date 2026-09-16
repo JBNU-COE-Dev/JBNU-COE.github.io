@@ -44,12 +44,6 @@
   object-fit: contain;
 }
 
-.banner-slogan {
-  font-size: 0.8rem;
-  color: white;
-  line-height: 1.4;
-}
-
 /* 중앙 섹션 - 개인정보처리방침, 주소, 저작권 */
 .banner-center {
   flex: 2;
@@ -227,10 +221,6 @@
     max-width: 250px;
   }
 
-  .banner-slogan {
-    font-size: 0.9rem;
-  }
-
   .banner-links {
     font-size: 0.9rem;
   }
@@ -253,10 +243,6 @@
   .banner-logo img {
     max-height: 70px;
     max-width: 180px;
-  }
-  
-  .banner-slogan {
-    font-size: 0.8rem;
   }
   
   .banner-links {

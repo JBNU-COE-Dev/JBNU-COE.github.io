@@ -99,12 +99,5 @@ function parseTSV(tsv) {
 // 사용 가능한 카테고리 목록
 export const categories = ['전체', '여가', '카페', '음식점', '기타'];
 
-//export const parsedPartners = parseTSV(pastedTSV);
-
-// 기존 수동 입력 샘플(좌표가 있거나 별도 관리 항목)
-export const basePartners = [
-  
-];
-
 // 최종 export: 붙여넣기한 파싱 결과만 사용 (사용자 요청에 따름)
 export const partners = parseTSV(pastedTSV);

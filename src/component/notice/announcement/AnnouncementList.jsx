@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import AnnouncementHeader from './AnnouncementHeader';
+import AnnouncementCategoryNav from './AnnouncementCategoryNav';
 import AnnouncementContent from './AnnouncementContent';
 import { formatDate } from './utils';
 import './announcement.css';
@@ -12,6 +13,7 @@ export default function AnnouncementList() {
   const [pinnedNotices, setPinnedNotices] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -30,6 +32,7 @@ export default function AnnouncementList() {
       const data = await response.json();
       setNotices(data.content);
       setTotalPages(data.totalPages);
+      setTotalElements(data.totalElements);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -73,6 +76,7 @@ export default function AnnouncementList() {
       const data = await response.json();
       setNotices(data.content);
       setTotalPages(data.totalPages);
+      setTotalElements(data.totalElements);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -88,29 +92,36 @@ export default function AnnouncementList() {
 
   return (
     <motion.div
-      className="announcement-container"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      className="announcement-page"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
     >
       <AnnouncementHeader
         searchKeyword={searchKeyword}
         setSearchKeyword={setSearchKeyword}
         handleSearch={handleSearch}
-        selectedCategory={selectedCategory}
-        handleCategoryChange={handleCategoryChange}
         error={error}
       />
 
-      <AnnouncementContent
-        notices={notices}
-        pinnedNotices={pinnedNotices}
-        loading={loading}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalPages={totalPages}
-        formatDate={formatDate}
-      />
+      <div className="announcement-body">
+        <AnnouncementCategoryNav
+          selectedCategory={selectedCategory}
+          handleCategoryChange={handleCategoryChange}
+          totalElements={totalElements}
+        />
+
+        <AnnouncementContent
+          notices={notices}
+          pinnedNotices={pinnedNotices}
+          loading={loading}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+          totalElements={totalElements}
+          formatDate={formatDate}
+        />
+      </div>
     </motion.div>
   );
 }
