@@ -21,7 +21,6 @@ const KakaoChannel = () => {
         <KakaoCard
           kakaoUrl="https://pf.kakao.com/_BHngn"
           title="전북대학교 공과대학 학생회 카카오톡 채널"
-          description="학생회와 실시간으로 소통하고, 문의사항을 편리하게 전달하세요"
           buttonText="카카오톡 채널 입장하기"
           qrImage={kakaoQR}
           qrAlt="카카오톡 채널 QR 코드"

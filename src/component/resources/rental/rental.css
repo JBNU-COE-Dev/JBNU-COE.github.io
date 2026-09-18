@@ -1,304 +1,287 @@
-/* 대여 물품 컨테이너 */
-.rental-container {
-  max-width: 1400px;
-  margin: 12vh auto 2rem;
-  padding: 2rem;
-  min-height: calc(100vh - 20vh);
+/*
+ * 대여 물품 목록
+ *
+ * 공지사항(announcement.css) · 제휴업체(benefits.css)와 같은 뼈대입니다.
+ * 화면 전체 폭 + 좌측 분류 레일(common/FilterRail) + 표 형식 목록,
+ * 그리고 목록 옆에 붙는 대여 안내 칸.
+ *
+ * 클래스 이름은 전부 .rental- 로 시작합니다. CSS 가 전역으로 번들되기
+ * 때문에 .section-head 같은 공통 이름을 쓰면 다른 페이지와 섞입니다.
+ */
+
+.rental-page {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 12vh);
+  padding-top: clamp(100px, 13vh, 132px);
+  background: #ffffff;
 }
 
-/* 헤더 */
+/* ===== 페이지 헤더 밴드 ===== */
+
 .rental-header {
   display: flex;
+  align-items: flex-end;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
+  gap: 2.5rem;
   flex-wrap: wrap;
-  gap: 1rem;
+  padding: 0 clamp(1.25rem, 3.5vw, 3.5rem) 1.4rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.rental-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
 }
 
 .rental-header h1 {
-  color: #0b1526;
-  font-size: 2.2rem;
-  font-weight: 900;
   margin: 0;
-  background: linear-gradient(135deg, #2955a6 0%, #1e3d7a 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 1.875rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #1a1a2e;
 }
 
-/* 검색 */
+/* 검색 (.search-icon 은 common/SearchInput.css) */
+.rental-search-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
 .rental-search {
-  flex: 1;
-  max-width: 400px;
-  position: relative; /* .search-icon(absolute) 기준 */
+  position: relative;
   display: flex;
   align-items: center;
 }
 
 .rental-search-input {
-  width: 100%;
-  padding: 0.8rem 1.2rem 0.8rem 2.8rem; /* 좌측은 아이콘 자리 */
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
+  width: 280px;
+  height: 42px;
+  padding: 0 0.875rem 0 2.4rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1f2937;
+  font-family: inherit;
+  font-size: 0.875rem;
   box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rental-search-input::placeholder {
+  color: #9ca3af;
 }
 
 .rental-search-input:focus {
   outline: none;
-  border-color: #2955a6;
-  box-shadow: 0 0 0 3px rgba(41, 85, 166, 0.1);
+  border-color: #004ca5;
+  box-shadow: 0 0 0 3px rgba(0, 76, 165, 0.1);
 }
 
-/* 카테고리 필터 */
-.rental-category-filter {
-  display: flex;
-  gap: 0.8rem;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
-  border-radius: 16px;
-  border: 2px solid #e5e7eb;
-}
-
-.rental-category-button {
-  padding: 0.6rem 1.5rem;
-  background: white;
-  color: #6b7280;
-  border: 2px solid #e5e7eb;
-  border-radius: 24px;
-  font-size: 0.95rem;
+.rental-search-button {
+  height: 42px;
+  padding: 0 1.375rem;
+  border: none;
+  border-radius: 8px;
+  background: #004ca5;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.875rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s ease;
 }
 
-.rental-category-button:hover {
-  border-color: #2955a6;
-  color: #2955a6;
-  box-shadow: 0 4px 8px rgba(41, 85, 166, 0.15);
-  transform: translateY(-2px);
+.rental-search-button:hover {
+  background: #003d8a;
 }
 
-.rental-category-button.active {
-  background: linear-gradient(135deg, #2955a6 0%, #1e3d7a 100%);
-  color: white;
-  border-color: #2955a6;
-  box-shadow: 0 4px 12px rgba(41, 85, 166, 0.3);
-}
+/* ===== 본문: 분류 레일 + 목록 + 안내 ===== */
 
-/* 통계 카드 */
-.rental-stats {
+.rental-body {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  grid-template-columns: 208px minmax(0, 1fr) 264px;
+  grid-template-areas: 'rail list guide';
+  align-content: start;
+  gap: 2.5rem;
+  flex-grow: 1;
+  padding: 1.75rem clamp(1.25rem, 3.5vw, 3.5rem) 3rem;
 }
 
-.rental-stat-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
-  border: 2px solid #e5e7eb;
-  border-radius: 16px;
-  padding: 2rem;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
+.rental-rail {
+  grid-area: rail;
 }
 
-.rental-stat-card:hover {
-  border-color: #2955a6;
-  box-shadow: 0 8px 24px rgba(41, 85, 166, 0.15);
-  transform: translateY(-4px);
-}
-
-.stat-number {
-  font-size: 2.5rem;
-  font-weight: 900;
-  background: linear-gradient(135deg, #2955a6 0%, #1e3d7a 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 0.5rem;
-}
-
-.stat-label {
-  color: #6b7280;
-  font-size: 1rem;
-  font-weight: 700;
-}
-
-/* 테이블 컨테이너 */
-.rental-table-container {
-  background: white;
-  border: 2px solid #e5e7eb;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  margin-bottom: 2rem;
-}
-
-/* 테이블 */
-.rental-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.rental-table thead {
-  background: linear-gradient(135deg, #2955a6 0%, #1e3d7a 100%);
-}
-
-.rental-table th {
-  padding: 1.2rem;
-  text-align: left;
-  font-weight: 800;
-  color: white;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.rental-table tbody tr {
-  border-bottom: 1px solid #e5e7eb;
-  transition: all 0.2s ease;
-}
-
-.rental-table tbody tr:hover {
-  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
-  box-shadow: inset 0 0 0 2px #2955a6;
-}
-
-.rental-table tbody tr:last-child {
-  border-bottom: none;
-}
-
-.rental-table td {
-  padding: 1.2rem;
-  font-size: 1rem;
-  color: #0b1526;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.item-name {
-  font-weight: 700;
-  color: #0b1526;
-}
-
-/* 카테고리 배지 */
-.category-badge {
-  display: inline-block;
-  padding: 0.4rem 1rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-align: center;
-}
-
-.category-badge.학용품 {
-  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-  color: #1e40af;
-}
-
-.category-badge.생활용품 {
-  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-  color: #166534;
-}
-
-.category-badge.안전용품 {
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  color: #92400e;
-}
-
-.category-badge.체육용품 {
-  background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
-  color: #5b21b6;
-}
-
-/* 수량 배지 */
-.quantity-badge {
-  display: inline-block;
-  padding: 0.4rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-  color: #065f46;
-}
-
-.quantity-badge.low {
-  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-  color: #991b1b;
-}
-
-/* 검색 결과 없음 */
-.no-results {
-  text-align: center;
-  padding: 3rem !important;
-  color: #9ca3af;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-/* 에러 메시지 */
-.rental-error {
+.rental-section {
+  grid-area: list;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  min-width: 0;
+}
+
+/* 목록 제목 줄 */
+.rental-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
   gap: 1rem;
-  text-align: center;
-  padding: 2rem;
-  color: #dc2626;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 12px;
-  margin-bottom: 2rem;
+  padding-bottom: 0.75rem;
 }
 
-.rental-error .error-retry-btn {
-  padding: 0.5rem 1.25rem;
-  background: #dc2626;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.9rem;
+.rental-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.rental-section-head h2 {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #1f2937;
+}
+
+.rental-section-count,
+.rental-section-note {
+  font-size: 0.8125rem;
+  color: #9ca3af;
+}
+
+/* ===== 표 형식 목록 ===== */
+
+.rental-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.rental-row {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr) 168px;
+  gap: 1.25rem;
+  align-items: center;
+  min-height: 56px;
+  padding: 0 1rem;
+  border-bottom: 1px solid #f1f3f5;
+}
+
+.rental-table-head {
+  height: 44px;
+  min-height: 44px;
+  border-top: 2px solid #1f2937;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #6b7280;
+}
+
+.rental-row:not(.rental-table-head):hover {
+  background: #f7fafe;
+}
+
+.rental-table .rental-row:last-child {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.rental-category {
+  font-size: 0.78rem;
   font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
+  color: #004ca5;
 }
 
-.rental-error .error-retry-btn:hover {
-  background: #b91c1c;
+.rental-name {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #1f2937;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* 스켈레톤 로딩 */
-.skeleton-row td {
-  padding: 1.2rem;
+.rental-quantity {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }
 
-.skeleton-cell {
-  height: 20px;
-  background: linear-gradient(90deg, #f3f4f6 0%, #e5e7eb 50%, #f3f4f6 100%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s ease-in-out infinite;
+.rental-table-head .rental-quantity {
+  display: block;
+  text-align: right;
+}
+
+.rental-quantity-number {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #1f2937;
+  white-space: nowrap;
+}
+
+/* 재고가 적은 물품은 색과 글자 둘 다로 표시합니다 */
+.rental-quantity-number.is-low {
+  color: #b42318;
+}
+
+.rental-quantity-unit {
+  margin-left: 1px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #9ca3af;
+}
+
+.rental-low-badge {
+  flex-shrink: 0;
+  padding: 2px 0.5rem;
+  border: 1px solid #f0c2c2;
   border-radius: 4px;
+  background: #fdf3f3;
+  color: #b42318;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.6;
+  white-space: nowrap;
 }
 
-.skeleton-cell.short {
-  width: 40px;
-  margin: 0 auto;
+.rental-no-items {
+  padding: 4rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: center;
+  font-size: 0.9375rem;
+  color: #9ca3af;
 }
 
-.skeleton-cell.medium {
-  width: 80px;
+.rental-table-note {
+  margin: 1rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: #9ca3af;
 }
 
-@keyframes skeleton-loading {
+/* 스켈레톤 */
+.rental-skeleton-row .rental-skeleton-bar {
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f3f4f6 0%, #e9ebee 50%, #f3f4f6 100%);
+  background-size: 200% 100%;
+  animation: rental-skeleton-loading 1.5s ease-in-out infinite;
+}
+
+.rental-skeleton-row .rental-skeleton-bar.wide {
+  width: 62%;
+}
+
+.rental-skeleton-row .rental-skeleton-bar.narrow {
+  width: 48px;
+  margin-left: auto;
+}
+
+@keyframes rental-skeleton-loading {
   0% {
     background-position: 200% 0;
   }
@@ -307,113 +290,205 @@
   }
 }
 
-/* 안내 메시지 */
-.rental-notice {
-  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-  border: 2px solid #93c5fd;
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 4px 12px rgba(41, 85, 166, 0.1);
+/* ===== 대여 안내 ===== */
+
+.rental-guide {
+  grid-area: guide;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding: 1.25rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #f9fbff;
 }
 
-.rental-notice h3 {
-  margin: 0 0 1rem 0;
-  color: #1e40af;
-  font-size: 1.3rem;
-  font-weight: 800;
-}
-
-.rental-notice ul {
+.rental-guide h2 {
   margin: 0;
-  padding-left: 1.5rem;
-  color: #1e3a8a;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #1f2937;
 }
 
-.rental-notice li {
-  margin: 0.6rem 0;
-  font-size: 1rem;
-  line-height: 1.6;
+.rental-guide-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin: 0;
+}
+
+.rental-guide-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.rental-guide-item dt {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #9ca3af;
+}
+
+.rental-guide-item dd {
+  margin: 0;
+  font-size: 0.84rem;
   font-weight: 600;
+  line-height: 1.5;
+  color: #1f2937;
 }
 
-/* 반응형 */
+.rental-guide-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4375rem;
+  margin: 0;
+  padding: 0.875rem 0 0;
+  border-top: 1px solid #e5e7eb;
+  list-style: none;
+}
+
+.rental-guide-rules li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.55;
+  color: #4b5563;
+}
+
+.rental-guide-rules svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #4a90d9;
+}
+
+/* ===== 반응형 ===== */
+
+/* 안내 칸을 따로 세울 만큼 넓지 않으면 목록 위로 올립니다 */
+@media (max-width: 1180px) {
+  .rental-body {
+    grid-template-columns: 208px minmax(0, 1fr);
+    grid-template-areas:
+      'rail guide'
+      'rail list';
+    gap: 1.5rem 2.5rem;
+  }
+
+  .rental-guide {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    align-items: start;
+    gap: 0.875rem 2rem;
+  }
+
+  .rental-guide h2 {
+    grid-column: 1 / -1;
+  }
+
+  .rental-guide-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.625rem 2rem;
+  }
+
+  .rental-guide-rules {
+    padding-top: 0;
+    border-top: none;
+  }
+}
+
+/* FilterRail 이 가로 스크롤 칩으로 바뀌는 지점 (FilterRail.css) */
 @media (max-width: 1024px) {
-  .rental-container {
-    padding: 1.5rem;
-  }
-
-  .rental-header h1 {
-    font-size: 1.8rem;
-  }
-
-  .stat-number {
-    font-size: 2rem;
+  .rental-body {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'rail'
+      'guide'
+      'list';
+    gap: 1.5rem;
   }
 }
 
+/* 모바일: 표를 카드 행으로 */
 @media (max-width: 767px) {
-  .rental-container {
-    padding: 1rem;
-    margin-top: 15vh;
-  }
-
   .rental-header {
-    flex-direction: column;
     align-items: flex-start;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-bottom: 1.25rem;
   }
 
   .rental-header h1 {
     font-size: 1.5rem;
   }
 
-  .rental-search {
+  .rental-search-form {
     width: 100%;
-    max-width: 100%;
   }
 
-  .rental-category-filter {
-    padding: 0.8rem;
-    gap: 0.6rem;
+  .rental-search {
+    flex: 1;
+    min-width: 0;
   }
 
-  .rental-category-button {
-    font-size: 0.85rem;
-    padding: 0.5rem 1rem;
+  .rental-search-input {
+    width: 100%;
   }
 
-  .rental-stats {
-    grid-template-columns: 1fr;
+  .rental-guide-list {
+    flex-direction: column;
+    gap: 0.625rem;
   }
 
-  /* 테이블 반응형 */
-  .rental-table-container {
-    overflow-x: auto;
+  .rental-table-head {
+    display: none;
   }
 
   .rental-table {
-    min-width: 600px;
+    border-top: 2px solid #1f2937;
   }
 
-  .rental-table th,
-  .rental-table td {
-    padding: 0.8rem;
-    font-size: 0.9rem;
+  .rental-row,
+  .rental-skeleton-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'category quantity'
+      'name quantity';
+    gap: 0.25rem 0.75rem;
+    padding: 0.75rem 0.25rem;
   }
 
-  .stat-number {
-    font-size: 2rem;
+  .rental-category {
+    grid-area: category;
+    align-self: end;
   }
 
-  .rental-notice {
-    padding: 1.5rem;
+  .rental-name {
+    grid-area: name;
+    align-self: start;
+    white-space: normal;
+    line-height: 1.4;
   }
 
-  .rental-notice h3 {
-    font-size: 1.1rem;
+  .rental-quantity {
+    grid-area: quantity;
   }
 
-  .rental-notice li {
-    font-size: 0.9rem;
+  /* 스켈레톤 막대도 같은 자리에 (행 구성이 바뀌므로 명시합니다) */
+  .rental-skeleton-row .rental-skeleton-bar {
+    grid-area: category;
+  }
+
+  .rental-skeleton-row .rental-skeleton-bar.wide {
+    grid-area: name;
+  }
+
+  .rental-skeleton-row .rental-skeleton-bar.narrow {
+    grid-area: quantity;
+    align-self: center;
   }
 }
-
