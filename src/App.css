@@ -1,3 +1,40 @@
+/*
+ * 고정 헤더(TopBar + HeaderBar) 높이의 단일 기준.
+ * 두 헤더 모두 position: fixed 라서 문서 흐름에서 빠지므로,
+ * .header-container 가 정확히 이 높이만큼 자리를 비워 둡니다.
+ * 페이지 CSS 에서는 헤더 높이를 다시 더하지 말고 자기 여백만 주세요.
+ */
+:root {
+  --topbar-h: 40px;
+  --headerbar-h: clamp(60px, 10vh, 80px);
+  --header-total: calc(var(--topbar-h) + var(--headerbar-h));
+}
+
+/* 태블릿/작은 노트북: 햄버거 메뉴 전환 지점 (useResponsive 와 동일) */
+@media (max-width: 1199px) {
+  :root { --headerbar-h: clamp(55px, 8vh, 70px); }
+}
+
+@media (max-width: 768px) {
+  :root { --topbar-h: 35px; }
+}
+
+@media (max-width: 767px) {
+  :root { --headerbar-h: clamp(50px, 7vh, 60px); }
+}
+
+@media (max-width: 480px) {
+  :root { --topbar-h: 30px; }
+}
+
+/* 핸드폰 가로모드 (화면 높이가 낮을 때) */
+@media (max-height: 500px) and (orientation: landscape) {
+  :root {
+    --topbar-h: 30px;
+    --headerbar-h: 50px;
+  }
+}
+
 html, body, #root{
   margin: 0;
   padding: 0;
@@ -10,16 +47,8 @@ html, body, #root{
   flex-direction: column;
 }
 .header-container{
-  height: 10vh;
-}
-
-/* 모바일: topBar 이후 여백 없이 header-container 표시 */
-@media (max-width: 767px) {
-  .header-container {
-    height: 0;
-    margin: 0;
-    padding: 0;
-  }
+  height: var(--header-total);
+  flex-shrink: 0;
 }
 
 .main-content {

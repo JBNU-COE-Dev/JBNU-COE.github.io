@@ -1,7 +1,7 @@
 .header-bar {
     position: fixed;
-    top: 40px;
-    height: clamp(60px, 10vh, 80px); /* 최소 60px 보장 (가로모드 대응) */
+    top: var(--topbar-h);
+    height: var(--headerbar-h); /* 높이는 App.css 의 :root 변수에서 반응형으로 관리 */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -284,35 +284,13 @@
     display: block; /* 햄버거 메뉴 버튼 표시 */
   }
 
-  .header-bar {
-    top: 40px; /* top bar 높이에 맞춤 */
-    height: clamp(55px, 8vh, 70px); /* 최소 55px 보장 */
-  }
-
   .logo-size-lg {
     --logo-size: 140px;
   }
 }
 
-/* 태블릿 작은 화면 (768px 이하) */
-@media (max-width: 768px) {
-  .header-bar {
-    top: 35px; /* top bar 높이 35px에 맞춤 */
-  }
-}
-
 /* 모바일 (~ 767px) */
 @media (max-width: 767px) {
-    .header-bar {
-      position: fixed;       /* 고정 */
-      top: 30px;             /* 모바일 topBar 높이(30px)에 맞춤 - 여백 없음 */
-      height: clamp(50px, 7vh, 60px); /* 최소 50px 보장 (가로모드 대응) */
-      width: 100%;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-    }
-  
     .logo {
       padding-left: 15px;
       gap: 10px;
@@ -356,11 +334,6 @@
 
 /* 가로모드 (화면 높이가 낮을 때) - 핸드폰 가로모드 대응 */
 @media (max-height: 500px) and (orientation: landscape) {
-  .header-bar {
-    height: 50px; /* 가로모드에서 고정 높이 */
-    top: 25px;
-  }
-
   .logo-img {
     width: 100px;
     height: auto;

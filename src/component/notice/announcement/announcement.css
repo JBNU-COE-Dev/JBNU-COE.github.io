@@ -11,8 +11,8 @@
 .announcement-page {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 12vh);
-  padding-top: clamp(100px, 13vh, 132px);
+  min-height: calc(100vh - var(--header-total));
+  padding-top: 1.75rem;
   background: #ffffff;
 }
 
@@ -381,7 +381,7 @@
 
 .announcement-detail-container {
   max-width: 900px;
-  margin: clamp(100px, 13vh, 132px) auto 3rem;
+  margin: 2rem auto 3rem;
   padding: 2.5rem clamp(1.25rem, 3.5vw, 3rem);
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -497,7 +497,7 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  margin-top: clamp(100px, 13vh, 132px);
+  margin-top: 2rem;
 }
 
 .back-button {

@@ -1,7 +1,7 @@
 /* 시설 점검 컨테이너 */
 .facility-inspection-container {
   max-width: 1400px;
-  margin: 12vh auto 2rem;
+  margin: 0 auto 2rem;
   padding: 2rem;
   min-height: calc(100vh - 20vh);
   position: relative;
@@ -462,7 +462,6 @@
 @media (max-width: 767px) {
   .facility-inspection-container {
     padding: 1rem;
-    margin-top: 15vh;
   }
 
   .facility-inspection-header {

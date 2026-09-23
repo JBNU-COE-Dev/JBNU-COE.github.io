@@ -12,8 +12,8 @@
 .rental-page {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 12vh);
-  padding-top: clamp(100px, 13vh, 132px);
+  min-height: calc(100vh - var(--header-total));
+  padding-top: 1.75rem;
   background: #ffffff;
 }
 

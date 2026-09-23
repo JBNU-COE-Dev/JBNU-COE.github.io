@@ -3,7 +3,6 @@
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
-  padding-top: calc(40px + 10vh + 2rem);
   box-sizing: border-box;
 }
 
@@ -47,7 +46,6 @@
 @media (max-width: 768px) {
   .kakao-channel-container {
     padding: 1.5rem 1rem;
-    padding-top: calc(40px + 10vh + 1rem);
   }
 }
 

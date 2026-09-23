@@ -5,7 +5,6 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
-  padding-top: calc(40px + 10vh + 2rem);
   box-sizing: border-box;
 }
 
@@ -467,7 +466,6 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
-  padding-top: calc(40px + 10vh + 2rem);
   box-sizing: border-box;
 }
 
@@ -574,7 +572,6 @@
   .activities-page,
   .activities-detail {
     padding: 1.5rem 1rem;
-    padding-top: calc(40px + 8vh + 1rem);
   }
 
   .activities-header {

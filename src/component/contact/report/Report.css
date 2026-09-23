@@ -1,6 +1,6 @@
 .report-container {
   max-width: 900px;
-  margin: clamp(5rem, 10vw, 8rem) auto 0 auto;
+  margin: 0 auto;
   padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 3vw, 2rem);
   min-height: calc(100vh - 200px);
 }
@@ -74,7 +74,6 @@
 /* 태블릿 반응형 */
 @media (max-width: 1023px) {
   .report-container {
-    margin-top: 7rem;
     padding: 2rem 1.5rem;
   }
 
@@ -90,7 +89,6 @@
 /* 모바일 반응형 */
 @media (max-width: 767px) {
   .report-container {
-    margin-top: 7rem;
     padding: 1.5rem 1rem;
   }
 

@@ -3,7 +3,6 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 20px;
-  padding-top: 120px; /* 헤더바(10vh ≈ 100px) + 여유(20px) */
   min-height: calc(100vh - 200px);
 }
 
@@ -401,7 +400,6 @@
 @media (max-width: 1023px) {
   .study-support-page {
     padding: 30px 15px;
-    padding-top: 110px; /* 헤더바 고려 */
   }
 
   .page-header h1 {
@@ -441,7 +439,6 @@
 @media (max-width: 767px) {
   .study-support-page {
     padding: 20px 10px;
-    padding-top: 100px; /* 모바일 헤더바 고려 */
   }
 
   .page-header {
