@@ -14,7 +14,6 @@ import ImageSlider from './imageSlider/imageSlider.jsx';
 import CardSection from './cardSection/cardSection.jsx';
 
 import { useResponsive } from '../hooks/useResponsive.jsx';
-import { useLayoutResize } from '../hooks/useLayoutResize.jsx';
 
 import PartnerShowcase from './partnerSlider/PartnerShowcase.jsx';
 
@@ -24,7 +23,6 @@ import { HiMenu } from 'react-icons/hi';
 const Home = () => {
   const slides = [{image: mainSlider1}, {image: mainSlider2}, {image: mainSlider3}, {image: mainSlider4}, {image: mainSlider5}];
   const { isMobile, isTablet, isDesktop } = useResponsive();
-  useLayoutResize();
   const [searchText, setSearchText] = useState('');
   const navigate = useNavigate();
 

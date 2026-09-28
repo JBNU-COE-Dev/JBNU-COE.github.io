@@ -4,13 +4,9 @@ import AllianceCard from './cards/allianceCard.jsx';
 import ReportCard from './cards/reportCard.jsx';
 import './cardSection.css';
 
-import { useLayoutResize } from '../../hooks/useLayoutResize.jsx';
-
 
 function CardSection({ isMobile, isTablet, isDesktop }) {
   // const { isMobile, isTablet, isDesktop } = useResponsive();
-
-  useLayoutResize();
 
   // 카드 배열
   const cards = [

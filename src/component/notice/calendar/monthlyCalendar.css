@@ -3,7 +3,6 @@
   max-width: 1400px;
   margin: 0 auto;
   padding: clamp(20px, 4vw, 40px) clamp(10px, 2vw, 20px);
-  padding-top: calc(40px + clamp(60px, 10vh, 80px) + 20px); /* topBar + headerBar + 여백 */
   min-height: calc(100vh - 200px);
 }
 
@@ -399,7 +398,6 @@
 @media (max-width: 1023px) {
   .monthly-calendar-page {
     padding: 30px 15px;
-    padding-top: calc(40px + clamp(55px, 8vh, 70px) + 15px); /* topBar + headerBar + 여백 */
   }
 
   .calendar-container {
@@ -429,7 +427,6 @@
 @media (max-width: 767px) {
   .monthly-calendar-page {
     padding: 20px 10px;
-    padding-top: calc(30px + clamp(50px, 7vh, 60px) + 10px); /* topBar + headerBar + 여백 */
   }
 
   .page-title {
@@ -526,10 +523,6 @@
 
 /* 가로모드 대응 */
 @media (max-height: 500px) and (orientation: landscape) {
-  .monthly-calendar-page {
-    padding-top: calc(25px + 50px + 10px); /* 가로모드 topBar(25px) + headerBar(50px) + 여백 */
-  }
-
   .calendar-container {
     padding: 15px;
   }

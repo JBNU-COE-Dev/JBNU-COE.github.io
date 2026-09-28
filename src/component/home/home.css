@@ -10,6 +10,7 @@ html, body, #root {
     height: 100%;
     overflow-y: auto;
     scroll-snap-type: y mandatory;
+    scroll-padding-top: var(--header-total); /* 스냅 위치를 고정 헤더 아래로 */
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
   }
@@ -23,10 +24,10 @@ html, body, #root {
     transition: transform 0.3s ease-out;
   }
   
-  /* 첫 번째 화면: 이미지 슬라이더 + 카드 */
+  /* 첫 번째 화면: 이미지 슬라이더 + 카드 (고정 헤더를 뺀 나머지 한 화면) */
   .first-screen {
-    height: 100vh !important;
-    min-height: 100vh !important;
+    height: calc(100vh - var(--header-total)) !important;
+    min-height: calc(100vh - var(--header-total)) !important;
     display: block !important;
     scroll-snap-align: start;
     position: relative !important;
@@ -57,13 +58,12 @@ html, body, #root {
   
   /* 두 번째 화면: 지도 + 버튼 */
   .second-screen {
-    height: 100vh;
-    min-height: 100vh;
+    height: calc(100vh - var(--header-total));
+    min-height: calc(100vh - var(--header-total));
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
     padding: 2rem;
-    margin-top: calc(40px + clamp(60px, 10vh, 80px)); /* topBar + headerBar 높이만큼 상단 여백 */
     scroll-snap-align: start;
     box-sizing: border-box;
   }
@@ -182,9 +182,7 @@ html, body, #root {
   /* 모바일 반응형 - 대폭 개선 */
   @media (max-width: 767px) {
     .first-screen {
-      height: 100vh;
-      min-height: 100vh;
-      max-height: 100vh;
+      max-height: calc(100vh - var(--header-total));
     }
 
     .slider-container {
@@ -199,9 +197,7 @@ html, body, #root {
 
     .second-screen {
       padding: 1rem;
-      margin-top: calc(30px + clamp(50px, 7vh, 60px)); /* 모바일 topBar + headerBar */
       gap: 1rem;
-      min-height: 100vh;
     }
 
     .benefit-toolbar {
@@ -244,7 +240,6 @@ html, body, #root {
     }
 
     .third-screen {
-      min-height: 100vh;
       padding: 1rem 0;
     }
 
@@ -273,8 +268,6 @@ html, body, #root {
   /* 높이가 800px 이하일 때 겹침 방지 */
   @media (max-height: 800px) {
     .second-screen {
-      margin-top: 0;
-      padding-top: calc(40px + clamp(60px, 10vh, 80px) + 1rem); /* topBar + headerBar + 여백 */
       min-height: auto;
       height: auto;
       margin-bottom: 2rem; /* third-screen과의 간격 확보 */
@@ -302,8 +295,6 @@ html, body, #root {
   /* 높이가 800px 이하이고 너비가 767px 이하일 때 */
   @media (max-height: 800px) and (max-width: 767px) {
     .second-screen {
-      margin-top: 0;
-      padding-top: calc(30px + clamp(50px, 7vh, 60px) + 1rem); /* 모바일 topBar + headerBar + 여백 */
       margin-bottom: 1.5rem;
     }
 
@@ -324,7 +315,7 @@ html, body, #root {
   
   /* 세 번째 화면: 달력 */
   .third-screen {
-    min-height: 100vh;
+    min-height: calc(100vh - var(--header-total));
     display: flex;
     scroll-snap-align: start;
     position: relative;

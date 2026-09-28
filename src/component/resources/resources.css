@@ -1,7 +1,7 @@
 /* 학생회 자료실 컨테이너 */
 .resources-container {
   max-width: 1400px;
-  margin: 12vh auto 2rem;
+  margin: 0 auto 2rem;
   padding: 2rem;
   min-height: calc(100vh - 20vh);
 }
@@ -207,7 +207,6 @@
 @media (max-width: 767px) {
   .resources-container {
     padding: 1rem;
-    margin-top: 15vh;
   }
 
   .resources-header h1 {

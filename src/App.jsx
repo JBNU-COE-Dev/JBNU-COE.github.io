@@ -32,12 +32,10 @@ import FloatingButton from './layouts/floatingButton/FloatingButton.jsx';
 import './App.css';
 
 import { useResponsive } from './component/hooks/useResponsive.jsx';
-import { useLayoutResize } from './component/hooks/useLayoutResize.jsx';
 
 function App() {
   const { isMobile, isTablet, isDesktop } = useResponsive();
-  useLayoutResize();
-  
+
   return (
     <BrowserRouter basename="/">
       <div className="app-container">
