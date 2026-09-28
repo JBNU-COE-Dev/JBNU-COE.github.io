@@ -24,7 +24,7 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         env:
           NO_CACHE: ${{ inputs.no_cache }}
-        with:
+        with: 
           host: ${{ secrets.JCLOUD_SSH_HOST }}
           username: ${{ secrets.JCLOUD_SSH_USER }}
           key: ${{ secrets.JCLOUD_SSH_KEY }}
@@ -33,7 +33,7 @@ jobs:
           command_timeout: 20m
           script: |
             set -e
-            REPO_DIR=/home/ubuntu/JBNU-COE.github.io
+            REPO_DIR=/home/ubuntu/engsc-web
             COMPOSE_FILE=/home/ubuntu/docker-compose.yml
             ENV_FILE=/home/ubuntu/.env
             SERVICE=user-front
