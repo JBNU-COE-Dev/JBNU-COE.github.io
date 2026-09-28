@@ -28,8 +28,7 @@ npm start             # 개발 서버 (http://localhost:3000)
 | 명령어 | 설명 |
 | --- | --- |
 | `npm start` | 개발 서버 실행 |
-| `npm run build` | 프로덕션 빌드 (`prebuild`가 먼저 실행됨) |
-| `npm run prebuild` | `public/notices/*.md` → `notices.index.json` 생성 |
+| `npm run build` | 프로덕션 빌드 |
 | `npm test` | 테스트 실행 (react-scripts / Testing Library) |
 | `npm run deploy` | `gh-pages`로 `build/` 배포 |
 
@@ -79,11 +78,7 @@ src/
 └── img/                    # 정적 이미지 에셋
 public/
 ├── feel_calendar/, maps/   # 페이지에서 직접 참조하는 이미지
-├── notices/                # (선택) 마크다운 공지 원본
 └── calendar.json
-scripts/
-├── generate-notices-index.mjs  # prebuild에서 실행
-└── fetch-notion.mjs            # Notion 공지 동기화(선택)
 ```
 
 ---
@@ -176,18 +171,6 @@ const { isAuthenticated, userNickname, isLoading, login, logout } = useAuth();
 | `isDesktop` | 1440px~ |
 
 `isMobileOrTablet`, `isNotMobile` 파생 값도 제공합니다. 컴포넌트에서 미디어 쿼리를 직접 작성하기보다 이 훅을 사용하세요.
-
----
-
-## 공지 데이터
-
-`npm run build` 시 `prebuild`가 `scripts/generate-notices-index.mjs`를 실행합니다.
-
-- `public/notices/*.md`를 스캔해 첫 `# 제목`을 title로, 파일명의 `YYYY-MM-DD` 또는 mtime을 date로 추출
-- 최신순 정렬 후 `src/component/notice/announcement/notices.index.json`에 기록
-- `public/notices/`가 없으면 경고만 남기고 정상 종료(빌드 실패 아님)
-
-`scripts/fetch-notion.mjs`는 Notion(`NOTION_TOKEN`, `NOTION_DATABASE_ID`, `NOTION_PAGE_IDS`)에서 공지를 가져오는 선택적 스크립트입니다.
 
 ---
 

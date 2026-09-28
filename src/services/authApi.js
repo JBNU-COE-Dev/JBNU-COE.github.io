@@ -8,7 +8,7 @@ const AUTH_BASE = '/api/auth';
 /**
  * Google ID 토큰으로 로그인
  * @param {string} idToken - Google Sign-In에서 받은 credential
- * @returns {Promise<{token: string, username: string}>}
+ * @returns {Promise<{token: string, username: string, nickname?: string, id?: number, needSignup?: boolean, email?: string}>}
  */
 export async function googleLogin(idToken) {
   return post(`${AUTH_BASE}/google`, { idToken });
@@ -16,7 +16,7 @@ export async function googleLogin(idToken) {
 
 /**
  * 토큰 검증
- * @returns {Promise<{valid: boolean, username: string}>}
+ * @returns {Promise<{valid: boolean, username: string, nickname?: string, role?: string, id?: number}>}
  */
 export async function verifyToken() {
   return get(`${AUTH_BASE}/verify`);
@@ -26,6 +26,7 @@ export async function verifyToken() {
  * 회원가입 완료 (닉네임 저장)
  * @param {string} idToken - Google ID 토큰
  * @param {string} nickname - 닉네임 (2~50자)
+ * @returns {Promise<{token: string, username: string, nickname?: string, id?: number}>}
  */
 export async function signup(idToken, nickname) {
   return post(`${AUTH_BASE}/signup`, { idToken, nickname });

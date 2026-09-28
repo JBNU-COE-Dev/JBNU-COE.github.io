@@ -3,12 +3,18 @@ import { authApi } from '../services/authApi';
 
 const AUTH_TOKEN_KEY = 'authToken';
 
+function toUserId(apiId) {
+  if (apiId == null || apiId === '') return null;
+  return String(apiId);
+}
+
 const AuthContext = createContext(undefined);
 
 export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState(null);
   const [userNickname, setUserNickname] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -24,6 +30,7 @@ export function AuthProvider({ children }) {
           setIsAuthenticated(true);
           setUserEmail(data.username);
           setUserNickname(data.nickname || null);
+          setUserId(toUserId(data.id));
         } else {
           localStorage.removeItem(AUTH_TOKEN_KEY);
         }
@@ -45,6 +52,7 @@ export function AuthProvider({ children }) {
     setIsAuthenticated(true);
     setUserEmail(data.username);
     setUserNickname(data.nickname || null);
+    setUserId(toUserId(data.id));
     return data;
   };
 
@@ -54,6 +62,7 @@ export function AuthProvider({ children }) {
     setIsAuthenticated(true);
     setUserEmail(data.username);
     setUserNickname(data.nickname || null);
+    setUserId(toUserId(data.id));
     return data;
   };
 
@@ -62,6 +71,7 @@ export function AuthProvider({ children }) {
     setIsAuthenticated(false);
     setUserEmail(null);
     setUserNickname(null);
+    setUserId(null);
     authApi.logout().catch(() => {});
   };
 
@@ -71,6 +81,7 @@ export function AuthProvider({ children }) {
         isAuthenticated,
         userEmail,
         userNickname,
+        userId,
         isLoading,
         login,
         completeSignup,

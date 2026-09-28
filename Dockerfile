@@ -14,9 +14,6 @@ RUN npm ci --only=production=false
 # 소스 코드 복사
 COPY . .
 
-# prebuild 스크립트 실행 (notices index 생성)
-RUN npm run prebuild
-
 # 환경 변수 설정 (빌드 시 필요)
 # 주의: 실제 배포 시에는 --build-arg로 전달하거나 .env 파일 사용
 ARG REACT_APP_NAVER_CLIENT_ID
@@ -45,4 +42,3 @@ EXPOSE 80
 
 # Nginx 실행
 CMD ["nginx", "-g", "daemon off;"]
-
