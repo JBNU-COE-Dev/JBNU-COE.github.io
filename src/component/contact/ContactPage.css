@@ -9,9 +9,9 @@
 .contact-page {
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 12vh);
-  /* 고정된 TopBar + HeaderBar 를 비우는 여백. 공지사항·제휴업체와 같은 값입니다. */
-  padding-top: clamp(100px, 13vh, 132px);
+  min-height: calc(100vh - var(--header-total));
+  /* 고정 헤더만큼의 자리는 App.css 의 .header-container 가 이미 비워 두므로 자체 여백만 둔다. */
+  padding-top: 1.75rem;
   background: #ffffff;
   color: #1f2937;
 }

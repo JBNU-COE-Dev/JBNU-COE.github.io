@@ -20,7 +20,6 @@ html, body, #root {
     position: relative !important;
     min-height: clamp(200px, 40vh, 300px) !important;
     max-height: clamp(300px, 60vh, 500px) !important;
-    margin-top: clamp(60px, 10vh, 12vh);
 }
 
 /* 분류바 스타일 */
@@ -355,7 +354,6 @@ html, body, #root {
     width: 100%;
     height: auto;
     min-height: 60vh; /* 모바일에서는 고정된 100vh 제거 */
-    margin-top: 10vh; /* 헤더바 높이만큼 상단 여백 추가 */
   }
 
   .imageSlider-container {
