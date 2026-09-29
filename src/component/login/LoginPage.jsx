@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../../contexts/AuthContext';
@@ -21,6 +21,30 @@ function LoginPage() {
   const [error, setError] = useState(null);
   const [pendingSignup, setPendingSignup] = useState(null); // { idToken, email }
   const [nickname, setNickname] = useState('');
+  const [googleBtnWidth, setGoogleBtnWidth] = useState(300);
+  const googleResizeObserverRef = useRef(null);
+
+  // Google 로그인 버튼은 고정 px 폭으로 그려지므로, 실제 컨테이너 폭을
+  // 측정해 width prop으로 넘겨줘야 화면 크기별로 올바르게 렌더링된다.
+  // isLoading이 풀리기 전까지는 컴포넌트가 null을 반환해 이 wrap이
+  // 나중에야 마운트되므로, effect 대신 콜백 ref로 실제 마운트 시점에 관찰한다.
+  const googleWrapRef = useCallback((node) => {
+    if (googleResizeObserverRef.current) {
+      googleResizeObserverRef.current.disconnect();
+      googleResizeObserverRef.current = null;
+    }
+    if (!node) return;
+    const updateWidth = () => {
+      const width = node.getBoundingClientRect().width;
+      if (width > 0) {
+        setGoogleBtnWidth(Math.round(Math.min(400, Math.max(240, width))));
+      }
+    };
+    updateWidth();
+    const observer = new ResizeObserver(updateWidth);
+    observer.observe(node);
+    googleResizeObserverRef.current = observer;
+  }, []);
 
   useEffect(() => {
     if (!isLoading && isAuthenticated && !pendingSignup) {
@@ -131,7 +155,7 @@ function LoginPage() {
         </p>
         {error && <div className="login-error">{error}</div>}
         {clientId ? (
-          <div className="login-google-wrap">
+          <div className="login-google-wrap" ref={googleWrapRef}>
             <GoogleLogin
               onSuccess={handleGoogleSuccess}
               onError={handleGoogleError}
@@ -140,6 +164,7 @@ function LoginPage() {
               size="large"
               text="continue_with"
               shape="rectangular"
+              width={googleBtnWidth}
             />
           </div>
         ) : (

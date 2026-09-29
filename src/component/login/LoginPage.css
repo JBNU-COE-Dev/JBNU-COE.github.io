@@ -51,15 +51,6 @@
   margin-bottom: 1.5rem;
 }
 
-.login-google-wrap > div {
-  width: 100% !important;
-}
-
-.login-google-wrap iframe {
-  width: 100% !important;
-  min-width: 240px !important;
-}
-
 .login-no-client {
   padding: 1rem;
   background: #fef9c3;
